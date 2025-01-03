@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:petify/containers/category_container.dart';
+import 'package:petify/containers/home_page_store_maker_container.dart';
 import 'package:petify/containers/promo_container.dart';
 import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
@@ -51,6 +53,8 @@ class _ShopPageState extends State<ShopPage> {
                   ],
                 ),
               ),
+              CategoryContainer(),
+              HomePageMakerContainer()
             ],
           ),
         ),
