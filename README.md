@@ -1,6 +1,6 @@
 # petify
 
-A new Flutter project.
+A Flutter project for take care of pets !!!.
 
 ## Getting Started
 
