@@ -46,23 +46,23 @@ class _pageSelectionState extends State<pageSelection> {
         items: const [
           Icon(
             FluentSystemIcons.ic_fluent_store_microsoft_filled,
-            size: 30,
+            size: 27,
           ),
           Icon(
             Icons.store,
-            size: 30,
+            size: 27,
           ),
           Icon(
             Icons.home,
-            size: 30,
+            size: 27,
           ),
           Icon(
             Icons.delivery_dining_outlined,
-            size: 30,
+            size: 27,
           ),
           Icon(
             FluentSystemIcons.ic_fluent_more_vertical_filled,
-            size: 30,
+            size: 27,
           )
         ],
       ),
