@@ -37,7 +37,7 @@ class _pageSelectionState extends State<pageSelection> {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
         index: 2,
-        height: 65,
+        height: 57,
         buttonBackgroundColor: const Color(0xff92A3FD),
         backgroundColor: const Color(0xff92A3FD),
         color: const Color.fromARGB(255, 209, 196, 233),
@@ -45,7 +45,7 @@ class _pageSelectionState extends State<pageSelection> {
         onTap: _pageSelection,
         items: const [
           Icon(
-            Icons.shopping_bag_rounded,
+            FluentSystemIcons.ic_fluent_store_microsoft_filled,
             size: 30,
           ),
           Icon(
@@ -57,11 +57,11 @@ class _pageSelectionState extends State<pageSelection> {
             size: 30,
           ),
           Icon(
-            Icons.delivery_dining,
+            Icons.delivery_dining_outlined,
             size: 30,
           ),
           Icon(
-            FluentSystemIcons.ic_fluent_more_filled,
+            FluentSystemIcons.ic_fluent_more_vertical_filled,
             size: 30,
           )
         ],
