@@ -42,7 +42,7 @@ class _ShopPageState extends State<ShopPage> {
                     const SizedBox(height: 10),
                     const RepaintBoundary(child: PromoContainer()),
                     const Text(
-                      "Categories 🐶",
+                      "Catego 🐶",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 24,
