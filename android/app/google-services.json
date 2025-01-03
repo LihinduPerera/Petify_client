@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "615935239911",
+    "project_id": "petify-18e5f",
+    "storage_bucket": "petify-18e5f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615935239911:android:7bde303faa86e385036442",
+        "android_client_info": {
+          "package_name": "com.example.petify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615935239911-jdqnf447npp9cal1o0vdm31nt9c7i2mf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFHt3ko-sCZ_NY7K2VXtrc7HTTahWNGMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615935239911-jdqnf447npp9cal1o0vdm31nt9c7i2mf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "615935239911-03dqcnsg62uh8fuei30a3sb7ble1n2pg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.petifyAdmin"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615935239911:android:e1eaca47982c634e036442",
+        "android_client_info": {
+          "package_name": "com.example.petify_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615935239911-jdqnf447npp9cal1o0vdm31nt9c7i2mf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFHt3ko-sCZ_NY7K2VXtrc7HTTahWNGMc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615935239911-jdqnf447npp9cal1o0vdm31nt9c7i2mf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "615935239911-03dqcnsg62uh8fuei30a3sb7ble1n2pg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.petifyAdmin"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
