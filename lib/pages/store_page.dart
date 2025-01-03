@@ -31,18 +31,16 @@ class _ShopPageState extends State<ShopPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 15),
-                    RepaintBoundary(
-                      child: Text(
-                        "What are\n you looking for?",
-                        style: AppStyles.headlineStyle1.copyWith(fontSize: 35),
-                      ),
+                    Text(
+                      "What are\n you looking for?",
+                      style: AppStyles.headlineStyle1.copyWith(fontSize: 35),
                     ),
                     const SizedBox(height: 10),
-                    RepaintBoundary(child: _buildCategoryButtons(size)),
+                    _buildCategoryButtons(size),
                     const SizedBox(height: 10),
                     const DefaultSearchBar(),
                     const SizedBox(height: 10),
-                    const RepaintBoundary(child: PromoContainer()),
+                    const PromoContainer(),
                     const Text(
                       "Categories 🐶",
                       style: TextStyle(
