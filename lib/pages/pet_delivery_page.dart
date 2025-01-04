@@ -72,7 +72,7 @@ class _PetDeliveryPageState extends State<PetDeliveryPage> {
               Positioned(
                 bottom: 20,
                 left: 20,
-                right: 20,
+                right: 70,
                 child: ElevatedButton(
                   onPressed: () {
                     // Trigger camera to current location

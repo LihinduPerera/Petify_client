@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart'; // For compute
 import 'package:flutter/material.dart';
 import 'package:petify/containers/category_container.dart';
 import 'package:petify/containers/home_page_store_maker_container.dart';
@@ -14,26 +13,6 @@ class ShopPage extends StatefulWidget {
 }
 
 class _ShopPageState extends State<ShopPage> {
-  late Future<List<Widget>> categoryContainerFuture;
-  late Future<List<Widget>> homePageMakerContainerFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    categoryContainerFuture = _loadCategoryContainer();
-    homePageMakerContainerFuture = _loadHomePageMakerContainer();
-  }
-
-  // Load CategoryContainer asynchronously using an isolate
-  Future<List<Widget>> _loadCategoryContainer() async {
-    return await compute(_loadCategoryWidgets, null);
-  }
-
-  // Load HomePageMakerContainer asynchronously using an isolate
-  Future<List<Widget>> _loadHomePageMakerContainer() async {
-    return await compute(_loadHomePageWidgets, null);
-  }
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -59,11 +38,11 @@ class _ShopPageState extends State<ShopPage> {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    RepaintBoundary(child: _buildCategoryButtons(size)),
+                    _buildCategoryButtons(size),
                     const SizedBox(height: 10),
                     const DefaultSearchBar(),
                     const SizedBox(height: 10),
-                    const RepaintBoundary(child: PromoContainer()),
+                    const PromoContainer(),
                     const Text(
                       "Categories 🐶",
                       style: TextStyle(
@@ -74,35 +53,8 @@ class _ShopPageState extends State<ShopPage> {
                   ],
                 ),
               ),
-              FutureBuilder<List<Widget>>(
-                future: categoryContainerFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('Error loading categories'));
-                  } else {
-                    return RepaintBoundary(
-                        child: Column(children: snapshot.data!));
-                  }
-                },
-              ),
-              const SizedBox(height: 10),
-              FutureBuilder<List<Widget>>(
-                future: homePageMakerContainerFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return const Center(
-                        child: Text('Error loading home page maker'));
-                  } else {
-                    return RepaintBoundary(
-                        child: Column(children: snapshot.data!));
-                  }
-                },
-              ),
+              CategoryContainer(),
+              HomePageMakerContainer(),
             ],
           ),
         ),
@@ -151,19 +103,5 @@ class _ShopPageState extends State<ShopPage> {
         ),
       ),
     );
-  }
-
-  // Simulate loading category widgets in a separate isolate
-  static List<Widget> _loadCategoryWidgets(_) {
-    return const [
-      CategoryContainer(),
-    ];
-  }
-
-  // Simulate loading home page maker widgets in a separate isolate
-  static List<Widget> _loadHomePageWidgets(_) {
-    return const [
-      HomePageMakerContainer(),
-    ];
   }
 }
