@@ -20,43 +20,38 @@ class _ShopPageState extends State<ShopPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       body: SafeArea(
-        child: RepaintBoundary(
-          child: ListView(
-            cacheExtent: 3000,
-            scrollDirection: Axis.vertical,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 15),
-                    RepaintBoundary(
-                      child: Text(
-                        "What are\n you looking for?",
-                        style: AppStyles.headlineStyle1.copyWith(fontSize: 35),
-                      ),
+        child: ListView(
+          scrollDirection: Axis.vertical,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 15),
+                  Text(
+                    "What are\n you looking for?",
+                    style: AppStyles.headlineStyle1.copyWith(fontSize: 35),
+                  ),
+                  const SizedBox(height: 10),
+                  _buildCategoryButtons(size),
+                  const SizedBox(height: 10),
+                  const DefaultSearchBar(),
+                  const SizedBox(height: 10),
+                  const PromoContainer(),
+                  const Text(
+                    "Categories 🐶",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 24,
                     ),
-                    const SizedBox(height: 10),
-                    _buildCategoryButtons(size),
-                    const SizedBox(height: 10),
-                    const DefaultSearchBar(),
-                    const SizedBox(height: 10),
-                    const PromoContainer(),
-                    const Text(
-                      "Categories 🐶",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 24,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              CategoryContainer(),
-              HomePageMakerContainer(),
-            ],
-          ),
+            ),
+            CategoryContainer(),
+            HomePageMakerContainer(),
+          ],
         ),
       ),
     );
