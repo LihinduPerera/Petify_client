@@ -3,6 +3,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/home_page.dart';
+import 'package:petify/pages/more_page.dart';
 import 'package:petify/pages/pet_delivery_page.dart';
 import 'package:petify/pages/store_page.dart';
 
@@ -19,9 +20,7 @@ class _pageSelectionState extends State<pageSelection> {
     const ShopPage(),
     const homePage(),
     const PetDeliveryPage(),
-    const Center(
-      child: Text("More"),
-    )
+    const MorePage()
   ];
 
   int selectedPageIndex = 2;

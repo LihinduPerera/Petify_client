@@ -12,9 +12,9 @@ class ProfilePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Hero(
-              tag: 'user-avatar', // The same tag as in homePage
+              tag: 'user-avatar',
               child: Container(
-                width: 200, // Larger size for the profile image
+                width: 200,
                 height: 200,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(100),
@@ -27,12 +27,11 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'Lihindu Perera', // You can add more profile details here
+              'Lihindu Perera',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 10),
             Text('This is the profile page.'),
-            // Add more profile details and styling as needed.
           ],
         ),
       ),
