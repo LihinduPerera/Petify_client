@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:petify/pages/sub_pages.dart/profile_page.dart';
+import 'package:petify/pages/sub_pages.dart/specific_products.dart';
 import 'package:petify/styles/app_styles.dart';
 
 class MorePage extends StatelessWidget {
@@ -14,7 +16,11 @@ class MorePage extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.only(left: 18),
-              child: Text("More", style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold, color: Color(0xFF3b3b3b))),
+              child: Text("More",
+                  style: TextStyle(
+                      fontSize: 38,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF3b3b3b))),
             ),
             Divider(),
             ListTile(
@@ -22,6 +28,12 @@ class MorePage extends StatelessWidget {
               title: Text('Profile & Account Settings'),
               subtitle: Text('Manage your profile and pet details'),
               onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ),
+                );
               },
             ),
             Divider(),
@@ -29,72 +41,63 @@ class MorePage extends StatelessWidget {
               leading: Icon(Icons.health_and_safety),
               title: Text('Pet Health & Wellness Tracker'),
               subtitle: Text('Track pet health data and appointments'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.info),
               title: Text('Pet Care Education Center'),
               subtitle: Text('Learn about proper pet care'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.group),
               title: Text('Pet Community & Forum'),
               subtitle: Text('Join discussions with other pet owners'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.shopping_cart),
               title: Text('Customized Shopping Experience'),
               subtitle: Text('Get product recommendations'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.card_giftcard),
               title: Text('Loyalty Program & Rewards'),
               subtitle: Text('Earn points and redeem rewards'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.location_on),
               title: Text('Pet-Friendly Locations Finder'),
               subtitle: Text('Find pet-friendly restaurants, parks, etc.'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.notifications),
               title: Text('Notifications & Alerts'),
               subtitle: Text('Manage app notifications'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text('App Settings'),
               subtitle: Text('Manage app preferences'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(
               leading: Icon(Icons.feedback),
               title: Text('Give Feedback'),
               subtitle: Text('Share your thoughts with us'),
-              onTap: () {
-              },
+              onTap: () {},
             ),
             Divider(),
             ListTile(

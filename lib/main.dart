@@ -7,8 +7,8 @@ import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/login.dart';
 import 'package:petify/pages/page_selection.dart';
 import 'package:petify/pages/signup.dart';
-import 'package:petify/pages/specific_products.dart';
-import 'package:petify/pages/view_product.dart';
+import 'package:petify/pages/sub_pages.dart/specific_products.dart';
+import 'package:petify/pages/sub_pages.dart/view_product.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:provider/provider.dart';
 

@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:petify/containers/home_page_store_maker_container.dart';
 import 'package:petify/models/user_pets_model.dart';
-import 'package:petify/pages/profile_page.dart';
+import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
 
@@ -60,7 +60,6 @@ class _homePageState extends State<homePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          // Navigate to Profile Page when image is tapped
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -70,7 +69,7 @@ class _homePageState extends State<homePage> {
                         },
                         child: Hero(
                           tag:
-                              'user-avatar', // The tag to associate with the Hero widget
+                              'user-avatar',
                           child: Container(
                             width: 70,
                             height: 70,
