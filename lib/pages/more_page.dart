@@ -106,9 +106,7 @@ class MorePage extends StatelessWidget {
               leading: Icon(Icons.exit_to_app),
               title: Text('Log Out'),
               subtitle: Text('Sign out of your account'),
-              onTap: () {
-                // Log out functionality
-              },
+              onTap: () {},
             ),
           ],
         ),
