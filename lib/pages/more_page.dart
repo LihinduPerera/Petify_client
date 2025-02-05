@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/pages/sub_pages.dart/specific_products.dart';
@@ -14,6 +15,7 @@ class MorePage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(8.0),
           children: [
+            SizedBox(height: 15,),
             Container(
               padding: EdgeInsets.only(left: 18),
               child: Text("More",
