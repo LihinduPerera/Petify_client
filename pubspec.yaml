@@ -37,7 +37,6 @@ dependencies:
   provider: ^6.1.2
   fluentui_icons: ^1.0.0
   fluentui_system_icons: ^1.1.270
-  curved_navigation_bar: ^1.0.6
   flutter_svg: ^2.0.16
   carousel_slider: ^5.0.0
   badges: ^3.1.2

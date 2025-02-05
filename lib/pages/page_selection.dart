@@ -1,4 +1,3 @@
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:petify/pages/cart_page.dart';
@@ -34,36 +33,54 @@ class _pageSelectionState extends State<pageSelection> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        index: 2,
-        height: 54,
-        buttonBackgroundColor: const Color(0xff92A3FD),
-        backgroundColor: const Color(0xff92A3FD),
-        color: const Color.fromARGB(255, 209, 196, 233),
-        //animationDuration: Duration(milliseconds: 400),
-        onTap: _pageSelection,
-        items: const [
-          Icon(
-            FluentSystemIcons.ic_fluent_store_microsoft_filled,
-            size: 27,
+      backgroundColor: const Color(0xFFeeedf2),
+      bottomNavigationBar: Container(
+        height: 75,
+        decoration: BoxDecoration(
+          color: const Color(0xFFeeedf2),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
           ),
-          Icon(
-            Icons.store,
-            size: 27,
-          ),
-          Icon(
-            Icons.home,
-            size: 27,
-          ),
-          Icon(
-            Icons.delivery_dining_outlined,
-            size: 27,
-          ),
-          Icon(
-            FluentSystemIcons.ic_fluent_more_vertical_filled,
-            size: 27,
-          )
-        ],
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.07),
+              blurRadius: 10,
+              spreadRadius: 5,
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Color(0xFFeeedf2),
+          currentIndex: selectedPageIndex,
+          onTap: _pageSelection,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: const Color(0xFF0060FF),
+          unselectedItemColor: Colors.grey,
+          elevation: 5,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(FluentSystemIcons.ic_fluent_store_microsoft_filled),
+              label: 'Store',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.store),
+              label: 'Shop',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.delivery_dining_outlined),
+              label: 'Delivery',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(FluentSystemIcons.ic_fluent_more_filled),
+              label: 'More',
+            ),
+          ],
+        ),
       ),
       body: applicationPages[selectedPageIndex],
     );

@@ -33,7 +33,6 @@ class _PetDeliveryPageState extends State<PetDeliveryPage> {
 
   @override
   void dispose() {
-    // Cancel location updates when widget is disposed
     _locationSubscription?.cancel();
     super.dispose();
   }
@@ -66,8 +65,7 @@ class _PetDeliveryPageState extends State<PetDeliveryPage> {
                           CameraPosition(target: _currentPosition!, zoom: 13),
                       markers: Set<Marker>.of(markers.values),
                       polylines: Set<Polyline>.of(polylines.values),
-                      onTap: _onMapTapped, // Handle tap to select destination
-                      //liteModeEnabled: true,
+                      onTap: _onMapTapped,
                     ),
               Positioned(
                 bottom: 20,
@@ -75,7 +73,6 @@ class _PetDeliveryPageState extends State<PetDeliveryPage> {
                 right: 70,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Trigger camera to current location
                     if (_currentPosition != null) {
                       _cameraToPosition(_currentPosition!);
                     }
@@ -153,14 +150,12 @@ class _PetDeliveryPageState extends State<PetDeliveryPage> {
     setState(() {
       _destinationPosition = tappedPosition;
 
-      // Update destination marker
       markers[MarkerId("_destinationLocation")] = Marker(
         markerId: MarkerId("_destinationLocation"),
         position: _destinationPosition!,
         icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueCyan),
       );
 
-      // Update polyline
       _updatePolyline();
     });
   }
