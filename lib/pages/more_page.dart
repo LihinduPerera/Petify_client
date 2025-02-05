@@ -1,27 +1,112 @@
 import 'package:flutter/material.dart';
+import 'package:petify/styles/app_styles.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: ListView(
-        children: [
-          Column(
-            // mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 70,),
-              Container(
-                width: 100,
-                height: 60,
-                color: Colors.red,
-                child: Text("MORE"),
-              )
-            ],
-          ),
-        ],
+    return Scaffold(
+      backgroundColor: Color(0xFFeeedf2),
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(8.0),
+          children: [
+            Container(
+              padding: EdgeInsets.only(left: 18),
+              child: Text("More", style: TextStyle(fontSize: 38, fontWeight: FontWeight.bold, color: Color(0xFF3b3b3b))),
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.person),
+              title: Text('Profile & Account Settings'),
+              subtitle: Text('Manage your profile and pet details'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.health_and_safety),
+              title: Text('Pet Health & Wellness Tracker'),
+              subtitle: Text('Track pet health data and appointments'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text('Pet Care Education Center'),
+              subtitle: Text('Learn about proper pet care'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.group),
+              title: Text('Pet Community & Forum'),
+              subtitle: Text('Join discussions with other pet owners'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.shopping_cart),
+              title: Text('Customized Shopping Experience'),
+              subtitle: Text('Get product recommendations'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.card_giftcard),
+              title: Text('Loyalty Program & Rewards'),
+              subtitle: Text('Earn points and redeem rewards'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.location_on),
+              title: Text('Pet-Friendly Locations Finder'),
+              subtitle: Text('Find pet-friendly restaurants, parks, etc.'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text('Notifications & Alerts'),
+              subtitle: Text('Manage app notifications'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text('App Settings'),
+              subtitle: Text('Manage app preferences'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.feedback),
+              title: Text('Give Feedback'),
+              subtitle: Text('Share your thoughts with us'),
+              onTap: () {
+              },
+            ),
+            Divider(),
+            ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Log Out'),
+              subtitle: Text('Sign out of your account'),
+              onTap: () {
+                // Log out functionality
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
