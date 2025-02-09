@@ -26,13 +26,9 @@ class _homePageState extends State<homePage> {
               height: 10,
             ),
             const UserPetsContainer(),
-            const Column(
-              children: [
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            )
+            SizedBox(
+              height: 10,
+            ),
           ],
         ),
       ),
