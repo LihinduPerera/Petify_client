@@ -5,12 +5,11 @@ class UserPetsModel {
   String petType;
   String petName;
   double petWeight;
-  UserPetsModel({
-    required this.petId,
-    required this.petType,
-    required this.petName,
-    required this.petWeight
-  });
+  UserPetsModel(
+      {required this.petId,
+      required this.petType,
+      required this.petName,
+      required this.petWeight});
 
   factory UserPetsModel.fromJson(Map<String, dynamic> json) {
     return UserPetsModel(
@@ -23,7 +22,7 @@ class UserPetsModel {
 
   static List<UserPetsModel> fromJsonList(List<QueryDocumentSnapshot> list) {
     return list
-    .map((e) => UserPetsModel.fromJson(e.data() as Map<String , dynamic>))
-    .toList();
+        .map((e) => UserPetsModel.fromJson(e.data() as Map<String, dynamic>))
+        .toList();
   }
 }

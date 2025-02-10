@@ -13,7 +13,9 @@ class MorePage extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(8.0),
           children: [
-            SizedBox(height: 15,),
+            SizedBox(
+              height: 15,
+            ),
             Container(
               padding: EdgeInsets.only(left: 18),
               child: Text("More",
@@ -42,12 +44,8 @@ class MorePage extends StatelessWidget {
               title: Text('Pet Health & Wellness Tracker'),
               subtitle: Text('Track pet health data and appointments'),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => PetHealthPage()
-                  )
-                );
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PetHealthPage()));
               },
             ),
             Divider(),

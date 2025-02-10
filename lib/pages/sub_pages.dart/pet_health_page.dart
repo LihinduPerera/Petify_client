@@ -41,13 +41,15 @@ class _PetHealthPageState extends State<PetHealthPage> {
             _buildSectionTitle('Medications'),
             _buildMedicationLog(),
             SizedBox(height: 15),
-            _buildAddItemForm(medicationController, 'Add Medication', _addMedication),
+            _buildAddItemForm(
+                medicationController, 'Add Medication', _addMedication),
             SizedBox(height: 15),
             Divider(),
             _buildSectionTitle('Vet Visits'),
             _buildVetVisitLog(),
             SizedBox(height: 15),
-            _buildAddItemForm(vetVisitController, 'Add Vet Visit', _addVetVisit),
+            _buildAddItemForm(
+                vetVisitController, 'Add Vet Visit', _addVetVisit),
             SizedBox(height: 15),
             Divider(),
             _buildSectionTitle('Activity Log'),
@@ -72,7 +74,8 @@ class _PetHealthPageState extends State<PetHealthPage> {
       elevation: 5,
       child: ListTile(
         contentPadding: EdgeInsets.all(16),
-        title: Text('$petName', style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+        title: Text('$petName',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
         subtitle: Text('Age: $petAge years\nWeight: $petWeight kg'),
         leading: CircleAvatar(
           radius: 30,
@@ -87,7 +90,10 @@ class _PetHealthPageState extends State<PetHealthPage> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Text(
         title,
-        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF3b3b3b)),
+        style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Color(0xFF3b3b3b)),
       ),
     );
   }
@@ -130,7 +136,9 @@ class _PetHealthPageState extends State<PetHealthPage> {
     return Column(
       children: activityLogs.isEmpty
           ? [Text('No activities logged yet.')]
-          : activityLogs.map((activity) => ListTile(title: Text(activity))).toList(),
+          : activityLogs
+              .map((activity) => ListTile(title: Text(activity)))
+              .toList(),
     );
   }
 
@@ -160,13 +168,15 @@ class _PetHealthPageState extends State<PetHealthPage> {
     }
   }
 
-  Widget _buildAddItemForm(TextEditingController controller, String hintText, Function onSubmit) {
+  Widget _buildAddItemForm(
+      TextEditingController controller, String hintText, Function onSubmit) {
     return Row(
       children: [
         Expanded(
           child: TextField(
             controller: controller,
-            decoration: InputDecoration(hintText: hintText, border: OutlineInputBorder()),
+            decoration: InputDecoration(
+                hintText: hintText, border: OutlineInputBorder()),
           ),
         ),
         IconButton(

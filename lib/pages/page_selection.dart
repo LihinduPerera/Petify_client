@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/home_page.dart';
 import 'package:petify/pages/more_page.dart';
-import 'package:petify/pages/pet_delivery_page.dart';
+import 'package:petify/pages/pet_ride.dart';
 import 'package:petify/pages/store_page.dart';
 
 class pageSelection extends StatefulWidget {
@@ -18,7 +18,7 @@ class _pageSelectionState extends State<pageSelection> {
     const CartPage(),
     const ShopPage(),
     const homePage(),
-    const PetDeliveryPage(),
+    const PetRidePage(),
     const MorePage()
   ];
 
@@ -73,7 +73,7 @@ class _pageSelectionState extends State<pageSelection> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.delivery_dining_outlined),
-              label: 'Delivery',
+              label: 'Pet Ride',
             ),
             BottomNavigationBarItem(
               icon: Icon(FluentSystemIcons.ic_fluent_more_filled),

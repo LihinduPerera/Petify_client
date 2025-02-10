@@ -6,14 +6,14 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:petify/consts.dart';
 
-class PetDeliveryPage extends StatefulWidget {
-  const PetDeliveryPage({super.key});
+class PetRidePage extends StatefulWidget {
+  const PetRidePage({super.key});
 
   @override
-  State<PetDeliveryPage> createState() => _PetDeliveryPageState();
+  State<PetRidePage> createState() => _PetRidePageState();
 }
 
-class _PetDeliveryPageState extends State<PetDeliveryPage> {
+class _PetRidePageState extends State<PetRidePage> {
   final Location _locationController = Location();
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
