@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/sub_pages.dart/pet_health_page.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
+import 'package:petify/providers/cart_provider.dart';
+import 'package:petify/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
@@ -109,7 +113,7 @@ class MorePage extends StatelessWidget {
               leading: Icon(Icons.exit_to_app),
               title: Text('Log Out'),
               subtitle: Text('Sign out of your account'),
-              onTap: () {},
+              onTap: () {}
             ),
           ],
         ),
