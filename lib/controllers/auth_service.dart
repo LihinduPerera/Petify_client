@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petify/controllers/db_service.dart';
 
 class AuthService {
-  // create new account using email password method
   Future<String> createAccountWithEmail(
       String name, String email, String password) async {
     try {
@@ -15,7 +14,6 @@ class AuthService {
     }
   }
 
-  // login with email password method
   Future<String> loginWithEmail(String email, String password) async {
     try {
       await FirebaseAuth.instance
@@ -26,12 +24,10 @@ class AuthService {
     }
   }
 
-  // logout the user
   Future logout() async {
     await FirebaseAuth.instance.signOut();
   }
 
-  // reset the password
   Future resetPassword(String email) async {
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
@@ -41,7 +37,6 @@ class AuthService {
     }
   }
 
-  // check whether the user is sign in or not
   Future<bool> isLoggedIn() async {
     var user = FirebaseAuth.instance.currentUser;
     return user != null;

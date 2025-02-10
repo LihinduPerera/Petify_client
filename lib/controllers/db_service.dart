@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petify/models/cart_model.dart';
+import 'package:petify/models/user_pets_model.dart';
 
 class DbService {
   User? user = FirebaseAuth.instance.currentUser;
 
   // USER DATA
-  // save user data after creating new account
   Future saveUserData({required String name, required String email}) async {
     try {
       Map<String, dynamic> data = {
@@ -20,7 +20,6 @@ class DbService {
     } catch (e) {}
   }
 
-  // update other data in database
   Future updateUserData({required Map<String, dynamic> extraData}) async {
     await FirebaseFirestore.instance
         .collection("shop_users")
@@ -28,7 +27,6 @@ class DbService {
         .update(extraData);
   }
 
-  // read user current  user data
   Stream<DocumentSnapshot> readUserData() {
     return FirebaseFirestore.instance
         .collection("shop_users")
@@ -36,7 +34,6 @@ class DbService {
         .snapshots();
   }
 
-  // READ PROMOS AND BANNERS
   Stream<QuerySnapshot> readPromos() {
     return FirebaseFirestore.instance.collection("shop_promos").snapshots();
   }
@@ -46,7 +43,6 @@ class DbService {
   }
 
   // DISCOUNTS
-// read discount coupons
   Stream<QuerySnapshot> readDiscounts() {
     return FirebaseFirestore.instance
         .collection("shop_coupons")
@@ -54,7 +50,6 @@ class DbService {
         .snapshots();
   }
 
-  // verify the coupon
   Future<QuerySnapshot> verifyDiscount({required String code}) {
     return FirebaseFirestore.instance
         .collection("shop_coupons")
@@ -71,7 +66,6 @@ class DbService {
   }
 
   // PRODUCTS
-  // read products of specific categories
   Stream<QuerySnapshot> readProducts(String category) {
     return FirebaseFirestore.instance
         .collection("shop_products")
@@ -79,7 +73,6 @@ class DbService {
         .snapshots();
   }
 
-  // search products by doc ids
   Stream<QuerySnapshot> searchProducts(List<String> docIds) {
     return FirebaseFirestore.instance
         .collection("shop_products")
@@ -87,7 +80,6 @@ class DbService {
         .snapshots();
   }
 
-  // reduce the count of products after purchase
   Future reduceQuantity(
       {required String productId, required int quantity}) async {
     await FirebaseFirestore.instance
@@ -97,8 +89,6 @@ class DbService {
   }
 
   // CART
-  // display the user cart
-
   Stream<QuerySnapshot> readUserCart() {
     return FirebaseFirestore.instance
         .collection("shop_users")
@@ -107,7 +97,6 @@ class DbService {
         .snapshots();
   }
 
-  // adding product to the cart
   Future addToCart({required CartModel cartData}) async {
     try {
       // update
@@ -133,7 +122,6 @@ class DbService {
     }
   }
 
-  // delete specific product from cart
   Future deleteItemFromCart({required String productId}) async {
     await FirebaseFirestore.instance
         .collection("shop_users")
@@ -143,7 +131,6 @@ class DbService {
         .delete();
   }
 
-  // empty users cart
   Future emptyCart() async {
     await FirebaseFirestore.instance
         .collection("shop_users")
@@ -157,7 +144,6 @@ class DbService {
     });
   }
 
-  // decrease count of item
   Future decreaseCount({required String productId}) async {
     await FirebaseFirestore.instance
         .collection("shop_users")
@@ -168,12 +154,10 @@ class DbService {
   }
 
   // ORDERS
-  // create a new order
   Future createOrder({required Map<String, dynamic> data}) async {
     await FirebaseFirestore.instance.collection("shop_orders").add(data);
   }
 
-  // update the status of order
   Future updateOrderStatus(
       {required String docId, required Map<String, dynamic> data}) async {
     await FirebaseFirestore.instance
@@ -182,12 +166,71 @@ class DbService {
         .update(data);
   }
 
-  // read the order data of specific user
   Stream<QuerySnapshot> readOrders() {
     return FirebaseFirestore.instance
         .collection("shop_orders")
         .where("user_id", isEqualTo: user!.uid)
         .orderBy("created_at", descending: true)
         .snapshots();
+  }
+  
+  //UserPets
+  Future addPet(UserPetsModel pet) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("shop_users")
+          .doc(user!.uid)
+          .collection("pets")
+          .doc(pet.petId)
+          .set({
+        "pet_id": pet.petId,
+        "pet_type": pet.petType,
+        "pet_name": pet.petName,
+        "pet_weight": pet.petWeight,
+      });
+    } catch (e) {
+      print("Error adding pet: $e");
+    }
+  }
+
+  Stream<List<UserPetsModel>> getUserPets() {
+    return FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("pets")
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs
+            .map((doc) => UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
+            .toList());
+  }
+
+  Future updatePet(UserPetsModel pet) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("shop_users")
+          .doc(user!.uid)
+          .collection("pets")
+          .doc(pet.petId)
+          .update({
+        "pet_name": pet.petName,
+        "pet_weight": pet.petWeight,
+        "pet_type": pet.petType,
+      });
+    } catch (e) {
+      print("Error updating pet: $e");
+    }
+  }
+
+  Future deletePet(String petId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection("shop_users")
+          .doc(user!.uid)
+          .collection("pets")
+          .doc(petId)
+          .delete();
+    } catch (e) {
+      print("Error deleting pet: $e");
+    }
   }
 }

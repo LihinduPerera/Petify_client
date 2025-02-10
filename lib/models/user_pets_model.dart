@@ -1,51 +1,29 @@
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserPetsModel {
+  final String petId;
   String petType;
   String petName;
-  String iconPath;
-  Color boxColor;
-
+  double petWeight;
   UserPetsModel({
+    required this.petId,
     required this.petType,
     required this.petName,
-    required this.iconPath,
-    required this.boxColor,
+    required this.petWeight
   });
 
-  static List<UserPetsModel> getUserPets() {
-    List<UserPetsModel> userPets = [];
+  factory UserPetsModel.fromJson(Map<String, dynamic> json) {
+    return UserPetsModel(
+      petId: json["pet_id"] ?? "",
+      petType: json["pet_type"] ?? "",
+      petName: json["pet_name"] ?? "",
+      petWeight: json["pet_weight"] ?? 0,
+    );
+  }
 
-    userPets.add(UserPetsModel(
-        petType: "Cat",
-        petName: "Patti",
-        iconPath: 'assets/images/user.png',
-        boxColor: Color(0xff92A3FD)));
-
-    userPets.add(UserPetsModel(
-        petType: "Dog",
-        petName: "Lipy",
-        iconPath: 'assets/images/user.png',
-        boxColor: Color(0xffc58BF2)));
-
-    userPets.add(UserPetsModel(
-        petType: "Dog",
-        petName: "Lipy",
-        iconPath: 'assets/images/user.png',
-        boxColor: Color(0xffc58BF2)));
-
-    userPets.add(UserPetsModel(
-        petType: "Dog",
-        petName: "Lipy",
-        iconPath: 'assets/images/user.png',
-        boxColor: Color(0xffc58BF2)));
-
-    userPets.add(UserPetsModel(
-        petType: "Dog",
-        petName: "Lipy",
-        iconPath: 'assets/images/user.png',
-        boxColor: Color(0xffc58BF2)));
-
-    return userPets;
+  static List<UserPetsModel> fromJsonList(List<QueryDocumentSnapshot> list) {
+    return list
+    .map((e) => UserPetsModel.fromJson(e.data() as Map<String , dynamic>))
+    .toList();
   }
 }

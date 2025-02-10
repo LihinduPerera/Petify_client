@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:petify/pages/sub_pages.dart/pet_health_page.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
-import 'package:petify/pages/sub_pages.dart/specific_products.dart';
-import 'package:petify/styles/app_styles.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});
@@ -43,7 +41,14 @@ class MorePage extends StatelessWidget {
               leading: Icon(Icons.health_and_safety),
               title: Text('Pet Health & Wellness Tracker'),
               subtitle: Text('Track pet health data and appointments'),
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => PetHealthPage()
+                  )
+                );
+              },
             ),
             Divider(),
             ListTile(
