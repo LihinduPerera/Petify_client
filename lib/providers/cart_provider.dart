@@ -22,13 +22,11 @@ class CartProvider extends ChangeNotifier {
     readCartData();
   }
 
-  // add product to the cart along with quantity
   void addToCart(CartModel cartModel) {
     DbService().addToCart(cartData: cartModel);
     notifyListeners();
   }
 
-  // stream and read cart data
   void readCartData() {
     isLoading = true;
     _cartSubscription?.cancel();
@@ -49,7 +47,6 @@ class CartProvider extends ChangeNotifier {
     });
   }
 
-  // read cart products
   void readCartProducts(List<String> uids) {
     _productSubscription?.cancel();
     _productSubscription = DbService().searchProducts(uids).listen((snapshot) {
@@ -57,13 +54,12 @@ class CartProvider extends ChangeNotifier {
           ProductsModel.fromJsonList(snapshot.docs);
       products = productsData;
       isLoading = false;
-      addCost(products, carts); // Calculate total cost
+      addCost(products, carts);
       calculateTotalQuantity();
       notifyListeners();
     });
   }
 
-  // add cost of all products
   void addCost(List<ProductsModel> products, List<CartModel> carts) {
     totalCost = 0;
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -74,7 +70,6 @@ class CartProvider extends ChangeNotifier {
     });
   }
 
-  // calculate total quantity for products
   void calculateTotalQuantity() {
     totalQuantity = 0;
     for (int i = 0; i < carts.length; i++) {
@@ -83,14 +78,12 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // delete product from the cart
   void deleteItem(String productId) {
     DbService().deleteItemFromCart(productId: productId);
     readCartData();
     notifyListeners();
   }
 
-  // decrease the count of product
   void decreaseCount(String productId) async {
     await DbService().decreaseCount(productId: productId);
     notifyListeners();

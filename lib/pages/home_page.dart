@@ -25,7 +25,7 @@ class _homePageState extends State<homePage> {
             const SizedBox(
               height: 10,
             ),
-            const UserPetsContainer(),
+            UserPetsContainer(),
             SizedBox(
               height: 10,
             ),
