@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
+import 'package:petify/providers/user_provider.dart';
 import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
+import 'package:provider/provider.dart';
 
 class Greeting extends StatelessWidget {
   const Greeting({super.key});
@@ -33,9 +35,8 @@ class Greeting extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  const Text(
-                    "Lihindu Perera",
-                    style: AppStyles.headlineStyle1,
+                  Consumer<UserProvider>(
+                    builder: (context, value, child) => Text(value.name, style: AppStyles.headlineStyle1,),
                   ),
                 ],
               ),
