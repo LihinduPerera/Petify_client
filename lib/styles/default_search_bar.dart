@@ -10,10 +10,8 @@ class DefaultSearchBar extends StatelessWidget {
     return Column(
       children: [
         Container(
-          //margin: EdgeInsets.only(top: 40, left: 20, right: 20),
           decoration: BoxDecoration(boxShadow: [
             BoxShadow(
-                // ignore: deprecated_member_use
                 color: const Color(0x0ff1d617).withOpacity(0.11),
                 blurRadius: 40,
                 spreadRadius: 0.0)

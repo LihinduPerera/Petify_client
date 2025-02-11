@@ -16,20 +16,22 @@ class _homePageState extends State<homePage> {
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       body: SafeArea(
-        child: ListView(
-          children: [
-            const SizedBox(
-              height: 40,
-            ),
-            const Greeting(),
-            const SizedBox(
-              height: 10,
-            ),
-            UserPetsContainer(),
-            SizedBox(
-              height: 10,
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 40,
+              ),
+              const Greeting(),
+              const SizedBox(
+                height: 10,
+              ),
+              UserPetsContainer(),
+              SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -64,7 +64,7 @@ class Greeting extends StatelessWidget {
             ],
           ),
           const SizedBox(
-            height: 25,
+            height: 16
           ),
           const DefaultSearchBar()
         ],
