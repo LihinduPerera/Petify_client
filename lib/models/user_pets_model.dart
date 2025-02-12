@@ -5,11 +5,14 @@ class UserPetsModel {
   String petType;
   String petName;
   double petWeight;
+  int petAge;
   UserPetsModel(
       {required this.petId,
       required this.petType,
       required this.petName,
-      required this.petWeight});
+      required this.petWeight,
+      required this.petAge,
+      });
 
   factory UserPetsModel.fromJson(Map<String, dynamic> json) {
     return UserPetsModel(
@@ -17,6 +20,7 @@ class UserPetsModel {
       petType: json["pet_type"] ?? "",
       petName: json["pet_name"] ?? "",
       petWeight: json["pet_weight"] ?? 0,
+      petAge: json["pet_age"] ?? 1,
     );
   }
 

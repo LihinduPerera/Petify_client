@@ -187,6 +187,7 @@ class DbService {
         "pet_type": pet.petType,
         "pet_name": pet.petName,
         "pet_weight": pet.petWeight,
+        "pet_age": pet.petAge,
       });
     } catch (e) {
       print("Error adding pet: $e");
@@ -215,6 +216,7 @@ class DbService {
         "pet_name": pet.petName,
         "pet_weight": pet.petWeight,
         "pet_type": pet.petType,
+        "pet_age": pet.petAge
       });
     } catch (e) {
       print("Error updating pet: $e");

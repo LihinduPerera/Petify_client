@@ -21,11 +21,13 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
     final TextEditingController petNameController = TextEditingController();
     final TextEditingController petWeightController = TextEditingController();
     String petType = "Dog";
+    int petAge = 2;
 
     if (pet != null) {
       petNameController.text = pet.petName;
       petWeightController.text = pet.petWeight.toString();
       petType = pet.petType;
+      petAge = pet.petAge;
     }
 
     showDialog(
@@ -50,7 +52,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                   ),
                   Row(
                     children: [
-                      Text("Pet Type :", style: TextStyle(fontSize: 18)),
+                      Text("Pet Type:", style: TextStyle(fontSize: 18)),
                       SizedBox(width: 18),
                       DropdownButton<String>(
                         value: petType,
@@ -61,11 +63,47 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                         },
                         items: <String>['Dog', 'Cat']
                             .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(value: value, child: Text(value));
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
                         }).toList(),
                       ),
                     ],
                   ),
+                  Row(
+                    children: [
+                      Text("Pet Age:", style: TextStyle(fontSize: 18)),
+                      SizedBox(width: 18),
+                      Expanded(
+                        child: Container(
+                          height: 50,
+                          child: DropdownButton<int>(
+                            value: petAge,
+                            onChanged: (int? newValue) {
+                              setState(() {
+                                petAge = newValue!;
+                              });
+                            },
+                            items: List.generate(30, (index) => index + 1)
+                                .map<DropdownMenuItem<int>>((int value) {
+                              return DropdownMenuItem<int>(
+                                value: value,
+                                child: Text(value.toString()),
+                              );
+                            }).toList(),
+                            isExpanded: true,
+                            dropdownColor: Colors.white,
+                            elevation: 10,
+                            iconSize: 30,
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
               actions: [
@@ -119,6 +157,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                       final updatedPet = UserPetsModel(
                         petId: pet?.petId ?? DateTime.now().toString(),
                         petName: petName,
+                        petAge: petAge,
                         petType: petType,
                         petWeight: petWeight,
                       );
@@ -204,11 +243,11 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                     } else {
                       int petIndex = index - 1;
                       String modelPic;
-                      if (userPetsProvider.userPets[petIndex].petType == "Dog") {
+                      if (userPetsProvider.userPets[petIndex].petType ==
+                          "Dog") {
                         modelPic =
                             "assets/images/user_pet_model_default_dog.png";
-                      } else if (userPetsProvider
-                              .userPets[petIndex].petType ==
+                      } else if (userPetsProvider.userPets[petIndex].petType ==
                           "Cat") {
                         modelPic =
                             "assets/images/user_pet_model_default_cat.png";
@@ -249,6 +288,119 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                                   color: Color.fromARGB(255, 0, 0, 0),
                                 ),
                               ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+}
+
+class UserPetsContainerForTracker extends StatefulWidget {
+  final Function(String petName, double petWeight, int petAge, String petType)
+      onPetSelected;
+
+  const UserPetsContainerForTracker({super.key, required this.onPetSelected});
+
+  @override
+  State<UserPetsContainerForTracker> createState() =>
+      _UserPetsContainerForTrackerState();
+}
+
+class _UserPetsContainerForTrackerState
+    extends State<UserPetsContainerForTracker> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserPetsProvider>(
+      builder: (context, userPetsProvider, child) {
+        if (userPetsProvider.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: const Text(
+                  "Your Pets",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 25),
+                  itemCount: userPetsProvider.userPets.isEmpty
+                      ? 1
+                      : userPetsProvider.userPets.length,
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  itemBuilder: (context, index) {
+                    if (userPetsProvider.userPets.isEmpty) {
+                      return Center(child: Text("No pets available"));
+                    } else {
+                      int petIndex = index;
+                      String modelPic;
+                      if (userPetsProvider.userPets[petIndex].petType ==
+                          "Dog") {
+                        modelPic =
+                            "assets/images/user_pet_model_default_dog.png";
+                      } else if (userPetsProvider.userPets[petIndex].petType ==
+                          "Cat") {
+                        modelPic =
+                            "assets/images/user_pet_model_default_cat.png";
+                      } else {
+                        modelPic = "assets/images/user_pet_model_default.png";
+                      }
+
+                      return GestureDetector(
+                        onTap: () {
+                          widget.onPetSelected(
+                              userPetsProvider.userPets[petIndex].petName,
+                              userPetsProvider.userPets[petIndex].petWeight,
+                              userPetsProvider.userPets[petIndex].petAge,
+                              userPetsProvider.userPets[petIndex].petType);
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Color(0xff92A3FD).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: AssetImage(modelPic),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Text(userPetsProvider.userPets[petIndex].petName),
                             ],
                           ),
                         ),
