@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class PetHealthPage extends StatefulWidget {
-  const PetHealthPage({super.key});
+class PetHealthAndWellnessTrackerPage extends StatefulWidget {
+  const PetHealthAndWellnessTrackerPage({super.key});
 
   @override
-  _PetHealthPageState createState() => _PetHealthPageState();
+  _PetHealthAndWellnessTrackerPageState createState() => _PetHealthAndWellnessTrackerPageState();
 }
 
-class _PetHealthPageState extends State<PetHealthPage> {
+class _PetHealthAndWellnessTrackerPageState extends State<PetHealthAndWellnessTrackerPage> {
   String petName = 'Buddy';
   double petWeight = 10.5;
   int petAge = 2;

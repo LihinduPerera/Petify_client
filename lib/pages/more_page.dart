@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/auth_service.dart';
-import 'package:petify/pages/sub_pages.dart/pet_health_page.dart';
+import 'package:petify/pages/sub_pages.dart/pet_health_and_wellness_tracker.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
@@ -51,7 +51,7 @@ class MorePage extends StatelessWidget {
                 subtitle: Text('Track pet health data and appointments'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PetHealthPage()));
+                      MaterialPageRoute(builder: (context) => PetHealthAndWellnessTrackerPage()));
                 },
               ),
               Divider(),
