@@ -1,7 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:petify/models/products_model.dart';  // Ensure this import is added
+import 'package:petify/controllers/db_service.dart';
+import 'package:petify/models/products_model.dart';
 
 class DefaultSearchBar extends StatefulWidget {
   const DefaultSearchBar({super.key});
@@ -13,6 +13,7 @@ class DefaultSearchBar extends StatefulWidget {
 class _DefaultSearchBarState extends State<DefaultSearchBar> {
   TextEditingController _controller = TextEditingController();
   List<ProductsModel> searchResults = [];
+  final DbService dbService = DbService();
 
   void _searchProducts(String query) async {
     if (query.isEmpty) {
@@ -21,15 +22,11 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
       });
       return;
     }
-
-    var productsSnapshot = await FirebaseFirestore.instance
-        .collection('shop_products')
-        .where('name', isGreaterThanOrEqualTo: query)
-        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
-        .get();
+    
+    List<ProductsModel> results = await dbService.searchProductsByName(query);
 
     setState(() {
-      searchResults = ProductsModel.fromJsonList(productsSnapshot.docs);
+      searchResults = results;
     });
   }
 
@@ -46,7 +43,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
             color: const Color(0x0ff1d617).withOpacity(0.11),
             blurRadius: 40,
             spreadRadius: 0.0)
-      ]),
+      ]), 
       child: Column(
         children: [
           TextField(
@@ -57,8 +54,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
               fillColor: const Color.fromARGB(255, 255, 255, 255),
               contentPadding: const EdgeInsets.all(15),
               hintText: 'Search in store',
-              hintStyle:
-                  const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
+              hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
               prefixIcon: const Icon(
                 FluentSystemIcons.ic_fluent_search_regular,
                 color: Color(0xFFBFC285),
@@ -79,8 +75,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                         onTap: _clearSearch,
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Icon(FluentSystemIcons
-                              .ic_fluent_clear_formatting_filled),
+                          child: Icon(FluentSystemIcons.ic_fluent_clear_formatting_filled),
                         ),
                       ),
                     ],
@@ -95,12 +90,12 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
           ),
           if (searchResults.isNotEmpty) ...[
             Container(
-              height: 200,
+              padding: const EdgeInsets.only(top: 10),
               child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: searchResults.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(searchResults[index].name),
+                  return GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(
                         context,
@@ -108,6 +103,63 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                         arguments: searchResults[index],
                       );
                     },
+                    child: Card(
+                      elevation: 2, 
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), 
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+                        child: Row(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                searchResults[index].image,
+                                width: 60, 
+                                height: 60, 
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            SizedBox(width: 12), 
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    searchResults[index].name,
+                                    style: TextStyle(
+                                      fontSize: 14, 
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black87,
+                                    ),
+                                  ),
+                                  SizedBox(height: 5),
+                                  Text(
+                                    '\$${searchResults[index].new_price}',
+                                    style: TextStyle(
+                                      fontSize: 13, 
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  if (searchResults[index].old_price > 0)
+                                    Text(
+                                      '\$${searchResults[index].old_price}',
+                                      style: TextStyle(
+                                        fontSize: 12, 
+                                        decoration: TextDecoration.lineThrough,
+                                        color: Colors.grey,
+                                      ),
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   );
                 },
               ),

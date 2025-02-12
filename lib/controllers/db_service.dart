@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petify/models/cart_model.dart';
+import 'package:petify/models/products_model.dart';
 import 'package:petify/models/user_pets_model.dart';
 
 class DbService {
@@ -78,6 +79,20 @@ class DbService {
         .collection("shop_products")
         .where(FieldPath.documentId, whereIn: docIds)
         .snapshots();
+  }
+
+  Future<List<ProductsModel>> searchProductsByName(String query) async {
+    if (query.isEmpty) {
+      return [];
+    }
+
+    var productsSnapshot = await FirebaseFirestore.instance
+        .collection('shop_products')
+        .where('name', isGreaterThanOrEqualTo: query)
+        .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+        .get();
+
+    return ProductsModel.fromJsonList(productsSnapshot.docs);
   }
 
   Future reduceQuantity(
@@ -173,7 +188,7 @@ class DbService {
         .orderBy("created_at", descending: true)
         .snapshots();
   }
-  
+
   //UserPets
   Future addPet(UserPetsModel pet) async {
     try {
@@ -201,7 +216,8 @@ class DbService {
         .collection("pets")
         .snapshots()
         .map((querySnapshot) => querySnapshot.docs
-            .map((doc) => UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
+            .map((doc) =>
+                UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
             .toList());
   }
 
