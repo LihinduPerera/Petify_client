@@ -36,7 +36,7 @@ class _ShopPageState extends State<ShopPage> {
                     const SizedBox(height: 10),
                     _buildCategoryButtons(size),
                     const SizedBox(height: 10),
-                    const DefaultSearchBar(),
+                    DefaultSearchBar(),
                     const SizedBox(height: 10),
                     const PromoContainer(),
                     const Text(
