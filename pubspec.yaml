@@ -51,11 +51,18 @@ dependencies:
   firebase_auth: ^5.3.4
   firebase_core: ^3.9.0
   cloud_firestore: ^5.6.0
+  flutter_launcher_icons: ^0.14.3
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/logo.png"
+  adaptive_icon_background: "assets/logo_background.png"
+  adaptive_icon_foreground: "assets/logo.png"
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
