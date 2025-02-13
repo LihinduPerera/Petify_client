@@ -39,7 +39,6 @@ migrate_working_dir/
 firebase.json
 pubspec.lock
 **/assets/
-**/assets/images/
 
 
 # Symbolication related
