@@ -38,7 +38,7 @@ migrate_working_dir/
 /lib/consts.dart
 firebase.json
 pubspec.lock
-/assets/
+**/assets/
 
 
 # Symbolication related
