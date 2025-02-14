@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:petify/containers/cart_container.dart';
+import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/cart_provider.dart';
+import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatefulWidget {
@@ -13,7 +15,11 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    final isConnectedToInternet = Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
+
+    return !isConnectedToInternet
+    ? const NoInternet()
+    : Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       appBar: AppBar(
         title: const Text(

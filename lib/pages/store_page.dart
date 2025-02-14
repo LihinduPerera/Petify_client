@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:petify/containers/category_container.dart';
 import 'package:petify/containers/home_page_store_maker_container.dart';
 import 'package:petify/containers/promo_container.dart';
+import 'package:petify/pages/sub_pages.dart/no_internet.dart';
+import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
+import 'package:provider/provider.dart';
 
 class ShopPage extends StatefulWidget {
   const ShopPage({super.key});
@@ -15,11 +18,14 @@ class ShopPage extends StatefulWidget {
 class _ShopPageState extends State<ShopPage> {
   @override
   Widget build(BuildContext context) {
+    final isConnectedToInternet = Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
-      body: SafeArea(
+      body: !isConnectedToInternet
+      ?const NoInternet()
+      :SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
