@@ -6,7 +6,7 @@ import 'package:petify/models/user_pets_model.dart';
 
 class DbService {
   User? user = FirebaseAuth.instance.currentUser;
-
+  
   // USER DATA
   Future saveUserData({required String name, required String email}) async {
     try {

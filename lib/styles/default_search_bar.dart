@@ -53,8 +53,8 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
               filled: true,
               fillColor: const Color.fromARGB(255, 255, 255, 255),
               contentPadding: const EdgeInsets.all(15),
-              hintText: 'Search in store',
-              hintStyle: const TextStyle(color: Color(0xffDDDADA), fontSize: 14),
+              hintText: 'Search Products',
+              hintStyle: const TextStyle(color: Color.fromARGB(255, 139, 137, 137), fontSize: 14),
               prefixIcon: const Icon(
                 FluentSystemIcons.ic_fluent_search_regular,
                 color: Color(0xFFBFC285),

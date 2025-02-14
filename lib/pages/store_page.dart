@@ -88,8 +88,16 @@ class _ShopPageState extends State<ShopPage> {
       padding: const EdgeInsets.symmetric(vertical: 7),
       width: size.width * 0.25,
       decoration: BoxDecoration(
-        color: const Color.fromARGB(255, 255, 255, 255),
+        color: const Color.fromARGB(255, 246, 215, 255),
         borderRadius: BorderRadius.circular(50),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1), // Adjust shadow color and opacity
+            spreadRadius: 3,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Center(
         child: GestureDetector(

@@ -14,6 +14,7 @@ class PetRidePage extends StatefulWidget {
 }
 
 class _PetRidePageState extends State<PetRidePage> {
+
   final Location _locationController = Location();
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();

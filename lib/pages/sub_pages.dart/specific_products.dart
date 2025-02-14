@@ -36,9 +36,9 @@ class _SpecificProductsState extends State<SpecificProducts> {
             } else {
               return GridView.builder(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, // Number of items per row
-                  crossAxisSpacing: 6.0, // Space between items horizontally
-                  mainAxisSpacing: 15, // Space between items vertically
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 6.0,
+                  mainAxisSpacing: 15,
                 ),
                 itemCount: products.length,
                 itemBuilder: (context, index) {

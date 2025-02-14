@@ -14,6 +14,7 @@ class pageSelection extends StatefulWidget {
 }
 
 class _pageSelectionState extends State<pageSelection> {
+
   final applicationPages = [
     const CartPage(),
     const ShopPage(),
