@@ -14,7 +14,7 @@ class NoInternet extends StatelessWidget {
           children: [
             Container(
               child: Lottie.asset(
-                'assets/loading.json',
+                'assets/animations/loading.json',
                 height: 300,
                 fit: BoxFit.fill,
               ),

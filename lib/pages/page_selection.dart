@@ -62,11 +62,11 @@ class _pageSelectionState extends State<pageSelection> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(FluentSystemIcons.ic_fluent_store_microsoft_filled),
-              label: 'Store',
+              label: 'Cart',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.store),
-              label: 'Shop',
+              label: 'Store',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

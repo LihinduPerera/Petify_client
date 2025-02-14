@@ -1,4 +1,6 @@
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/providers/cart_provider.dart';
@@ -22,18 +24,38 @@ class MorePage extends StatelessWidget {
                 height: 15,
               ),
               Container(
-                padding: EdgeInsets.only(left: 18),
-                child: Text("More",
-                    style: TextStyle(
-                        fontSize: 38,
-                        fontWeight: FontWeight.bold,
-                        color: Color(0xFF3b3b3b))),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Lottie.asset(
+                          'assets/animations/more_lottie_in_more.json',
+                          height: 70,
+                          fit: BoxFit.contain),
+                    ),
+                    Text("More",
+                        style: TextStyle(
+                            fontSize: 38,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF3b3b3b))),
+                  ],
+                ),
               ),
               Divider(),
               ListTile(
-                leading: Icon(Icons.person),
-                title: Text('Profile & Account Settings'),
-                subtitle: Text('Manage your profile and pet details'),
+                title: Row(
+                  children: [
+                    Container(
+                      child: Lottie.asset(
+                          'assets/animations/male_profile_lottie.json',
+                          height: 80,
+                          fit: BoxFit.contain),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    Text('Profile & Account Settings'),
+                  ],
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -44,59 +66,67 @@ class MorePage extends StatelessWidget {
                 },
               ),
               Divider(),
-              ListTile(
-                leading: Icon(Icons.health_and_safety),
-                title: Text('Pet Health & Wellness Tracker'),
-                subtitle: Text('Track pet health data and appointments'),
-                onTap: () {
-                  Navigator.pushNamed(context, "/pet_health_and_wellness_tracker");
-                }
-              ),
+              SizedBox(height: 10,),
               Divider(),
               ListTile(
-                leading: Icon(Icons.info),
-                title: Text('Pet Care Education Center'),
-                subtitle: Text('Learn about proper pet care'),
+                  title: Row(
+                    children: [
+                      Container(
+                        child: Lottie.asset(
+                            'assets/animations/health_lottie_for_homepage.json',
+                            height: 45,
+                            fit: BoxFit.contain),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text('Pet Health & Wellness Tracker'),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.pushNamed(
+                        context, "/pet_health_and_wellness_tracker");
+                  }),
+              Divider(),
+              ListTile(
+                title: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        FluentSystemIcons
+                            .ic_fluent_book_formula_database_filled,
+                        color: const Color.fromARGB(255, 250, 139, 131),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text('Pet Care Education Center'),
+                    ],
+                  ),
+                ),
+                subtitle: Container(
+                  child: Lottie.asset(
+                    'assets/animations/education_lottie_for_morepage.json',
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
+                ),
                 onTap: () {},
               ),
               Divider(),
-              ListTile(
-                leading: Icon(Icons.group),
-                title: Text('Pet Community & Forum'),
-                subtitle: Text('Join discussions with other pet owners'),
-                onTap: () {},
-              ),
+              SizedBox(height: 10,),
               Divider(),
               ListTile(
-                leading: Icon(Icons.shopping_cart),
-                title: Text('Customized Shopping Experience'),
-                subtitle: Text('Get product recommendations'),
-                onTap: () {},
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.card_giftcard),
-                title: Text('Loyalty Program & Rewards'),
-                subtitle: Text('Earn points and redeem rewards'),
-                onTap: () {},
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.location_on),
-                title: Text('Pet-Friendly Locations Finder'),
-                subtitle: Text('Find pet-friendly restaurants, parks, etc.'),
-                onTap: () {},
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.notifications),
+                leading: Icon(Icons.notifications,
+                    color: const Color.fromARGB(255, 179, 250, 131)),
                 title: Text('Notifications & Alerts'),
-                subtitle: Text('Manage app notifications'),
                 onTap: () {},
               ),
               Divider(),
               ListTile(
-                leading: Icon(Icons.settings),
+                leading: Icon(Icons.settings,
+                    color: const Color.fromARGB(255, 131, 139, 250)),
                 title: Text('App Settings'),
                 subtitle: Text('Manage app preferences'),
                 onTap: () {},
@@ -120,9 +150,9 @@ class MorePage extends StatelessWidget {
                       .cancelProvider();
                   Provider.of<UserPetsProvider>(context, listen: false)
                       .cancelFetchingPets();
-          
+
                   await AuthService().logout();
-          
+
                   Navigator.pushNamedAndRemoveUntil(
                       context, "/login", (route) => true);
                 },

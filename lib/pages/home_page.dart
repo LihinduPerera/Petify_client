@@ -25,20 +25,17 @@ class _homePageState extends State<homePage> {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
-                      height: 40,
+                      height: 20,
                     ),
                     const Greeting(),
                     const SizedBox(
                       height: 10,
                     ),
                     const UserPetsContainer(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                  ],
+                  ]
                 ),
               ),
             ),

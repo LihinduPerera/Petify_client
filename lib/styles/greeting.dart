@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:petify/styles/app_styles.dart';
@@ -36,7 +37,10 @@ class Greeting extends StatelessWidget {
                     height: 5,
                   ),
                   Consumer<UserProvider>(
-                    builder: (context, value, child) => Text(value.name, style: AppStyles.headlineStyle1,),
+                    builder: (context, value, child) => Text(
+                      value.name,
+                      style: AppStyles.headlineStyle1,
+                    ),
                   ),
                 ],
               ),
@@ -49,22 +53,20 @@ class Greeting extends StatelessWidget {
                     ),
                   );
                 },
-                child: Hero(
-                  tag: 'user-avatar',
-                  child: Container(
-                    width: 70,
-                    height: 70,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        image: const DecorationImage(
-                            image: AssetImage("assets/images/user.png"))),
-                  ),
-                ),
+                // child: Container(
+                //   width: 70,
+                //   height: 70,
+                //   decoration: BoxDecoration(
+                //       borderRadius: BorderRadius.circular(50),
+                //       image: const DecorationImage(
+                //           image: AssetImage("assets/images/user.png"))),
+                // ),
+                child: Lottie.asset(
+                    'assets/animations/male_profile_lottie.json',
+                    height: 100,
+                    fit: BoxFit.contain),
               )
             ],
-          ),
-          const SizedBox(
-            height: 16
           ),
           const DefaultSearchBar()
         ],

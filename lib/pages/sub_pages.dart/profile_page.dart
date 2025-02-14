@@ -41,8 +41,12 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
+          SizedBox(height: 10,),
           Consumer<UserProvider>(
             builder: (context, value, child) => Card(
+              color: const Color.fromARGB(255, 223, 180, 255).withOpacity(0.4),
+              elevation: 8,
+              shadowColor: Colors.blueGrey.withOpacity(0.4),
               child: ListTile(
                 title: Text(value.name),
                 subtitle: Text(value.email),

@@ -100,7 +100,8 @@ class _PetHealthAndWellnessTrackerPageState
     }
     return Card(
       color: const Color(0xffc58BF2).withOpacity(0.4),
-      elevation: 18,
+      elevation: 8,
+      shadowColor: Colors.blueGrey.withOpacity(0.4),
       // shadowColor: Colors.transparent,
       child: ListTile(
         contentPadding: EdgeInsets.all(16),

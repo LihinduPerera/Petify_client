@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) =>  UserProvider()),
         ChangeNotifierProvider(create: (context) => UserPetsProvider()),
-        ChangeNotifierProvider(create: (_) => InternetConnectionProvider())
+        ChangeNotifierProvider(create: (context) => InternetConnectionProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
