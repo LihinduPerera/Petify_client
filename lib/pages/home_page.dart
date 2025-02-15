@@ -44,7 +44,7 @@ class _homePageState extends State<homePage> {
                     SizedBox(height: 15,),
                     Container(
                       height: 130,
-                      child: PromoContainer()
+                      child: PromoContainer(routeToTheStore: true,)
                       ),
                   ]
                 ),

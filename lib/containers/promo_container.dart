@@ -2,10 +2,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/db_service.dart';
 import 'package:petify/models/promo_banners_model.dart';
+import 'package:petify/pages/page_selection.dart';
+import 'package:petify/pages/store_page.dart';
 import 'package:shimmer/shimmer.dart';
 
 class PromoContainer extends StatefulWidget {
-  const PromoContainer({super.key});
+  final bool routeToTheStore;
+  const PromoContainer({super.key , required this.routeToTheStore});
 
   @override
   State<PromoContainer> createState() => _PromoContainerState();
@@ -27,8 +30,10 @@ class _PromoContainerState extends State<PromoContainer> {
                 items: promos
                     .map((promo) => GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, "/specific",
-                              arguments: {"name": promo.category});
+                          !widget.routeToTheStore
+                          ?Navigator.pushNamed(context, "/specific",
+                              arguments: {"name": promo.category})
+                          :Navigator.pushReplacementNamed(context, "/from_anyware_to_store");
                         },
                         child: Image.network(
                           promo.image,

@@ -44,7 +44,7 @@ class _ShopPageState extends State<ShopPage> {
                     const SizedBox(height: 10),
                     DefaultSearchBar(),
                     const SizedBox(height: 10),
-                    const PromoContainer(),
+                    const PromoContainer(routeToTheStore: false,),
                     const Text(
                       "Categories 🐶",
                       style: TextStyle(
