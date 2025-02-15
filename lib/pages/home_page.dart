@@ -5,6 +5,7 @@ import 'package:petify/containers/user_pets_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/styles/greeting.dart';
+import 'package:petify/widgets/cart_widget.dart';
 import 'package:provider/provider.dart';
 
 class homePage extends StatefulWidget {
@@ -42,7 +43,8 @@ class _homePageState extends State<homePage> {
                         child: TrackersContainer(height: 150, isAddable: false),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20, top: 10 , bottom: 10),
+                        padding: const EdgeInsets.only(
+                            left: 20, top: 10, bottom: 10),
                         child: Row(
                           children: [
                             const Icon(Icons.storefront_outlined,
@@ -73,11 +75,14 @@ class _homePageState extends State<homePage> {
                                 routeToTheStore: true,
                               ),
                             ),
-                            SizedBox(width: 10,),
+                            SizedBox(
+                              width: 10,
+                            ),
                             Container(
                               height: 150,
                               width: 200,
                               color: Colors.amber,
+                              child: CartWidget(),
                             ),
                           ],
                         ),

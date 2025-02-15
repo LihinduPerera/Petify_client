@@ -29,8 +29,10 @@ void main() async {
     statusBarIconBrightness: Brightness.dark,
   ));
   //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -43,23 +45,27 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CartProvider(),
         ),
-        ChangeNotifierProvider(create: (context) =>  UserProvider()),
+        ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => UserPetsProvider()),
-        ChangeNotifierProvider(create: (context) => InternetConnectionProvider())
+        ChangeNotifierProvider(
+            create: (context) => InternetConnectionProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Poppins'),
         routes: {
           "/": (context) => CheckUser(),
-          "/page_selection": (context) => pageSelection(defaultPage: 2,),
+          "/page_selection": (context) => pageSelection(
+                defaultPage: 2,
+              ),
           "/login": (context) => LoginPage(),
           "/signup": (context) => SingupPage(),
           "/specific": (context) => SpecificProducts(),
           "/view_product": (context) => ViewProduct(),
           "/cart": (context) => CartPage(),
           "/update_profile": (context) => UpdateProfile(),
-          "/pet_health_and_wellness_tracker": (context) => PetHealthAndWellnessTrackerPage(),
+          "/pet_health_and_wellness_tracker": (context) =>
+              PetHealthAndWellnessTrackerPage(),
           "/from_anyware_to_store": (context) => pageSelection(defaultPage: 1),
         },
       ),
