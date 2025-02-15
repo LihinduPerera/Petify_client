@@ -53,18 +53,10 @@ class Greeting extends StatelessWidget {
                     ),
                   );
                 },
-                // child: Container(
-                //   width: 70,
-                //   height: 70,
-                //   decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(50),
-                //       image: const DecorationImage(
-                //           image: AssetImage("assets/images/user.png"))),
-                // ),
                 child: Lottie.asset(
                     'assets/animations/male_profile_lottie.json',
-                    height: 100,
-                    fit: BoxFit.contain),
+                    height: 120,
+                    fit: BoxFit.fill),
               )
             ],
           ),

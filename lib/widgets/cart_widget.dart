@@ -30,9 +30,12 @@ class _CartWidgetState extends State<CartWidget> {
                 return GestureDetector(
                   child: Container(
                     decoration: BoxDecoration(
-                        // color: const Color.fromARGB(255, 255, 215, 253),
-                        color: const Color.fromARGB(255, 177, 198, 255),
-                        borderRadius: BorderRadius.circular(20)),
+                        color: const Color.fromARGB(255, 255, 215, 253),
+                        // color: const Color.fromARGB(255, 177, 198, 255),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: const Color.fromARGB(255, 255, 101, 247),
+                        )),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -43,6 +46,8 @@ class _CartWidgetState extends State<CartWidget> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
+                              Text("Your Cart", style: TextStyle(fontSize: 19),),
+                              SizedBox(height: 10,),
                               Text("Items: ${value.totalQuantity}"
                               ),
                               SizedBox(

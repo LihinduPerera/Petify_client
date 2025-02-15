@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/products_model.dart';
+import 'package:petify/models/trackers_model.dart';
 import 'package:petify/models/user_pets_model.dart';
 
 class DbService {
@@ -249,6 +250,83 @@ class DbService {
           .delete();
     } catch (e) {
       print("Error deleting pet: $e");
+    }
+  }
+
+  //Trackers
+  Future<void> addTrackerLog(String petId , String trackerType , String log) async{
+    try {
+      DocumentReference petTrackerRef = FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("pets")
+        .doc(petId)
+        .collection("trackers")
+        .doc(trackerType);
+
+        DocumentSnapshot docSnapshot = await petTrackerRef.get();
+
+        List<String> logs = [];
+        if (docSnapshot.exists) {
+          logs = List<String>.from(docSnapshot['logs']);
+        }
+
+        logs.add(log);
+
+        await petTrackerRef.set({
+          'tracker_id': trackerType,
+          'tracker_type' : trackerType,
+          'logs' : logs
+        }, SetOptions(merge: true));
+    } catch (e) {
+      print("Errrror Error Error !!! : $e");
+    }
+  }
+
+  Future<void> removeTrackerLog (String petId , String tracker_type , String log) async {
+    try {
+      DocumentReference petTrackerRef = FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("pets")
+        .doc(petId)
+        .collection("trackers")
+        .doc(tracker_type);
+
+        DocumentSnapshot docSnapshot = await petTrackerRef.get();
+
+        List<String> logs = [];
+        if (docSnapshot.exists) {
+          logs = List<String>.from(docSnapshot['logs']);
+          logs.remove(log);
+        }
+
+        await petTrackerRef.set({
+          'tracker_id': tracker_type,
+          'tracker_type': tracker_type,
+          'logs': logs
+        },SetOptions(merge: true));
+    } catch (e) {
+      print("Error !!!!! : $e");
+    }
+  }
+
+  Future<List<TrackersModel>> getPetTrackers (String petId) async {
+    try {
+      QuerySnapshot snapshot = await FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("pets")
+        .doc(petId)
+        .collection("trackers")
+        .get();
+
+        return snapshot.docs
+          .map((doc) => TrackersModel.fromJson(doc.data() as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print("Error while fetching trackers : $e");
+      return [];
     }
   }
 }

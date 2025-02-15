@@ -13,6 +13,7 @@ import 'package:petify/pages/sub_pages.dart/update_profile.dart';
 import 'package:petify/pages/sub_pages.dart/view_product.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
+import 'package:petify/providers/tracker_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -47,8 +48,8 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (context) => UserProvider()),
         ChangeNotifierProvider(create: (context) => UserPetsProvider()),
-        ChangeNotifierProvider(
-            create: (context) => InternetConnectionProvider())
+        ChangeNotifierProvider(create: (context) => InternetConnectionProvider()),
+        ChangeNotifierProvider(create: (context) => TrackerProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
