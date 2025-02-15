@@ -254,7 +254,7 @@ class DbService {
   }
 
   //Trackers
-  Future<void> addTrackerLog(String petId , String trackerType , String log) async{
+  Future<void> addTrackerLog(String petId , String trackerType , String log , String petName) async{
     try {
       DocumentReference petTrackerRef = FirebaseFirestore.instance
         .collection("shop_users")
@@ -271,7 +271,7 @@ class DbService {
           logs = List<String>.from(docSnapshot['logs']);
         }
 
-        logs.add(log);
+        logs.add('$petName: $log');
 
         await petTrackerRef.set({
           'tracker_id': trackerType,

@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:petify/controllers/db_service.dart';
 
 class TrackersContainer extends StatefulWidget {
   final double height;
   final bool isAddable;
-  const TrackersContainer({super.key, required this.height , required this.isAddable});
+  final String petName;
+  final String petId; 
+
+  const TrackersContainer({
+    super.key,
+    required this.height,
+    required this.isAddable,
+    required this.petName,
+    required this.petId,
+  });
 
   @override
   State<TrackersContainer> createState() => _TrackersContainerState();
@@ -20,6 +30,8 @@ class _TrackersContainerState extends State<TrackersContainer> {
   TextEditingController activityController = TextEditingController();
   TextEditingController mealController = TextEditingController();
 
+  final DbService dbService = DbService();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,8 +40,8 @@ class _TrackersContainerState extends State<TrackersContainer> {
           padding: const EdgeInsets.only(left: 10),
           child: Row(
             children: [
-              const Icon(Icons.track_changes,color: Color.fromARGB(255, 81, 245, 130)),
-              SizedBox(width: 10,),
+              const Icon(Icons.track_changes, color: Color.fromARGB(255, 81, 245, 130)),
+              SizedBox(width: 10),
               const Text(
                 "Logs and Trackers",
                 style: TextStyle(
@@ -41,7 +53,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
             ],
           ),
         ),
-        SizedBox(height: 8,),
+        SizedBox(height: 8),
         Container(
           height: widget.height,
           child: ListView(
@@ -53,37 +65,31 @@ class _TrackersContainerState extends State<TrackersContainer> {
                   _buildMedicationLog(),
                   medicationController,
                   'Add Medication',
-                  _addMedication),
-              SizedBox(
-                width: 10,
-              ),
+                  () => _addMedication(widget.petName)),
+              SizedBox(width: 10),
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 213, 255, 179).withOpacity(0.6),
                   'Vet Visits',
                   _buildVetVisitLog(),
                   vetVisitController,
                   'Add Vet Visit',
-                  _addVetVisit),
-              SizedBox(
-                width: 10,
-              ),
+                  () => _addVetVisit(widget.petName)),
+              SizedBox(width: 10),
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 179, 227, 255).withOpacity(0.6),
                   'Activity Log',
                   _buildActivityLog(),
                   activityController,
                   'Add Activity',
-                  _addActivity),
-              SizedBox(
-                width: 10,
-              ),
+                  () => _addActivity(widget.petName)),
+              SizedBox(width: 10),
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 255, 254, 179).withOpacity(0.6),
                   'Meal Log',
                   _buildMealLog(),
                   mealController,
                   'Add Meal',
-                  _addMeal),
+                  () => _addMeal(widget.petName)),
             ],
           ),
         ),
@@ -102,21 +108,20 @@ class _TrackersContainerState extends State<TrackersContainer> {
       width: 340,
       child: Card(
         color: color,
-        // elevation: 8,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
               _buildSectionTitle(title),
-              _buildMedicationLog(),
+              logWidget,
               SizedBox(height: 15),
               widget.isAddable
-              ?Container(
-                width: 330,
-                child: _buildAddItemForm(
-                    textEditingController, hintText, function),
-              )
-              :SizedBox()
+                  ? Container(
+                      width: 330,
+                      child: _buildAddItemForm(
+                          textEditingController, hintText, function),
+                    )
+                  : SizedBox(),
             ],
           ),
         ),
@@ -132,7 +137,6 @@ class _TrackersContainerState extends State<TrackersContainer> {
         style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            // color: Color(0xFF3b3b3b)
             color: Colors.black),
       ),
     );
@@ -146,10 +150,12 @@ class _TrackersContainerState extends State<TrackersContainer> {
     );
   }
 
-  void _addMedication() {
+  void _addMedication(String petName) {
     if (medicationController.text.isNotEmpty) {
+      dbService.addTrackerLog(widget.petId, 'Medications', medicationController.text, petName);
+
       setState(() {
-        medications.add(medicationController.text);
+        medications.add('$petName: ${medicationController.text}');
         medicationController.clear();
       });
     }
@@ -163,10 +169,12 @@ class _TrackersContainerState extends State<TrackersContainer> {
     );
   }
 
-  void _addVetVisit() {
+  void _addVetVisit(String petName) {
     if (vetVisitController.text.isNotEmpty) {
+      dbService.addTrackerLog(widget.petId, 'Vet Visits', vetVisitController.text, petName);
+
       setState(() {
-        vetVisits.add(vetVisitController.text);
+        vetVisits.add('$petName: ${vetVisitController.text}');
         vetVisitController.clear();
       });
     }
@@ -182,10 +190,12 @@ class _TrackersContainerState extends State<TrackersContainer> {
     );
   }
 
-  void _addActivity() {
+  void _addActivity(String petName) {
     if (activityController.text.isNotEmpty) {
+      dbService.addTrackerLog(widget.petId, 'Activity Log', activityController.text, petName);
+
       setState(() {
-        activityLogs.add(activityController.text);
+        activityLogs.add('$petName: ${activityController.text}');
         activityController.clear();
       });
     }
@@ -199,10 +209,12 @@ class _TrackersContainerState extends State<TrackersContainer> {
     );
   }
 
-  void _addMeal() {
+  void _addMeal(String petName) {
     if (mealController.text.isNotEmpty) {
+      dbService.addTrackerLog(widget.petId, 'Meal Log', mealController.text, petName);
+
       setState(() {
-        mealLogs.add(mealController.text);
+        mealLogs.add('$petName: ${mealController.text}');
         mealController.clear();
       });
     }

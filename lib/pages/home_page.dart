@@ -40,7 +40,7 @@ class _homePageState extends State<homePage> {
                       const UserPetsContainer(),
                       Padding(
                         padding: const EdgeInsets.only(left: 10, top: 18),
-                        child: TrackersContainer(height: 150, isAddable: false),
+                        // child: TrackersContainer(height: 150, isAddable: false),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(

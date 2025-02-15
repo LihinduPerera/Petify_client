@@ -16,14 +16,16 @@ class _PetHealthAndWellnessTrackerPageState
   String petName = 'Select the pet';
   double petWeight = 0;
   int petAge = 0;
+  String petId= "";
 
   void _updatePetDetails(
-      String newPetName, double newPetWeight, int newAge, String newPetType) {
+      String newPetName, double newPetWeight, int newAge, String newPetType, String newPetId) {
     setState(() {
       petName = newPetName;
       petWeight = newPetWeight;
       petAge = newAge;
       petType = newPetType;
+      petId = newPetId;
     });
   }
 
@@ -51,7 +53,7 @@ class _PetHealthAndWellnessTrackerPageState
             SizedBox(height: 5),
             Divider(),
             SizedBox(height: 20,),
-            TrackersContainer(height: 500, isAddable: true,)
+            TrackersContainer(height: 500, isAddable: true, petName: petName, petId: petName,)
           ],
         ),
       ),

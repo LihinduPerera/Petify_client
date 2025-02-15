@@ -11,8 +11,8 @@ class TrackerProvider with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> addTrackerLog (String petId , String trackerType, String log) async {
-    await dbService.addTrackerLog(petId, trackerType, log);
+  Future<void> addTrackerLog (String petId , String trackerType, String log , String petName) async {
+    await dbService.addTrackerLog(petId, trackerType, log , petName);
     fetchTrackers(petId);
   }
 
