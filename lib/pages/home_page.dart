@@ -69,20 +69,18 @@ class _homePageState extends State<homePage> {
                           scrollDirection: Axis.horizontal,
                           children: [
                             Container(
-                              height: 150,
                               width: 250,
-                              child: PromoContainer(
-                                routeToTheStore: true,
-                              ),
+                              child: CartWidget(),
                             ),
                             SizedBox(
                               width: 10,
                             ),
                             Container(
                               height: 150,
-                              width: 200,
-                              color: Colors.amber,
-                              child: CartWidget(),
+                              width: 250,
+                              child: PromoContainer(
+                                routeToTheStore: true,
+                              ),
                             ),
                           ],
                         ),

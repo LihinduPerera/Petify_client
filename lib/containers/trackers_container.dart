@@ -25,7 +25,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 20),
+          padding: const EdgeInsets.only(left: 10),
           child: Row(
             children: [
               const Icon(Icons.track_changes,color: Color.fromARGB(255, 81, 245, 130)),

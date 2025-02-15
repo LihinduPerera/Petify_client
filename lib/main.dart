@@ -67,6 +67,7 @@ class MyApp extends StatelessWidget {
           "/pet_health_and_wellness_tracker": (context) =>
               PetHealthAndWellnessTrackerPage(),
           "/from_anyware_to_store": (context) => pageSelection(defaultPage: 1),
+          "/from_anyware_to_cart": (context) => pageSelection(defaultPage: 0),
         },
       ),
     );
