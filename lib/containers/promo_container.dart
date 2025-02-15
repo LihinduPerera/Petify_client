@@ -40,7 +40,7 @@ class _PromoContainerState extends State<PromoContainer> {
                   autoPlayInterval: const Duration(seconds: 5),
                   aspectRatio: 16 / 8,
                   viewportFraction: 5,
-                  enlargeCenterPage: true,
+                  enlargeCenterPage: false,
                   scrollDirection: Axis.horizontal,
                 ));
           }

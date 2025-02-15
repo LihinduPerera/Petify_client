@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(fontFamily: 'Poppins'),
         routes: {
           "/": (context) => CheckUser(),
-          "/page_selection": (context) => pageSelection(),
+          "/page_selection": (context) => pageSelection(defaultPage: 2,),
           "/login": (context) => LoginPage(),
           "/signup": (context) => SingupPage(),
           "/specific": (context) => SpecificProducts(),

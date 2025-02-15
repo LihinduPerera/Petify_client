@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:petify/containers/promo_container.dart';
+import 'package:petify/containers/trackers_container.dart';
 import 'package:petify/containers/user_pets_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
@@ -35,6 +37,15 @@ class _homePageState extends State<homePage> {
                       height: 10,
                     ),
                     const UserPetsContainer(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10 , top: 18),
+                      child: TrackersContainer(height: 150, isAddable: false),
+                    ),
+                    SizedBox(height: 15,),
+                    Container(
+                      height: 130,
+                      child: PromoContainer()
+                      ),
                   ]
                 ),
               ),

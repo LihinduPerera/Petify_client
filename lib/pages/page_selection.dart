@@ -7,7 +7,8 @@ import 'package:petify/pages/pet_ride.dart';
 import 'package:petify/pages/store_page.dart';
 
 class pageSelection extends StatefulWidget {
-  const pageSelection({super.key});
+  final int defaultPage;
+  const pageSelection({super.key, required this.defaultPage});
 
   @override
   State<pageSelection> createState() => _pageSelectionState();
@@ -23,7 +24,13 @@ class _pageSelectionState extends State<pageSelection> {
     const MorePage()
   ];
 
-  int selectedPageIndex = 2;
+  late int selectedPageIndex;
+
+  @override
+  void initState() {
+    selectedPageIndex = widget.defaultPage;
+    super.initState();
+  }
 
   void _pageSelection(int index) {
     setState(() {
