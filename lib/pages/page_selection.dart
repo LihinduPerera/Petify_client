@@ -18,7 +18,7 @@ class _pageSelectionState extends State<pageSelection> {
 
   final applicationPages = [
     const CartPage(),
-    const ShopPage(),
+    const StorePage(),
     const homePage(),
     const PetRidePage(),
     const MorePage()

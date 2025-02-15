@@ -8,14 +8,14 @@ import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
 import 'package:provider/provider.dart';
 
-class ShopPage extends StatefulWidget {
-  const ShopPage({super.key});
+class StorePage extends StatefulWidget {
+  const StorePage({super.key});
 
   @override
-  State<ShopPage> createState() => _ShopPageState();
+  State<StorePage> createState() => _StorePageState();
 }
 
-class _ShopPageState extends State<ShopPage> {
+class _StorePageState extends State<StorePage> {
   @override
   Widget build(BuildContext context) {
     final isConnectedToInternet = Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;

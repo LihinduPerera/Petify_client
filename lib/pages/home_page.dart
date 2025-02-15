@@ -27,27 +27,62 @@ class _homePageState extends State<homePage> {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Greeting(),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const UserPetsContainer(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10 , top: 18),
-                      child: TrackersContainer(height: 150, isAddable: false),
-                    ),
-                    SizedBox(height: 15,),
-                    Container(
-                      height: 130,
-                      child: PromoContainer(routeToTheStore: true,)
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(
+                        height: 20,
                       ),
-                  ]
-                ),
+                      const Greeting(),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      const UserPetsContainer(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 18),
+                        child: TrackersContainer(height: 150, isAddable: false),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20, top: 10 , bottom: 10),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.storefront_outlined,
+                                color: Color.fromARGB(255, 92, 81, 245)),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              "Check The Store",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        height: 150,
+                        child: ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: [
+                            Container(
+                              height: 150,
+                              width: 250,
+                              child: PromoContainer(
+                                routeToTheStore: true,
+                              ),
+                            ),
+                            SizedBox(width: 10,),
+                            Container(
+                              height: 150,
+                              width: 200,
+                              color: Colors.amber,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ]),
               ),
             ),
           );
