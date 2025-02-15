@@ -59,12 +59,15 @@ class _PetHealthAndWellnessTrackerPageState
             _buildPetInfoCard(),
             SizedBox(height: 15),
             Divider(),
-            _buildSectionTitle('Medications'),
-            _buildMedicationLog(),
-            SizedBox(height: 15),
-            _buildAddItemForm(
-                medicationController, 'Add Medication', _addMedication),
-            SizedBox(height: 15),
+            _buildCardsForTrackers(
+              const Color.fromARGB(255, 255, 179, 179).withOpacity(0.6),
+               'Medications', 
+               _buildMedicationLog(), 
+               medicationController, 
+               'Add Medication', 
+               _addMedication
+              ),
+            Divider(),
             Divider(),
             _buildSectionTitle('Vet Visits'),
             _buildVetVisitLog(),
@@ -73,11 +76,13 @@ class _PetHealthAndWellnessTrackerPageState
                 vetVisitController, 'Add Vet Visit', _addVetVisit),
             SizedBox(height: 15),
             Divider(),
+            Divider(),
             _buildSectionTitle('Activity Log'),
             _buildActivityLog(),
             SizedBox(height: 15),
             _buildAddItemForm(activityController, 'Add Activity', _addActivity),
             SizedBox(height: 15),
+            Divider(),
             Divider(),
             _buildSectionTitle('Meal Log'),
             _buildMealLog(),
@@ -102,7 +107,6 @@ class _PetHealthAndWellnessTrackerPageState
       color: const Color(0xffc58BF2).withOpacity(0.4),
       elevation: 8,
       shadowColor: Colors.blueGrey.withOpacity(0.4),
-      // shadowColor: Colors.transparent,
       child: ListTile(
         contentPadding: EdgeInsets.all(16),
         title: Text('$petName',
@@ -116,6 +120,26 @@ class _PetHealthAndWellnessTrackerPageState
     );
   }
 
+  Widget _buildCardsForTrackers(Color color , String title, Widget logWidget , TextEditingController textEditingController , String hintText, VoidCallback function) {
+    return Card(
+      color: color,
+      elevation: 8,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            _buildSectionTitle(title),
+            _buildMedicationLog(),
+            SizedBox(height: 15),
+            _buildAddItemForm(
+                textEditingController, hintText,  function),
+            SizedBox(height: 15),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -124,7 +148,8 @@ class _PetHealthAndWellnessTrackerPageState
         style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF3b3b3b)),
+            // color: Color(0xFF3b3b3b)
+            color: Colors.black),
       ),
     );
   }
