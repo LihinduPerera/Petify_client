@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
@@ -27,42 +28,36 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Column(
         children: [
-          Hero(
-            tag: 'user-avatar',
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/user.png"),
-                  fit: BoxFit.cover,
+          Container(
+            child: Lottie.asset('assets/animations/groud_profile_lottie.json',
+                height: 250, fit: BoxFit.contain),
+          ),
+          Consumer<UserProvider>(
+            builder: (context, value, child) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Card(
+                color: const Color.fromARGB(255, 246, 180, 255).withOpacity(0.4),
+                elevation: 8,
+                shadowColor: Colors.blueGrey.withOpacity(0.4),
+                child: ListTile(
+                  title: Text(value.name),
+                  subtitle: Text(value.email),
+                  onTap: () {
+                    Navigator.pushNamed(context, "/update_profile");
+                  },
+                  trailing: Icon(Icons.edit_outlined),
                 ),
               ),
             ),
           ),
-          SizedBox(height: 10,),
-          Consumer<UserProvider>(
-            builder: (context, value, child) => Card(
-              color: const Color.fromARGB(255, 223, 180, 255).withOpacity(0.4),
-              elevation: 8,
-              shadowColor: Colors.blueGrey.withOpacity(0.4),
-              child: ListTile(
-                title: Text(value.name),
-                subtitle: Text(value.email),
-                onTap: () {
-                  Navigator.pushNamed(context, "/update_profile");
-                },
-                trailing: Icon(Icons.edit_outlined),
-              ),
-            ),
-          ),
           SizedBox(
-            height: 20,
+            height: 30,
           ),
+          Divider(),
           ListTile(
             title: Text("Orders"),
-            leading: Icon(Icons.local_shipping_outlined),
+            leading: Icon(Icons.local_shipping_outlined,
+            color: const Color.fromARGB(255, 131, 139, 250)),
             onTap: () {
               Navigator.pushNamed(context, "/orders");
             },
@@ -73,8 +68,9 @@ class _ProfilePageState extends State<ProfilePage> {
             indent: 10,
           ),
           ListTile(
-            title: Text("Discount & Offers"),
-            leading: Icon(Icons.discount_outlined),
+            title: Text("Discount & Offers",),
+            leading: Icon(Icons.discount_outlined,
+            color: const Color.fromARGB(255, 122, 250, 122)),
             onTap: () {
               Navigator.pushNamed(context, "/discount");
             },
@@ -86,10 +82,12 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           ListTile(
             title: Text("Help & Support"),
-            leading: Icon(Icons.support_agent),
+            leading: Icon(Icons.support_agent,
+            color: const Color.fromARGB(255, 248, 121, 121)),
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text("Mail us at ecommerce@shop.com")));
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                duration: Duration(milliseconds: 6000),
+                  content: Text("Mail me @lihindu.indudunu.perera@gmail.com")));
             },
           ),
           Divider(

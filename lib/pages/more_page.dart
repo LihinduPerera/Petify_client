@@ -66,7 +66,9 @@ class MorePage extends StatelessWidget {
                 },
               ),
               Divider(),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Divider(),
               ListTile(
                   title: Row(
@@ -115,11 +117,13 @@ class MorePage extends StatelessWidget {
                 onTap: () {},
               ),
               Divider(),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Divider(),
               ListTile(
                 leading: Icon(Icons.notifications,
-                    color: const Color.fromARGB(255, 179, 250, 131)),
+                    color: const Color.fromARGB(255, 131, 250, 137)),
                 title: Text('Notifications & Alerts'),
                 onTap: () {},
               ),
@@ -133,7 +137,8 @@ class MorePage extends StatelessWidget {
               ),
               Divider(),
               ListTile(
-                leading: Icon(Icons.feedback),
+                leading: Icon(Icons.feedback,
+                color: const Color.fromARGB(255, 250, 131, 131)),
                 title: Text('Give Feedback'),
                 subtitle: Text('Share your thoughts with us'),
                 onTap: () {},

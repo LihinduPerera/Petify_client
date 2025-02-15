@@ -280,12 +280,16 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                                   shape: BoxShape.circle,
                                 ),
                               ),
-                              Text(
-                                userPetsProvider.userPets[petIndex].petName,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  userPetsProvider.userPets[petIndex].petName,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
                                 ),
                               ),
                             ],
@@ -400,7 +404,18 @@ class _UserPetsContainerForTrackerState
                                   ),
                                 ),
                               ),
-                              Text(userPetsProvider.userPets[petIndex].petName),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  userPetsProvider.userPets[petIndex].petName,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
