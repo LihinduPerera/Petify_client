@@ -8,14 +8,12 @@ class TrackersContainer extends StatefulWidget {
   final double height;
   final bool isAddable;
   final String petName;
-  final String petId;
 
   const TrackersContainer({
     super.key,
     required this.height,
     required this.isAddable,
     required this.petName,
-    required this.petId,
   });
 
   @override
@@ -27,6 +25,19 @@ class _TrackersContainerState extends State<TrackersContainer> {
   TextEditingController vetVisitController = TextEditingController();
   TextEditingController activityController = TextEditingController();
   TextEditingController mealController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    
+    trackerProvider.fetchMedications();
+    trackerProvider.fetchVetVisits(); 
+    trackerProvider.fetchActivities();
+    trackerProvider.fetchMeals();
+  });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,18 +117,22 @@ class _TrackersContainerState extends State<TrackersContainer> {
         color: color,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: ListView(
             children: [
-              _buildSectionTitle(title),
-              logWidget,
-              SizedBox(height: 15),
-              widget.isAddable
-                  ? Container(
-                      width: 330,
-                      child: _buildAddItemForm(
-                          textEditingController, hintText, function),
-                    )
-                  : SizedBox(),
+              Column(
+                children: [
+                  _buildSectionTitle(title),
+                  logWidget,
+                  SizedBox(height: 15),
+                  widget.isAddable
+                      ? Container(
+                          width: 330,
+                          child: _buildAddItemForm(
+                              textEditingController, hintText, function),
+                        )
+                      : SizedBox(),
+                ],
+              ),
             ],
           ),
         ),
@@ -141,19 +156,25 @@ class _TrackersContainerState extends State<TrackersContainer> {
   Widget _buildMedicationLog(BuildContext context) {
     final medicationProvider = Provider.of<TrackerProvider>(context);
     return Column(
-      children: medicationProvider.medications.isEmpty
-          ? [Text('No medications logged yet.')]
-          : medicationProvider.medications
-              .map((med) => ListTile(
-                    title: Text(med.medicationLog),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteMedication(context, med.medicationId);
-                      },
-                    ),
-                  ))
-              .toList(),
+      children: [
+        Column(
+          children: medicationProvider.medications.isEmpty
+              ? [Text('No medications logged yet.')]
+              : medicationProvider.medications
+                  .map((med) => ListTile(
+                        title: Text(med.medicationLog, style: TextStyle(fontSize: 18),),
+                        subtitle: Text(med.medicationDate.toString()),
+                        dense: true,
+                        trailing: IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _deleteMedication(context, med.medicationId);
+                          },
+                        ),
+                      ))
+                  .toList(),
+        ),
+      ],
     );
   }
 
@@ -163,10 +184,9 @@ class _TrackersContainerState extends State<TrackersContainer> {
       trackerProvider.addMedication(
         MedicationsLogModel(
           medicationId: DateTime.now().toString(),
-          medicationLog: medicationController.text,
+          medicationLog: widget.petName +" : "+ medicationController.text,
           medicationDate: Timestamp.now(),
-        ),
-        widget.petId,
+        )
       );
       medicationController.clear();
     }
@@ -174,7 +194,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
 
   void _deleteMedication(BuildContext context, String medicationId) {
     final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
-    trackerProvider.deleteMedication(medicationId, widget.petId);
+    trackerProvider.deleteMedication(medicationId);
   }
 
   Widget _buildVetVisitLog(BuildContext context) {
@@ -205,7 +225,6 @@ class _TrackersContainerState extends State<TrackersContainer> {
           vetVisitLog: vetVisitController.text,
           vetVisitDate: Timestamp.now(),
         ),
-        widget.petId,
       );
       vetVisitController.clear();
     }
@@ -213,7 +232,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
 
   void _deleteVetVisit(BuildContext context, String vetVisitId) {
     final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
-    trackerProvider.deleteVetVisit(vetVisitId, widget.petId);
+    trackerProvider.deleteVetVisit(vetVisitId);
   }
 
   Widget _buildActivityLog(BuildContext context) {
@@ -245,7 +264,6 @@ class _TrackersContainerState extends State<TrackersContainer> {
           activityDate: Timestamp.now(),
           activityTime: Timestamp.now(),
         ),
-        widget.petId,
       );
       activityController.clear();
     }
@@ -253,7 +271,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
 
   void _deleteActivity(BuildContext context, String activityId) {
     final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
-    trackerProvider.deleteActivitie(activityId, widget.petId);
+    trackerProvider.deleteActivitie(activityId);
   }
 
   Widget _buildMealLog(BuildContext context) {
@@ -284,7 +302,6 @@ class _TrackersContainerState extends State<TrackersContainer> {
           mealLog: mealController.text,
           mealTime: Timestamp.now(),
         ),
-        widget.petId,
       );
       mealController.clear();
     }
@@ -292,7 +309,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
 
   void _deleteMeal(BuildContext context, String mealId) {
     final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
-    trackerProvider.deleteMeal(mealId, widget.petId);
+    trackerProvider.deleteMeal(mealId);
   }
 
   Widget _buildAddItemForm(

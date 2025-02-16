@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/containers/trackers_container.dart';
 import 'package:petify/containers/user_pets_container.dart';
 
@@ -12,20 +13,18 @@ class PetHealthAndWellnessTrackerPage extends StatefulWidget {
 
 class _PetHealthAndWellnessTrackerPageState
     extends State<PetHealthAndWellnessTrackerPage> {
-  String petType = "nunSelected";
-  String petName = 'Select the pet';
+  String petType = "";
+  String petName = "";
   double petWeight = 0;
   int petAge = 0;
-  String petId= "";
 
   void _updatePetDetails(
-      String newPetName, double newPetWeight, int newAge, String newPetType, String newPetId) {
+      String newPetName, double newPetWeight, int newAge, String newPetType) {
     setState(() {
       petName = newPetName;
       petWeight = newPetWeight;
       petAge = newAge;
       petType = newPetType;
-      petId = newPetId;
     });
   }
 
@@ -49,11 +48,40 @@ class _PetHealthAndWellnessTrackerPageState
             SizedBox(
               height: 10,
             ),
-            _buildPetInfoCard(),
-            SizedBox(height: 5),
-            Divider(),
-            SizedBox(height: 20,),
-            TrackersContainer(height: 500, isAddable: true, petName: petName, petId: petId,)
+            petName == ""
+                ? Column(
+                  children: [
+                    SizedBox(height: 40,),
+                    Container(
+                      height: 220,
+                      child: Lottie.asset(
+                        'assets/animations/look_up_lottie.json',
+                        fit: BoxFit.contain
+                      ),
+                    ),
+                    Text("Select A Pet \n To Manage Logs", textAlign: TextAlign.center , style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 27,
+                      fontWeight: FontWeight.bold
+                    ),),
+                    SizedBox(height: 5,),
+                  ],
+                )
+                : Column(
+                    children: [
+                      _buildPetInfoCard(),
+                      SizedBox(height: 5),
+                      Divider(),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      TrackersContainer(
+                        height: 500,
+                        isAddable: true,
+                        petName: petName,
+                      )
+                    ],
+                  )
           ],
         ),
       ),

@@ -254,13 +254,11 @@ class DbService {
   }
 
   // Trackers - medications
-  Future addMedications (MedicationsLogModel medication , String petId) async {
+  Future addMedications (MedicationsLogModel medication ,) async {
     try {
       await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
-        .collection("pets")
-        .doc(petId)
         .collection("trackers")
         .doc("medication_trackers")
         .collection("medications")
@@ -275,12 +273,10 @@ class DbService {
     }
   }
 
-  Stream<List<MedicationsLogModel>> getMedications(String petId) {
+  Stream<List<MedicationsLogModel>> getMedications() {
     return FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("medication_trackers")
       .collection("medications")
@@ -290,13 +286,11 @@ class DbService {
         .toList());
   }
 
-  Future deleteMedication (String medicationId , String petId) async{
+  Future deleteMedication (String medicationId) async{
     try {
       await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
-        .collection("pets")
-        .doc(petId)
         .collection("trackers")
         .doc("medication_trackers")
         .collection("medications")
@@ -308,13 +302,11 @@ class DbService {
   }
 
   // Trackers - vetVisits
-  Future addVetVisits (VetVisitLogModel vetVisit , String petId) async {
+  Future addVetVisits (VetVisitLogModel vetVisit) async {
     try {
       await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
-        .collection("pets")
-        .doc(petId)
         .collection("trackers")
         .doc("vetvisit_trackers")
         .collection("vetvisits")
@@ -329,12 +321,10 @@ class DbService {
     }
   }
 
-  Stream<List<VetVisitLogModel>> getVetVisits (String petId){
+  Stream<List<VetVisitLogModel>> getVetVisits (){
     return FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("vetvisit_trackers")
       .collection("vetvisits")
@@ -344,13 +334,11 @@ class DbService {
       .toList());
   }
 
-  Future deleteVetVisit (String vetVisitId , String petId) async {
+  Future deleteVetVisit (String vetVisitId) async {
     try {
       await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
-        .collection("pets")
-        .doc(petId)
         .collection("trackers")
         .doc("vetvisit_trackers")
         .collection("vetvisits")
@@ -362,13 +350,11 @@ class DbService {
   }
 
   //trackers -Activity
-  Future addActivity (ActivityLogModel activity , String petId) async {
+  Future addActivity (ActivityLogModel activity) async {
     try {
       await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
-        .collection("pets")
-        .doc(petId)
         .collection("trackers")
         .doc("activity_trackers")
         .collection("activities")
@@ -384,12 +370,10 @@ class DbService {
     }
   }
 
-  Stream <List<ActivityLogModel>> getActivities (String petId) {
+  Stream <List<ActivityLogModel>> getActivities () {
     return FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("activity_trackers")
       .collection("activities")
@@ -399,13 +383,11 @@ class DbService {
       .toList());
   }
 
-  Future deleteActivity (String activityId , String petId) async {
+  Future deleteActivity (String activityId) async {
     try {
       await FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("activity_trackers")
       .collection("activities")
@@ -417,13 +399,11 @@ class DbService {
   }
 
   //trackers - meael
-  Future addMeal (MealLogModel meal , String petId) async{
+  Future addMeal (MealLogModel meal) async{
     try {
       await FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("meal_trackers")
       .collection("meals")
@@ -438,12 +418,10 @@ class DbService {
     }
   }
 
-  Stream <List<MealLogModel>> getMeals (String petId) {
+  Stream <List<MealLogModel>> getMeals () {
     return FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("meal_trackers")
       .collection("meals")
@@ -453,13 +431,11 @@ class DbService {
       .toList());
   }
 
-  Future deleteMeal (String mealId , String petId) async {
+  Future deleteMeal (String mealId) async {
     try {
       await FirebaseFirestore.instance
       .collection("shop_users")
       .doc(user!.uid)
-      .collection("pets")
-      .doc(petId)
       .collection("trackers")
       .doc("meal_trackers")
       .collection("meals")

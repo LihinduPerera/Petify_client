@@ -16,12 +16,12 @@ class TrackerProvider with ChangeNotifier{
   List<MedicationsLogModel> get medications => _medications;
   bool get medicationsAreLoading => _medicationsAreLoading;
 
-  Future<void> fetchMedications (String petId) async {
+  Future<void> fetchMedications () async {
     try {
       _medicationsAreLoading = true;
       notifyListeners();
       
-      await for (var snapshot in _dbService.getMedications(petId)){
+      await for (var snapshot in _dbService.getMedications()){
         _medications = snapshot;
         _medicationsAreLoading = false;
         notifyListeners();
@@ -33,19 +33,19 @@ class TrackerProvider with ChangeNotifier{
     }
   }
 
-  Future<void> addMedication (MedicationsLogModel medication , String petId) async {
+  Future<void> addMedication (MedicationsLogModel medication) async {
     try {
-      await _dbService.addMedications(medication, petId);
-      _medications.add(medication);
+      await _dbService.addMedications(medication,);
+      // _medications.add(medication);
       notifyListeners();
     } catch (e) {
       print("Error adiing the medications : $e");
     }
   }
 
-  Future<void> deleteMedication (String medicationId , String petId) async {
+  Future<void> deleteMedication (String medicationId) async {
     try {
-      await _dbService.deleteMedication(medicationId, petId);
+      await _dbService.deleteMedication(medicationId);
       _medications.removeWhere((medication) => medication.medicationId == medicationId);
       notifyListeners();
     } catch (e) {
@@ -61,12 +61,12 @@ class TrackerProvider with ChangeNotifier{
   List<VetVisitLogModel> get vetVisits => _vetVisits;
   bool get vetVisitsAreLoading => _vetVisitsAreLoading;
 
-  Future <void> fetchVetVisits (String petId) async {
+  Future <void> fetchVetVisits () async {
     try {
       _vetVisitsAreLoading = true;
       notifyListeners();
 
-      await for (var snapshot in _dbService.getVetVisits(petId)) {
+      await for (var snapshot in _dbService.getVetVisits()) {
         _vetVisits = snapshot;
         _vetVisitsAreLoading = false;
         notifyListeners();
@@ -78,19 +78,19 @@ class TrackerProvider with ChangeNotifier{
     }
   }
 
-  Future <void> addVetVisit (VetVisitLogModel vetVisit , String petId) async {
+  Future <void> addVetVisit (VetVisitLogModel vetVisit) async {
     try {
-      await _dbService.addVetVisits(vetVisit, petId);
-      _vetVisits.add(vetVisit);
+      await _dbService.addVetVisits(vetVisit);
+      // _vetVisits.add(vetVisit);
       notifyListeners();
     } catch (e) {
       print("Err while adding Visits : $e");
     }
   }
 
-  Future <void> deleteVetVisit (String vetVisitId ,String petId) async {
+  Future <void> deleteVetVisit (String vetVisitId) async {
     try {
-      await _dbService.deleteVetVisit(vetVisitId, petId);
+      await _dbService.deleteVetVisit(vetVisitId);
       _vetVisits.removeWhere((vetVisit) => vetVisit.vetVisitId == vetVisitId);
       notifyListeners();
     } catch (e) {
@@ -107,12 +107,12 @@ class TrackerProvider with ChangeNotifier{
   List<ActivityLogModel> get activities => _activities;
   bool get activitiesAreLoading => _activitiesAreLoading;
 
-  Future <void> fetchActivities (String petId) async {
+  Future <void> fetchActivities () async {
     try {
       _activitiesAreLoading = true;
       notifyListeners();
 
-      await for (var snapshot in _dbService.getActivities(petId)){
+      await for (var snapshot in _dbService.getActivities()){
         _activities = snapshot;
         _activitiesAreLoading = false;
         notifyListeners();
@@ -123,18 +123,18 @@ class TrackerProvider with ChangeNotifier{
       notifyListeners();
     }
   }
-  Future <void> addActivity (ActivityLogModel activity , String petId) async {
+  Future <void> addActivity (ActivityLogModel activity) async {
     try {
-      await _dbService.addActivity(activity, petId);
-      _activities.add(activity);
+      await _dbService.addActivity(activity);
+      // _activities.add(activity);
       notifyListeners();
     } catch (e) {
       print("Err while addint the Activity : $e");
     }
   }
-  Future<void> deleteActivitie (String activityId , String petId) async {
+  Future<void> deleteActivitie (String activityId) async {
     try {
-      await _dbService.deleteActivity(activityId, petId);
+      await _dbService.deleteActivity(activityId);
       _activities.removeWhere((activitie) => activitie.activityId == activityId);
       notifyListeners();
     } catch (e) {
@@ -150,12 +150,12 @@ class TrackerProvider with ChangeNotifier{
   List<MealLogModel> get meals => _meals;
   bool get mealsAreLoading => _mealsAreLoading;
 
-  Future<void> fetchMeals (String petId) async {
+  Future<void> fetchMeals () async {
     try {
       _mealsAreLoading = true;
       notifyListeners();
 
-      await for (var snapshot in _dbService.getMeals(petId)) {
+      await for (var snapshot in _dbService.getMeals()) {
         _meals = snapshot;
         _mealsAreLoading = false;
         notifyListeners();
@@ -167,23 +167,30 @@ class TrackerProvider with ChangeNotifier{
     }
   }
 
-  Future<void> addMeal (MealLogModel meal , String petId) async {
+  Future<void> addMeal (MealLogModel meal) async {
     try {
-      await _dbService.addMeal(meal, petId);
-      _meals.add(meal);
+      await _dbService.addMeal(meal);
+      // _meals.add(meal);
       notifyListeners();
     } catch (e) {
       print("Err while adding meal : $e");
     }
   }
 
-  Future<void> deleteMeal (String mealId , String petId) async {
+  Future<void> deleteMeal (String mealId) async {
     try {
-      await _dbService.deleteMeal(mealId, petId);
+      await _dbService.deleteMeal(mealId);
       _meals.removeWhere((meal) => meal.mealId == mealId);
       notifyListeners();
     } catch (e) {
       print("err while delete meal : $e");
     }
+  }
+  void dispose() {
+    _medicationSubscription?.cancel();
+    _vetVisitSubscription?.cancel();
+    _activitieSbscription?.cancel();
+    _mealSubscription?.cancel();
+    super.dispose();
   }
 }

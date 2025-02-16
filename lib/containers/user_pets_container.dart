@@ -309,7 +309,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
 }
 
 class UserPetsContainerForTracker extends StatefulWidget {
-  final Function(String petName, double petWeight, int petAge, String petType , String petId)
+  final Function(String petName, double petWeight, int petAge, String petType)
       onPetSelected;
 
   const UserPetsContainerForTracker({super.key, required this.onPetSelected});
@@ -382,8 +382,7 @@ class _UserPetsContainerForTrackerState
                               userPetsProvider.userPets[petIndex].petName,
                               userPetsProvider.userPets[petIndex].petWeight,
                               userPetsProvider.userPets[petIndex].petAge,
-                              userPetsProvider.userPets[petIndex].petType,
-                              userPetsProvider.userPets[petIndex].petId
+                              userPetsProvider.userPets[petIndex].petType
                               );
                         },
                         child: Container(
