@@ -1,11 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:petify/controllers/db_service.dart';
+import 'package:petify/models/trackers_models.dart';
+import 'package:provider/provider.dart';
+import 'package:petify/providers/tracker_provider.dart';
 
 class TrackersContainer extends StatefulWidget {
   final double height;
   final bool isAddable;
   final String petName;
-  final String petId; 
+  final String petId;
 
   const TrackersContainer({
     super.key,
@@ -20,17 +23,10 @@ class TrackersContainer extends StatefulWidget {
 }
 
 class _TrackersContainerState extends State<TrackersContainer> {
-  List<String> medications = [];
-  List<String> vetVisits = [];
-  List<String> activityLogs = [];
-  List<String> mealLogs = [];
-
   TextEditingController medicationController = TextEditingController();
   TextEditingController vetVisitController = TextEditingController();
   TextEditingController activityController = TextEditingController();
   TextEditingController mealController = TextEditingController();
-
-  final DbService dbService = DbService();
 
   @override
   Widget build(BuildContext context) {
@@ -62,34 +58,34 @@ class _TrackersContainerState extends State<TrackersContainer> {
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 255, 179, 179).withOpacity(0.6),
                   'Medications',
-                  _buildMedicationLog(),
+                  _buildMedicationLog(context),
                   medicationController,
                   'Add Medication',
-                  () => _addMedication(widget.petName)),
+                  () => _addMedication(context)),
               SizedBox(width: 10),
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 213, 255, 179).withOpacity(0.6),
                   'Vet Visits',
-                  _buildVetVisitLog(),
+                  _buildVetVisitLog(context),
                   vetVisitController,
                   'Add Vet Visit',
-                  () => _addVetVisit(widget.petName)),
+                  () => _addVetVisit(context)),
               SizedBox(width: 10),
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 179, 227, 255).withOpacity(0.6),
                   'Activity Log',
-                  _buildActivityLog(),
+                  _buildActivityLog(context),
                   activityController,
                   'Add Activity',
-                  () => _addActivity(widget.petName)),
+                  () => _addActivity(context)),
               SizedBox(width: 10),
               _buildCardsForTrackers(
                   const Color.fromARGB(255, 255, 254, 179).withOpacity(0.6),
                   'Meal Log',
-                  _buildMealLog(),
+                  _buildMealLog(context),
                   mealController,
                   'Add Meal',
-                  () => _addMeal(widget.petName)),
+                  () => _addMeal(context)),
             ],
           ),
         ),
@@ -142,82 +138,161 @@ class _TrackersContainerState extends State<TrackersContainer> {
     );
   }
 
-  Widget _buildMedicationLog() {
+  Widget _buildMedicationLog(BuildContext context) {
+    final medicationProvider = Provider.of<TrackerProvider>(context);
     return Column(
-      children: medications.isEmpty
+      children: medicationProvider.medications.isEmpty
           ? [Text('No medications logged yet.')]
-          : medications.map((med) => ListTile(title: Text(med))).toList(),
-    );
-  }
-
-  void _addMedication(String petName) {
-    if (medicationController.text.isNotEmpty) {
-      dbService.addTrackerLog(widget.petId, 'Medications', medicationController.text, petName);
-
-      setState(() {
-        medications.add('$petName: ${medicationController.text}');
-        medicationController.clear();
-      });
-    }
-  }
-
-  Widget _buildVetVisitLog() {
-    return Column(
-      children: vetVisits.isEmpty
-          ? [Text('No vet visits logged yet.')]
-          : vetVisits.map((visit) => ListTile(title: Text(visit))).toList(),
-    );
-  }
-
-  void _addVetVisit(String petName) {
-    if (vetVisitController.text.isNotEmpty) {
-      dbService.addTrackerLog(widget.petId, 'Vet Visits', vetVisitController.text, petName);
-
-      setState(() {
-        vetVisits.add('$petName: ${vetVisitController.text}');
-        vetVisitController.clear();
-      });
-    }
-  }
-
-  Widget _buildActivityLog() {
-    return Column(
-      children: activityLogs.isEmpty
-          ? [Text('No activities logged yet.')]
-          : activityLogs
-              .map((activity) => ListTile(title: Text(activity)))
+          : medicationProvider.medications
+              .map((med) => ListTile(
+                    title: Text(med.medicationLog),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteMedication(context, med.medicationId);
+                      },
+                    ),
+                  ))
               .toList(),
     );
   }
 
-  void _addActivity(String petName) {
-    if (activityController.text.isNotEmpty) {
-      dbService.addTrackerLog(widget.petId, 'Activity Log', activityController.text, petName);
-
-      setState(() {
-        activityLogs.add('$petName: ${activityController.text}');
-        activityController.clear();
-      });
+  void _addMedication(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    if (medicationController.text.isNotEmpty) {
+      trackerProvider.addMedication(
+        MedicationsLogModel(
+          medicationId: DateTime.now().toString(),
+          medicationLog: medicationController.text,
+          medicationDate: Timestamp.now(),
+        ),
+        widget.petId,
+      );
+      medicationController.clear();
     }
   }
 
-  Widget _buildMealLog() {
+  void _deleteMedication(BuildContext context, String medicationId) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    trackerProvider.deleteMedication(medicationId, widget.petId);
+  }
+
+  Widget _buildVetVisitLog(BuildContext context) {
+    final vetVisitProvider = Provider.of<TrackerProvider>(context);
     return Column(
-      children: mealLogs.isEmpty
-          ? [Text('No meals logged yet.')]
-          : mealLogs.map((meal) => ListTile(title: Text(meal))).toList(),
+      children: vetVisitProvider.vetVisits.isEmpty
+          ? [Text('No vet visits logged yet.')]
+          : vetVisitProvider.vetVisits
+              .map((visit) => ListTile(
+                    title: Text(visit.vetVisitLog),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteVetVisit(context, visit.vetVisitId);
+                      },
+                    ),
+                  ))
+              .toList(),
     );
   }
 
-  void _addMeal(String petName) {
-    if (mealController.text.isNotEmpty) {
-      dbService.addTrackerLog(widget.petId, 'Meal Log', mealController.text, petName);
-
-      setState(() {
-        mealLogs.add('$petName: ${mealController.text}');
-        mealController.clear();
-      });
+  void _addVetVisit(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    if (vetVisitController.text.isNotEmpty) {
+      trackerProvider.addVetVisit(
+        VetVisitLogModel(
+          vetVisitId: DateTime.now().toString(),
+          vetVisitLog: vetVisitController.text,
+          vetVisitDate: Timestamp.now(),
+        ),
+        widget.petId,
+      );
+      vetVisitController.clear();
     }
+  }
+
+  void _deleteVetVisit(BuildContext context, String vetVisitId) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    trackerProvider.deleteVetVisit(vetVisitId, widget.petId);
+  }
+
+  Widget _buildActivityLog(BuildContext context) {
+    final activityProvider = Provider.of<TrackerProvider>(context);
+    return Column(
+      children: activityProvider.activities.isEmpty
+          ? [Text('No activities logged yet.')]
+          : activityProvider.activities
+              .map((activity) => ListTile(
+                    title: Text(activity.activityLog),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteActivity(context, activity.activityId);
+                      },
+                    ),
+                  ))
+              .toList(),
+    );
+  }
+
+  void _addActivity(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    if (activityController.text.isNotEmpty) {
+      trackerProvider.addActivity(
+        ActivityLogModel(
+          activityId: DateTime.now().toString(),
+          activityLog: activityController.text,
+          activityDate: Timestamp.now(),
+          activityTime: Timestamp.now(),
+        ),
+        widget.petId,
+      );
+      activityController.clear();
+    }
+  }
+
+  void _deleteActivity(BuildContext context, String activityId) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    trackerProvider.deleteActivitie(activityId, widget.petId);
+  }
+
+  Widget _buildMealLog(BuildContext context) {
+    final mealProvider = Provider.of<TrackerProvider>(context);
+    return Column(
+      children: mealProvider.meals.isEmpty
+          ? [Text('No meals logged yet.')]
+          : mealProvider.meals
+              .map((meal) => ListTile(
+                    title: Text(meal.mealLog),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        _deleteMeal(context, meal.mealId);
+                      },
+                    ),
+                  ))
+              .toList(),
+    );
+  }
+
+  void _addMeal(BuildContext context) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    if (mealController.text.isNotEmpty) {
+      trackerProvider.addMeal(
+        MealLogModel(
+          mealId: DateTime.now().toString(),
+          mealLog: mealController.text,
+          mealTime: Timestamp.now(),
+        ),
+        widget.petId,
+      );
+      mealController.clear();
+    }
+  }
+
+  void _deleteMeal(BuildContext context, String mealId) {
+    final trackerProvider = Provider.of<TrackerProvider>(context, listen: false);
+    trackerProvider.deleteMeal(mealId, widget.petId);
   }
 
   Widget _buildAddItemForm(

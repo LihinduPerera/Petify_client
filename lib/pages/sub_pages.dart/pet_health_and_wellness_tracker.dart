@@ -53,7 +53,7 @@ class _PetHealthAndWellnessTrackerPageState
             SizedBox(height: 5),
             Divider(),
             SizedBox(height: 20,),
-            TrackersContainer(height: 500, isAddable: true, petName: petName, petId: petName,)
+            TrackersContainer(height: 500, isAddable: true, petName: petName, petId: petId,)
           ],
         ),
       ),

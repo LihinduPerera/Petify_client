@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/products_model.dart';
-import 'package:petify/models/trackers_model.dart';
+import 'package:petify/models/trackers_models.dart';
 import 'package:petify/models/user_pets_model.dart';
 
 class DbService {
@@ -253,80 +253,220 @@ class DbService {
     }
   }
 
-  //Trackers
-  Future<void> addTrackerLog(String petId , String trackerType , String log , String petName) async{
+  // Trackers - medications
+  Future addMedications (MedicationsLogModel medication , String petId) async {
     try {
-      DocumentReference petTrackerRef = FirebaseFirestore.instance
+      await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
         .collection("pets")
         .doc(petId)
         .collection("trackers")
-        .doc(trackerType);
-
-        DocumentSnapshot docSnapshot = await petTrackerRef.get();
-
-        List<String> logs = [];
-        if (docSnapshot.exists) {
-          logs = List<String>.from(docSnapshot['logs']);
-        }
-
-        logs.add('$petName: $log');
-
-        await petTrackerRef.set({
-          'tracker_id': trackerType,
-          'tracker_type' : trackerType,
-          'logs' : logs
-        }, SetOptions(merge: true));
+        .doc("medication_trackers")
+        .collection("medications")
+        .doc(medication.medicationId)
+        .set({
+          "medication_id": medication.medicationId,
+          "medication_log": medication.medicationLog,
+          "medication_date": medication.medicationDate
+        });
     } catch (e) {
-      print("Errrror Error Error !!! : $e");
+      print ("Error while adding medications : $e");
     }
   }
 
-  Future<void> removeTrackerLog (String petId , String tracker_type , String log) async {
+  Stream<List<MedicationsLogModel>> getMedications(String petId) {
+    return FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("medication_trackers")
+      .collection("medications")
+      .snapshots()
+      .map((querySnapShot) => querySnapShot.docs
+        .map((doc) => MedicationsLogModel.fromJson(doc.data() as Map<String,dynamic>))
+        .toList());
+  }
+
+  Future deleteMedication (String medicationId , String petId) async{
     try {
-      DocumentReference petTrackerRef = FirebaseFirestore.instance
+      await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
         .collection("pets")
         .doc(petId)
         .collection("trackers")
-        .doc(tracker_type);
-
-        DocumentSnapshot docSnapshot = await petTrackerRef.get();
-
-        List<String> logs = [];
-        if (docSnapshot.exists) {
-          logs = List<String>.from(docSnapshot['logs']);
-          logs.remove(log);
-        }
-
-        await petTrackerRef.set({
-          'tracker_id': tracker_type,
-          'tracker_type': tracker_type,
-          'logs': logs
-        },SetOptions(merge: true));
+        .doc("medication_trackers")
+        .collection("medications")
+        .doc(medicationId)
+        .delete();
     } catch (e) {
-      print("Error !!!!! : $e");
+      print ("Error deleting the medications : $e");
     }
   }
 
-  Future<List<TrackersModel>> getPetTrackers (String petId) async {
+  // Trackers - vetVisits
+  Future addVetVisits (VetVisitLogModel vetVisit , String petId) async {
     try {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance
+      await FirebaseFirestore.instance
         .collection("shop_users")
         .doc(user!.uid)
         .collection("pets")
         .doc(petId)
         .collection("trackers")
-        .get();
-
-        return snapshot.docs
-          .map((doc) => TrackersModel.fromJson(doc.data() as Map<String, dynamic>))
-          .toList();
+        .doc("vetvisit_trackers")
+        .collection("vetvisits")
+        .doc(vetVisit.vetVisitId)
+        .set({
+          "vetvisit_id": vetVisit.vetVisitId,
+          "vetvisit_log": vetVisit.vetVisitLog,
+          "vetvisit_date":vetVisit.vetVisitDate
+        });
     } catch (e) {
-      print("Error while fetching trackers : $e");
-      return [];
+      print ("Err adding vetVisits : $e");
+    }
+  }
+
+  Stream<List<VetVisitLogModel>> getVetVisits (String petId){
+    return FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("vetvisit_trackers")
+      .collection("vetvisits")
+      .snapshots()
+      .map((querySnapShot) => querySnapShot.docs
+      .map((doc) =>  VetVisitLogModel.fromJson(doc.data() as Map<String,dynamic>))
+      .toList());
+  }
+
+  Future deleteVetVisit (String vetVisitId , String petId) async {
+    try {
+      await FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("pets")
+        .doc(petId)
+        .collection("trackers")
+        .doc("vetvisit_trackers")
+        .collection("vetvisits")
+        .doc(vetVisitId)
+        .delete();
+    } catch (e) {
+      print ("err while deleting vetVisit : $e");
+    }
+  }
+
+  //trackers -Activity
+  Future addActivity (ActivityLogModel activity , String petId) async {
+    try {
+      await FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("pets")
+        .doc(petId)
+        .collection("trackers")
+        .doc("activity_trackers")
+        .collection("activities")
+        .doc(activity.activityId)
+        .set({
+          "activity_id": activity.activityId,
+          "activity_log": activity.activityLog,
+          "activity_date": activity.activityDate,
+          "activity_time": activity.activityTime
+        });
+    } catch (e) {
+      print("Err while adding Activity : $e");
+    }
+  }
+
+  Stream <List<ActivityLogModel>> getActivities (String petId) {
+    return FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("activity_trackers")
+      .collection("activities")
+      .snapshots()
+      .map((querySnapShot) => querySnapShot.docs
+      .map((doc) => ActivityLogModel.fromJson(doc.data() as Map<String,dynamic>))
+      .toList());
+  }
+
+  Future deleteActivity (String activityId , String petId) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("activity_trackers")
+      .collection("activities")
+      .doc(activityId)
+      .delete();
+    } catch (e) {
+      print ("Err while deleting : $e");
+    }
+  }
+
+  //trackers - meael
+  Future addMeal (MealLogModel meal , String petId) async{
+    try {
+      await FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("meal_trackers")
+      .collection("meals")
+      .doc(meal.mealId)
+      .set({
+        "meal_id":meal.mealId,
+        "meal_log":meal.mealLog,
+        "meal_time":meal.mealTime
+      });
+    } catch (e) {
+      print ("err while adding meal : $e");
+    }
+  }
+
+  Stream <List<MealLogModel>> getMeals (String petId) {
+    return FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("meal_trackers")
+      .collection("meals")
+      .snapshots()
+      .map((querySnapShot) => querySnapShot.docs
+      .map((doc) => MealLogModel.fromJson(doc.data() as Map <String,dynamic>))
+      .toList());
+  }
+
+  Future deleteMeal (String mealId , String petId) async {
+    try {
+      await FirebaseFirestore.instance
+      .collection("shop_users")
+      .doc(user!.uid)
+      .collection("pets")
+      .doc(petId)
+      .collection("trackers")
+      .doc("meal_trackers")
+      .collection("meals")
+      .doc(mealId)
+      .delete();
+    }catch (e) {
+      print("err while deleting meal : $e");
     }
   }
 }
