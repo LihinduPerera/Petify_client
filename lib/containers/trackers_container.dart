@@ -216,7 +216,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           : medicationProvider.medications
               .map((med) => ListTile(
                     title:
-                        Text(med.medicationLog,style: TextStyle(fontSize: 15)),
+                        Text(med.medicationLog, style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(med.medicationDate),
@@ -226,25 +226,31 @@ class _TrackersContainerState extends State<TrackersContainer> {
                             style: TextStyle(fontSize: 12)),
                         SizedBox(width: 10),
                         widget.isAddable
-                        ?Text(
-                          _getLogStatus(med.medicationDate),
-                          style: TextStyle(fontSize: 11, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
-                        :Text(
-                          _getLogStatus(med.medicationDate),
-                          style: TextStyle(fontSize: 15, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
+                            ? Text(
+                                _getLogStatus(med.medicationDate),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            : Text(
+                                _getLogStatus(med.medicationDate),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                        widget.isAddable
+                            ? IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  _deleteMedication(context, med.medicationId);
+                                },
+                              )
+                            : SizedBox(),
                       ],
                     ),
                     dense: true,
-                    trailing: widget.isAddable
-                        ? IconButton(
-                            icon: Icon(Icons.delete),
-                            onPressed: () {
-                              _deleteMedication(context, med.medicationId);
-                            },
-                          )
-                        : SizedBox(),
                   ))
               .toList(),
     );
@@ -279,36 +285,40 @@ class _TrackersContainerState extends State<TrackersContainer> {
           ? [Text('No vet visits logged yet.')]
           : vetVisitProvider.vetVisits
               .map((visit) => ListTile(
-                    title: Text(visit.vetVisitLog,style: TextStyle(fontSize: 15)),
-                    subtitle: Row(
-                      children: [
-                        Text(formatDateTime(visit.vetVisitDate),
-                            style: TextStyle(fontSize: 12)),
-                        SizedBox(width: 10),
-                        Text(formatTime(visit.vetVisitDate),
-                            style: TextStyle(fontSize: 12)),
-                        SizedBox(width: 10),
-                        widget.isAddable
-                        ?Text(
-                          _getLogStatus(visit.vetVisitDate),
-                          style: TextStyle(fontSize: 11, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
-                        :Text(
-                          _getLogStatus(visit.vetVisitDate),
-                          style: TextStyle(fontSize: 15, color: Colors.red , fontWeight: FontWeight.bold),
-                        ),
-                      ]
-                    ),
-                    trailing: widget.isAddable
-                    ? IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteVetVisit(context, visit.vetVisitId);
-                      },
-                    )
-                    :SizedBox(),
-                    dense: true
-                  ))
+                  title:
+                      Text(visit.vetVisitLog, style: TextStyle(fontSize: 15)),
+                  subtitle: Row(children: [
+                    Text(formatDateTime(visit.vetVisitDate),
+                        style: TextStyle(fontSize: 12)),
+                    SizedBox(width: 10),
+                    Text(formatTime(visit.vetVisitDate),
+                        style: TextStyle(fontSize: 12)),
+                    SizedBox(width: 10),
+                    widget.isAddable
+                        ? Text(
+                            _getLogStatus(visit.vetVisitDate),
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                          )
+                        : Text(
+                            _getLogStatus(visit.vetVisitDate),
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold),
+                          ),
+                    widget.isAddable
+                        ? IconButton(
+                            icon: Icon(Icons.delete),
+                            onPressed: () {
+                              _deleteVetVisit(context, visit.vetVisitId);
+                            },
+                          )
+                        : SizedBox(),
+                  ]),
+                  dense: true))
               .toList(),
     );
   }
@@ -344,7 +354,8 @@ class _TrackersContainerState extends State<TrackersContainer> {
           ? [Text('No activities logged yet.')]
           : activityProvider.activities
               .map((activity) => ListTile(
-                    title: Text(activity.activityLog,style: TextStyle(fontSize: 15)),
+                    title: Text(activity.activityLog,
+                        style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(activity.activityDate),
@@ -354,24 +365,31 @@ class _TrackersContainerState extends State<TrackersContainer> {
                             style: TextStyle(fontSize: 12)),
                         SizedBox(width: 10),
                         widget.isAddable
-                        ?Text(
-                          _getLogStatus(activity.activityDate),
-                          style: TextStyle(fontSize: 11, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
-                        :Text(
-                          _getLogStatus(activity.activityDate),
-                          style: TextStyle(fontSize: 15, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
+                            ? Text(
+                                _getLogStatus(activity.activityDate),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            : Text(
+                                _getLogStatus(activity.activityDate),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                        widget.isAddable
+                            ? IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  _deleteActivity(context, activity.activityId);
+                                },
+                              )
+                            : SizedBox(),
                       ],
                     ),
-                    trailing: widget.isAddable
-                    ? IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteActivity(context, activity.activityId);
-                      },
-                    )
-                    : SizedBox(), dense: true,
+                    dense: true,
                   ))
               .toList(),
     );
@@ -408,7 +426,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           ? [Text('No meals logged yet.')]
           : mealProvider.meals
               .map((meal) => ListTile(
-                    title: Text(meal.mealLog,style: TextStyle(fontSize: 15)),
+                    title: Text(meal.mealLog, style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(meal.mealTime),
@@ -418,24 +436,31 @@ class _TrackersContainerState extends State<TrackersContainer> {
                             style: TextStyle(fontSize: 12)),
                         SizedBox(width: 10),
                         widget.isAddable
-                        ?Text(
-                          _getLogStatus(meal.mealTime),
-                          style: TextStyle(fontSize: 11, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
-                        :Text(
-                          _getLogStatus(meal.mealTime),
-                          style: TextStyle(fontSize: 15, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
+                            ? Text(
+                                _getLogStatus(meal.mealTime),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            : Text(
+                                _getLogStatus(meal.mealTime),
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                        widget.isAddable
+                            ? IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  _deleteMeal(context, meal.mealId);
+                                },
+                              )
+                            : SizedBox(),
                       ],
                     ),
-                    trailing: widget.isAddable
-                    ? IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteMeal(context, meal.mealId);
-                      },
-                    )
-                    : SizedBox(), dense: true,
+                    dense: true,
                   ))
               .toList(),
     );
