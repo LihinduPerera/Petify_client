@@ -22,7 +22,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
     final TextEditingController petNameController = TextEditingController();
     final TextEditingController petWeightController = TextEditingController();
     String petType = "Dog";
-    int petAge = 2;
+    int petAge = 1;
 
     if (pet != null) {
       petNameController.text = pet.petName;
