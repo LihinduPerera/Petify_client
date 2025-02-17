@@ -363,7 +363,6 @@ class DbService {
           "activity_id": activity.activityId,
           "activity_log": activity.activityLog,
           "activity_date": activity.activityDate,
-          "activity_time": activity.activityTime
         });
     } catch (e) {
       print("Err while adding Activity : $e");

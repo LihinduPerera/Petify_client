@@ -54,6 +54,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   lottie: ^3.3.1
   internet_connection_checker_plus: ^2.7.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
