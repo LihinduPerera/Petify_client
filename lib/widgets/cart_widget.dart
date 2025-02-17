@@ -32,15 +32,15 @@ class _CartWidgetState extends State<CartWidget> {
                     decoration: BoxDecoration(
                         color: const Color.fromARGB(255, 255, 215, 253),
                         // color: const Color.fromARGB(255, 177, 198, 255),
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(8),
                         border: Border.all(
                           color: const Color.fromARGB(255, 255, 101, 247),
                         )),
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Lottie.asset('assets/animations/cart_lottie.json',
-                            height: 200, fit: BoxFit.contain),
+                            height: 145,fit: BoxFit.fitWidth),
                         Padding(
                           padding: const EdgeInsets.only(right: 10),
                           child: Column(

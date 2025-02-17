@@ -51,7 +51,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           child: Row(
             children: [
               const Icon(Icons.track_changes,
-                  color: Color.fromARGB(255, 81, 245, 130)),
+                  color: Color.fromARGB(255, 53, 202, 98)),
               SizedBox(width: 10),
               const Text(
                 "Logs and Trackers",
@@ -71,7 +71,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
             scrollDirection: Axis.horizontal,
             children: [
               _buildCardsForTrackers(
-                  const Color.fromARGB(255, 255, 179, 179).withOpacity(0.6),
+                  const Color.fromARGB(255, 249, 186, 210),
                   'Medications',
                   _buildMedicationLog(context),
                   medicationController,
