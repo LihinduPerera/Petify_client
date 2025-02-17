@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:petify/models/user_pets_model.dart';
 import 'package:provider/provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
@@ -37,74 +38,78 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
           builder: (context, setState) {
             return AlertDialog(
               title: Text(pet == null ? 'Add a New Pet' : 'Update Pet Details'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  TextField(
-                    controller: petNameController,
-                    decoration: const InputDecoration(labelText: 'Pet Name'),
-                  ),
-                  TextField(
-                    controller: petWeightController,
-                    decoration: const InputDecoration(labelText: 'Pet Weight'),
-                    keyboardType:
-                        TextInputType.numberWithOptions(decimal: false),
-                  ),
-                  Row(
-                    children: [
-                      Text("Pet Type:", style: TextStyle(fontSize: 18)),
-                      SizedBox(width: 18),
-                      DropdownButton<String>(
-                        value: petType,
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            petType = newValue!;
-                          });
-                        },
-                        items: <String>['Dog', 'Cat']
-                            .map<DropdownMenuItem<String>>((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text("Pet Age:", style: TextStyle(fontSize: 18)),
-                      SizedBox(width: 18),
-                      Expanded(
-                        child: Container(
-                          height: 50,
-                          child: DropdownButton<int>(
-                            value: petAge,
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                petAge = newValue!;
-                              });
-                            },
-                            items: List.generate(30, (index) => index + 1)
-                                .map<DropdownMenuItem<int>>((int value) {
-                              return DropdownMenuItem<int>(
-                                value: value,
-                                child: Text(value.toString()),
-                              );
-                            }).toList(),
-                            isExpanded: true,
-                            dropdownColor: Colors.white,
-                            elevation: 10,
-                            iconSize: 30,
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-                            },
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: petNameController,
+                      decoration: const InputDecoration(labelText: 'Pet Name'),
+                       maxLength: 10,
+                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
+                    ),
+                    TextField(
+                      controller: petWeightController,
+                      decoration: const InputDecoration(labelText: 'Pet Weight'),
+                      keyboardType:
+                          TextInputType.numberWithOptions(decimal: false),
+                    ),
+                    Row(
+                      children: [
+                        Text("Pet Type:", style: TextStyle(fontSize: 18)),
+                        SizedBox(width: 18),
+                        DropdownButton<String>(
+                          value: petType,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              petType = newValue!;
+                            });
+                          },
+                          items: <String>['Dog', 'Cat']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text("Pet Age:", style: TextStyle(fontSize: 18)),
+                        SizedBox(width: 18),
+                        Expanded(
+                          child: Container(
+                            height: 50,
+                            child: DropdownButton<int>(
+                              value: petAge,
+                              onChanged: (int? newValue) {
+                                setState(() {
+                                  petAge = newValue!;
+                                });
+                              },
+                              items: List.generate(30, (index) => index + 1)
+                                  .map<DropdownMenuItem<int>>((int value) {
+                                return DropdownMenuItem<int>(
+                                  value: value,
+                                  child: Text(value.toString()),
+                                );
+                              }).toList(),
+                              isExpanded: true,
+                              dropdownColor: Colors.white,
+                              elevation: 10,
+                              iconSize: 30,
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
+                      ],
+                    )
+                  ],
+                ),
               ),
               actions: [
                 TextButton(

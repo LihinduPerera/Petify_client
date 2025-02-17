@@ -23,44 +23,49 @@ class Greeting extends StatelessWidget {
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(greetingMessage, style: AppStyles.headlineStyle3),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Consumer<UserProvider>(
-                    builder: (context, value, child) => Text(
-                      value.name,
-                      style: AppStyles.headlineStyle1,
+          Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(greetingMessage, style: AppStyles.headlineStyle3),
+                    const SizedBox(
+                      height: 5,
                     ),
-                  ),
-                ],
-              ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ProfilePage(),
+                    Consumer<UserProvider>(
+                      builder: (context, value, child) => Text(
+                        value.name,
+                        style: AppStyles.headlineStyle1,
+                      ),
                     ),
-                  );
-                },
-                child: Lottie.asset(
-                    'assets/animations/male_profile_lottie.json',
-                    height: 120,
-                    fit: BoxFit.fill),
-              )
-            ],
+                  ],
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePage(),
+                      ),
+                    );
+                  },
+                  child: Lottie.asset(
+                      'assets/animations/male_profile_lottie.json',
+                      height: 135,
+                      fit: BoxFit.fitHeight),
+                )
+              ],
+            ),
           ),
-          const DefaultSearchBar()
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: const DefaultSearchBar(),
+          )
         ],
       ),
     );

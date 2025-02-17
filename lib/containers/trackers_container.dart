@@ -216,7 +216,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           : medicationProvider.medications
               .map((med) => ListTile(
                     title:
-                        Text(med.medicationLog, style: TextStyle(fontSize: 18)),
+                        Text(med.medicationLog,style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(med.medicationDate),
@@ -279,7 +279,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           ? [Text('No vet visits logged yet.')]
           : vetVisitProvider.vetVisits
               .map((visit) => ListTile(
-                    title: Text(visit.vetVisitLog),
+                    title: Text(visit.vetVisitLog,style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(visit.vetVisitDate),
@@ -296,8 +296,8 @@ class _TrackersContainerState extends State<TrackersContainer> {
                         :Text(
                           _getLogStatus(visit.vetVisitDate),
                           style: TextStyle(fontSize: 15, color: Colors.red , fontWeight: FontWeight.bold),
-                        )
-                      ],
+                        ),
+                      ]
                     ),
                     trailing: widget.isAddable
                     ? IconButton(
@@ -306,7 +306,8 @@ class _TrackersContainerState extends State<TrackersContainer> {
                         _deleteVetVisit(context, visit.vetVisitId);
                       },
                     )
-                    :SizedBox()
+                    :SizedBox(),
+                    dense: true
                   ))
               .toList(),
     );
@@ -343,7 +344,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           ? [Text('No activities logged yet.')]
           : activityProvider.activities
               .map((activity) => ListTile(
-                    title: Text(activity.activityLog),
+                    title: Text(activity.activityLog,style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(activity.activityDate),
@@ -370,7 +371,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
                         _deleteActivity(context, activity.activityId);
                       },
                     )
-                    : SizedBox()
+                    : SizedBox(), dense: true,
                   ))
               .toList(),
     );
@@ -407,7 +408,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
           ? [Text('No meals logged yet.')]
           : mealProvider.meals
               .map((meal) => ListTile(
-                    title: Text(meal.mealLog),
+                    title: Text(meal.mealLog,style: TextStyle(fontSize: 15)),
                     subtitle: Row(
                       children: [
                         Text(formatDateTime(meal.mealTime),
@@ -434,7 +435,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
                         _deleteMeal(context, meal.mealId);
                       },
                     )
-                    : SizedBox()
+                    : SizedBox(), dense: true,
                   ))
               .toList(),
     );

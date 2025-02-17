@@ -63,8 +63,6 @@ class _CartContainerState extends State<CartContainer> {
         color: Colors.grey.shade300,
         child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all(2),
-          margin: EdgeInsets.all(2),
           child: Column(
             children: [
               Row(
@@ -202,7 +200,7 @@ class _CartContainerState extends State<CartContainer> {
                   ),
                   Text(
                     "Rs.${widget.new_price * count}",
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
                   ),
                 ],
               ),
