@@ -8,7 +8,6 @@ import 'package:petify/models/trackers_models.dart';
 class TrackerProvider with ChangeNotifier{
   final DbService _dbService = DbService();
 
-  //Medication Provider
   List<MedicationsLogModel> _medications = [];
   StreamSubscription<List<MedicationsLogModel>>? _medicationSubscription;
   bool _medicationsAreLoading = false;

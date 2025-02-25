@@ -71,7 +71,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
             scrollDirection: Axis.horizontal,
             children: [
               _buildCardsForTrackers(
-                  const Color.fromARGB(255, 249, 186, 210),
+                  const Color.fromARGB(255, 243, 215, 226),
                   'Medications',
                   _buildMedicationLog(context),
                   medicationController,
@@ -79,7 +79,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
                   () => _addMedication(context)),
               SizedBox(width: 10),
               _buildCardsForTrackers(
-                  const Color.fromARGB(255, 213, 255, 179).withOpacity(0.6),
+                  const Color.fromARGB(255, 232, 250, 217).withOpacity(0.6),
                   'Vet Visits',
                   _buildVetVisitLog(context),
                   vetVisitController,
@@ -87,7 +87,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
                   () => _addVetVisit(context)),
               SizedBox(width: 10),
               _buildCardsForTrackers(
-                  const Color.fromARGB(255, 179, 227, 255).withOpacity(0.6),
+                  const Color.fromARGB(255, 207, 234, 249).withOpacity(0.6),
                   'Activity Log',
                   _buildActivityLog(context),
                   activityController,
@@ -95,7 +95,7 @@ class _TrackersContainerState extends State<TrackersContainer> {
                   () => _addActivity(context)),
               SizedBox(width: 10),
               _buildCardsForTrackers(
-                  const Color.fromARGB(255, 255, 254, 179).withOpacity(0.6),
+                  const Color.fromARGB(255, 252, 253, 225).withOpacity(0.6),
                   'Meal Log',
                   _buildMealLog(context),
                   mealController,
