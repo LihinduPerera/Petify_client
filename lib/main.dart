@@ -101,7 +101,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/login.dart';
+import 'package:petify/pages/page_selection.dart';
+import 'package:petify/pages/signup.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -110,9 +113,7 @@ void main() async {
     statusBarColor: const Color(0xFFeeedf2),
     statusBarIconBrightness: Brightness.dark,
   ));
-  //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((_) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     runApp(const MyApp());
   });
 }
@@ -123,12 +124,23 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Poppins'),
-        routes: {
-          // "/": (context) => CheckUser(),
-          "/": (context) => LoginPage(),
-        },
-      );
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Poppins'),
+      routes: {
+        "/": (context) => FutureBuilder(
+          future: AuthService().getCurrentUser(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasData) {
+              return SingupPage();
+            } else {
+              return LoginPage();
+            }
+          },
+        ),
+        "/signup": (context) => SingupPage(),
+      },
+    );
   }
 }
