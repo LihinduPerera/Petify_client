@@ -12,6 +12,7 @@ class _LoginPageState extends State<LoginPage> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      const Text("Enter you email"),
+                                      const Text("Enter your email"),
                                       const SizedBox(
                                         height: 10,
                                       ),
@@ -188,13 +189,13 @@ class _LoginPageState extends State<LoginPage> {
                         "Login",
                         style: TextStyle(fontSize: 16),
                       ))),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text("Don't have and account?"),
+                  const Text("Don't have an account?"),
                   TextButton(
                       onPressed: () {
                         Navigator.pushNamed(context, "/signup");
