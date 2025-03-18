@@ -42,7 +42,7 @@
 //                     const SizedBox(height: 10),
 //                     _buildCategoryButtons(size),
 //                     const SizedBox(height: 10),
-//                     DefaultSearchBar(),
+//                     // DefaultSearchBar(),
 //                     const SizedBox(height: 10),
 //                     const PromoContainer(routeToTheStore: false,),
 //                     const Text(

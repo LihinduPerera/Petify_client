@@ -19,9 +19,9 @@ class _pageSelectionState extends State<pageSelection> {
   final applicationPages = [
     // const CartPage(),
     // const StorePage(),
-    // const homePage(),
-    // const PetRidePage(),
-    // const MorePage()
+    const homePage(),
+    const PetRidePage(),
+    const MorePage()
   ];
 
   late int selectedPageIndex;

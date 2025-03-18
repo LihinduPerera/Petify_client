@@ -1,128 +1,144 @@
-// import 'package:flutter/material.dart';
-// import 'package:petify/controllers/db_service.dart';
-// import 'package:petify/providers/user_provider.dart';
-// import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
+import 'package:petify/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
-// class UpdateProfile extends StatefulWidget {
-//   const UpdateProfile({super.key});
+class UpdateProfile extends StatefulWidget {
+  const UpdateProfile({super.key});
 
-//   @override
-//   State<UpdateProfile> createState() => _UpdateProfileState();
-// }
+  @override
+  State<UpdateProfile> createState() => _UpdateProfileState();
+}
 
-// class _UpdateProfileState extends State<UpdateProfile> {
-//   final formKey = GlobalKey<FormState>();
-//   TextEditingController _nameController = TextEditingController();
-//   TextEditingController _emailController = TextEditingController();
-//   TextEditingController _addressController = TextEditingController();
-//   TextEditingController _phoneController = TextEditingController();
+class _UpdateProfileState extends State<UpdateProfile> {
+  final formKey = GlobalKey<FormState>();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
 
-//   @override
-//   void initState() {
-//     final user = Provider.of<UserProvider>(context, listen: false);
-//     _nameController.text = user.name;
-//     _emailController.text = user.email;
-//     _addressController.text = user.address;
-//     _phoneController.text = user.phone;
+  @override
+  void initState() {
+    final user = Provider.of<UserProvider>(context, listen: false);
+    _nameController.text = user.name;
+    _emailController.text = user.email;
+    _addressController.text = user.address;
+    _phoneController.text = user.phone;
 
-//     super.initState();
-//   }
+    super.initState();
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text("Update Profile"),
-//         scrolledUnderElevation: 0,
-//         forceMaterialTransparency: true,
-//       ),
-//       body: SingleChildScrollView(
-//         child: Form(
-//           key: formKey,
-//           child: Padding(
-//             padding: const EdgeInsets.all(8.0),
-//             child: Column(
-//               children: [
-//                 TextFormField(
-//                   controller: _nameController,
-//                   decoration: InputDecoration(
-//                       labelText: "Name",
-//                       hintText: "Name",
-//                       border: OutlineInputBorder()),
-//                   validator: (value) =>
-//                       value!.isEmpty ? "Name cannot be empty." : null,
-//                 ),
-//                 SizedBox(
-//                   height: 10,
-//                 ),
-//                 TextFormField(
-//                   controller: _emailController,
-//                   readOnly: true,
-//                   decoration: InputDecoration(
-//                       labelText: "Email",
-//                       hintText: "Email",
-//                       border: OutlineInputBorder()),
-//                   validator: (value) =>
-//                       value!.isEmpty ? "Email cannot be empty." : null,
-//                 ),
-//                 SizedBox(
-//                   height: 10,
-//                 ),
-//                 TextFormField(
-//                   maxLines: 3,
-//                   controller: _addressController,
-//                   decoration: InputDecoration(
-//                       labelText: "Address",
-//                       hintText: "Address",
-//                       border: OutlineInputBorder()),
-//                   validator: (value) =>
-//                       value!.isEmpty ? "Address cannot be empty." : null,
-//                 ),
-//                 SizedBox(
-//                   height: 10,
-//                 ),
-//                 TextFormField(
-//                   controller: _phoneController,
-//                   decoration: InputDecoration(
-//                       labelText: "Phone",
-//                       hintText: "Phone",
-//                       border: OutlineInputBorder()),
-//                   validator: (value) =>
-//                       value!.isEmpty ? "Phone cannot be empty." : null,
-//                 ),
-//                 SizedBox(
-//                   height: 10,
-//                 ),
-//                 SizedBox(
-//                     height: 60,
-//                     width: MediaQuery.of(context).size.width * .9,
-//                     child: ElevatedButton(
-//                         onPressed: () async {
-//                           if (formKey.currentState!.validate()) {
-//                             var data = {
-//                               "name": _nameController.text,
-//                               "email": _emailController.text,
-//                               "address": _addressController.text,
-//                               "phone": _phoneController.text
-//                             };
-//                             await DbService().updateUserData(extraData: data);
-//                             Navigator.pop(context);
-//                             ScaffoldMessenger.of(context).showSnackBar(
-//                                 SnackBar(content: Text("Profile Updated")));
-//                           }
-//                         },
-//                         style: ElevatedButton.styleFrom(
-//                             backgroundColor: Theme.of(context).primaryColor,
-//                             foregroundColor: Colors.white),
-//                         child: Text(
-//                           "Update Profile",
-//                           style: TextStyle(fontSize: 16),
-//                         ))),
-//               ],
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Update Profile"),
+        scrolledUnderElevation: 0,
+        forceMaterialTransparency: true,
+      ),
+      body: SingleChildScrollView(
+        child: Form(
+          key: formKey,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    labelText: "Name",
+                    hintText: "Name",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator:
+                      (value) =>
+                          value!.isEmpty ? "Name cannot be empty." : null,
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _emailController,
+                  readOnly: true,
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    hintText: "Email",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator:
+                      (value) =>
+                          value!.isEmpty ? "Email cannot be empty." : null,
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  maxLines: 3,
+                  controller: _addressController,
+                  decoration: InputDecoration(
+                    labelText: "Address",
+                    hintText: "Address",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator:
+                      (value) =>
+                          value!.isEmpty ? "Address cannot be empty." : null,
+                ),
+                SizedBox(height: 10),
+                TextFormField(
+                  controller: _phoneController,
+                  decoration: InputDecoration(
+                    labelText: "Phone",
+                    hintText: "Phone",
+                    border: OutlineInputBorder(),
+                  ),
+                  validator:
+                      (value) =>
+                          value!.isEmpty ? "Phone cannot be empty." : null,
+                ),
+                SizedBox(height: 10),
+                SizedBox(
+                  height: 60,
+                  width: MediaQuery.of(context).size.width * .9,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      if (formKey.currentState!.validate()) {
+                        String newName = _nameController.text;
+                        String newAddress = _addressController.text;
+                        String newPhone = _phoneController.text;
+
+                        try {
+                          String result = await Provider.of<UserProvider>(
+                            context,
+                            listen: false,
+                          ).updateUser(newName, newAddress, newPhone);
+
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text(result)));
+
+                          if (result == "User updated successfully!") {
+                            Navigator.pop(context);
+                          }
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Error updating profile: $e"),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).primaryColor,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: Text(
+                      "Update Profile",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

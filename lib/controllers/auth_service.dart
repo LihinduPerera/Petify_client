@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'baseUrl.dart';
 
 class AuthService {
-  final Dio _dio = Dio(BaseOptions(baseUrl: 'http://192.168.8.200:8000/auth'));
+  final Dio _dio = Dio(BaseOptions(baseUrl: API_URL));
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   Future<String> createAccountWithEmail(
@@ -37,15 +38,40 @@ class AuthService {
     }
   }
 
-  Future<String?> getCurrentUser() async {
+  Future<Map<String, dynamic>?> getCurrentUser() async {
+  String? token = await _secureStorage.read(key: 'access_token');
+  if (token == null) return null;
+
+  try {
+    Response response = await _dio.get('/current-user', options: Options(
+      headers: {'Authorization': 'Bearer $token'},
+    ));
+    return response.data as Map<String, dynamic>;
+  } catch (e) {
+    return null;
+  }
+}
+
+  Future<String> updateUser(String name, String address, String phone) async {
     String? token = await _secureStorage.read(key: 'access_token');
-    if (token == null) return null;
+    if (token == null) {
+      return "User not logged in!";
+    }
 
     try {
-      Response response = await _dio.get('/current-user', options: Options(
+      Response response = await _dio.put('/update-user', data: {
+        "name": name,
+        "address": address,
+        "phone": phone,
+      }, options: Options(
         headers: {'Authorization': 'Bearer $token'},
       ));
-      return response.data.toString();
+
+      if (response.statusCode == 200) {
+        return "User updated successfully!";
+      } else {
+        return "Failed to update user.";
+      }
     } catch (e) {
       return e.toString();
     }
