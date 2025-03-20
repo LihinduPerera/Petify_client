@@ -4,6 +4,7 @@ import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
+// import 'package:petify/styles/default_search_bar.dart';
 import 'package:provider/provider.dart';
 
 class Greeting extends StatelessWidget {
@@ -34,14 +35,11 @@ class Greeting extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(greetingMessage, style: AppStyles.headlineStyle3),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    const SizedBox(height: 5),
                     Consumer<UserProvider>(
-                      builder: (context, value, child) => Text(
-                        value.name,
-                        style: AppStyles.headlineStyle1,
-                      ),
+                      builder:
+                          (context, value, child) =>
+                              Text(value.name, style: AppStyles.headlineStyle1),
                     ),
                   ],
                 ),
@@ -49,23 +47,22 @@ class Greeting extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
-                      ),
+                      MaterialPageRoute(builder: (context) => ProfilePage()),
                     );
                   },
                   child: Lottie.asset(
-                      'assets/animations/male_profile_lottie.json',
-                      height: 135,
-                      fit: BoxFit.fitHeight),
-                )
+                    'assets/animations/male_profile_lottie.json',
+                    height: 135,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            // child: const DefaultSearchBar(),
-          )
+            child: const DefaultSearchBar(),
+          ),
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:petify/controllers/auth_service.dart';
-import 'package:petify/providers/cart_provider.dart';
-import 'package:petify/providers/user_pets_provider.dart';
+// import 'package:petify/controllers/auth_service.dart';
+// import 'package:petify/providers/cart_provider.dart';
+// import 'package:petify/providers/user_pets_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 

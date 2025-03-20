@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:petify/containers/promo_container.dart';
-import 'package:petify/containers/trackers_container.dart';
-import 'package:petify/containers/user_pets_container.dart';
+// import 'package:petify/containers/promo_container.dart';
+// import 'package:petify/containers/trackers_container.dart';
+// import 'package:petify/containers/user_pets_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/styles/greeting.dart';
-import 'package:petify/widgets/cart_widget.dart';
+// import 'package:petify/widgets/cart_widget.dart';
 import 'package:provider/provider.dart';
 
 class homePage extends StatefulWidget {

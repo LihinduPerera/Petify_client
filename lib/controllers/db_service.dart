@@ -7,7 +7,7 @@
 
 // class DbService {
 //   User? user = FirebaseAuth.instance.currentUser;
-  
+
 //   // USER DATA
 //   Future saveUserData({required String name, required String email}) async {
 //     try {
@@ -68,41 +68,41 @@
 //   }
 
 //   // PRODUCTS
-//   Stream<QuerySnapshot> readProducts(String category) {
-//     return FirebaseFirestore.instance
-//         .collection("shop_products")
-//         .where("category", isEqualTo: category.toLowerCase())
-//         .snapshots();
+// Stream<QuerySnapshot> readProducts(String category) {
+//   return FirebaseFirestore.instance
+//       .collection("shop_products")
+//       .where("category", isEqualTo: category.toLowerCase())
+//       .snapshots();
+// }
+
+// Stream<QuerySnapshot> searchProducts(List<String> docIds) {
+//   return FirebaseFirestore.instance
+//       .collection("shop_products")
+//       .where(FieldPath.documentId, whereIn: docIds)
+//       .snapshots();
+// }
+
+// Future<List<ProductsModel>> searchProductsByName(String query) async {
+//   if (query.isEmpty) {
+//     return [];
 //   }
 
-//   Stream<QuerySnapshot> searchProducts(List<String> docIds) {
-//     return FirebaseFirestore.instance
-//         .collection("shop_products")
-//         .where(FieldPath.documentId, whereIn: docIds)
-//         .snapshots();
-//   }
+//   var productsSnapshot = await FirebaseFirestore.instance
+//       .collection('shop_products')
+//       .where('name', isGreaterThanOrEqualTo: query)
+//       .where('name', isLessThanOrEqualTo: query + '\uf8ff')
+//       .get();
 
-//   Future<List<ProductsModel>> searchProductsByName(String query) async {
-//     if (query.isEmpty) {
-//       return [];
-//     }
+//   return ProductsModel.fromJsonList(productsSnapshot.docs);
+// }
 
-//     var productsSnapshot = await FirebaseFirestore.instance
-//         .collection('shop_products')
-//         .where('name', isGreaterThanOrEqualTo: query)
-//         .where('name', isLessThanOrEqualTo: query + '\uf8ff')
-//         .get();
-
-//     return ProductsModel.fromJsonList(productsSnapshot.docs);
-//   }
-
-//   Future reduceQuantity(
-//       {required String productId, required int quantity}) async {
-//     await FirebaseFirestore.instance
-//         .collection("shop_products")
-//         .doc(productId)
-//         .update({"quantity": FieldValue.increment(-quantity)});
-//   }
+// Future reduceQuantity(
+//     {required String productId, required int quantity}) async {
+//   await FirebaseFirestore.instance
+//       .collection("shop_products")
+//       .doc(productId)
+//       .update({"quantity": FieldValue.increment(-quantity)});
+// }
 
 //   // CART
 //   Stream<QuerySnapshot> readUserCart() {
@@ -445,3 +445,91 @@
 //     }
 //   }
 // }
+
+import 'package:dio/dio.dart';
+import 'package:petify/controllers/baseUrl.dart';
+import 'package:petify/models/products_model.dart';
+
+class DBService {
+  final Dio _dio = Dio();
+  final String baseUrl = API_URL;
+
+  Future<ProductsModel> createProduct(ProductsModel product) async {
+    try {
+      final response = await _dio.post(
+        '$baseUrl/products/',
+        data: product.toJson(),
+      );
+
+      return ProductsModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to create product: $e');
+    }
+  }
+
+  Future<List<ProductsModel>> getProducts() async {
+    try {
+      final response = await _dio.get('$baseUrl/products/');
+      return ProductsModel.fromJsonList(response.data);
+    } catch (e) {
+      throw Exception('Failed to fetch products: $e');
+    }
+  }
+
+  Future<ProductsModel> getProductById(String productId) async {
+    try {
+      final response = await _dio.get('$baseUrl/products/$productId');
+      return ProductsModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Product not found: $e');
+    }
+  }
+
+  Future<ProductsModel> updateProduct(
+    String productId,
+    ProductsModel product,
+  ) async {
+    try {
+      final response = await _dio.put(
+        '$baseUrl/products/$productId',
+        data: product.toJson(),
+      );
+
+      return ProductsModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to update product: $e');
+    }
+  }
+
+  Future<void> deleteProduct(String productId) async {
+    try {
+      await _dio.delete('$baseUrl/products/$productId');
+    } catch (e) {
+      throw Exception('Failed to delete product: $e');
+    }
+  }
+
+  Future<List<ProductsModel>> searchProductsByName(String query) async {
+    try {
+      final response = await _dio.get(
+        '$baseUrl/products/search/',
+        queryParameters: {'query': query},
+      );
+
+      return ProductsModel.fromJsonList(response.data);
+    } catch (e) {
+      throw Exception('Failed to search products: $e');
+    }
+  }
+
+  Future<void> reduceQuantity(String productId, int quantity) async {
+    try {
+      await _dio.put(
+        '$baseUrl/products/$productId/reduce_quantity/',
+        data: {'quantity': quantity},
+      );
+    } catch (e) {
+      throw Exception('Failed to reduce quantity: $e');
+    }
+  }
+}

@@ -1,12 +1,12 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:petify/controllers/auth_service.dart';
-import 'package:petify/pages/sub_pages.dart/profile_page.dart';
-import 'package:petify/providers/cart_provider.dart';
-import 'package:petify/providers/user_pets_provider.dart';
-import 'package:petify/providers/user_provider.dart';
-import 'package:provider/provider.dart';
+// import 'package:petify/controllers/auth_service.dart';
+// import 'package:petify/pages/sub_pages.dart/profile_page.dart';
+// import 'package:petify/providers/cart_provider.dart';
+// import 'package:petify/providers/user_pets_provider.dart';
+// import 'package:petify/providers/user_provider.dart';
+// import 'package:provider/provider.dart';
 
 class MorePage extends StatelessWidget {
   const MorePage({super.key});

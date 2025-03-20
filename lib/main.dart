@@ -107,17 +107,22 @@ import 'package:petify/pages/page_selection.dart';
 import 'package:petify/pages/signup.dart';
 import 'package:petify/pages/sub_pages.dart/update_profile.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
+import 'package:petify/providers/products_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Hide the status bar globally
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: const Color(0xFFeeedf2),
-    statusBarIconBrightness: Brightness.dark,
-  ));
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: const Color(0xFFeeedf2),
+      statusBarIconBrightness: Brightness.dark,
+    ),
+  );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
+    _,
+  ) {
     runApp(const MyApp());
   });
 }
@@ -129,29 +134,31 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=> InternetConnectionProvider()),
+        ChangeNotifierProvider(create: (context) => ProductsProvider()),
+        ChangeNotifierProvider(
+          create: (context) => InternetConnectionProvider(),
+        ),
         ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Poppins'),
         routes: {
-          "/": (context) => FutureBuilder(
-            future: AuthService().getCurrentUser(), 
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasData) {
-                return pageSelection(defaultPage: 0);
-              } else {
-                return LoginPage();
-              }
-            },
-          ),
-          "/signup": (context) => SingupPage(),
-          "/page_selection": (context) => pageSelection(
-                defaultPage: 0,
+          "/":
+              (context) => FutureBuilder(
+                future: AuthService().getCurrentUser(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasData && snapshot.data != null) {
+                    return pageSelection(defaultPage: 0);
+                  } else {
+                    return LoginPage();
+                  }
+                },
               ),
+          "/signup": (context) => SingupPage(),
+          "/page_selection": (context) => pageSelection(defaultPage: 0),
           "/update_profile": (context) => UpdateProfile(),
         },
       ),

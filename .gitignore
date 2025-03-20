@@ -34,9 +34,7 @@ migrate_working_dir/
 /build/
 **/ios/
 **/android/
-/lib/firebase_options.dart
 /lib/consts.dart
-firebase.json
 pubspec.lock
 **/assets/
 /lib/controllers/baseUrl.dart

@@ -2,11 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/models/user_model.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
-  FlutterSecureStorage _secureStorage = FlutterSecureStorage();
 
   String name = "Loading . . .";
   String email = "";
@@ -18,8 +17,10 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> loadUserData() async {
-    String? token = await _secureStorage.read(key: 'access_token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('access_token');
     if (token == null) {
+      print("No token found, user not logged in.");
       return;
     }
 
@@ -30,8 +31,8 @@ class UserProvider extends ChangeNotifier {
 
         name = data.name;
         email = data.email;
-        address = data.address;
-        phone = data.phone;
+        address = data.address ?? '';
+        phone = data.phone ?? '';
 
         notifyListeners();
       }
@@ -45,7 +46,8 @@ class UserProvider extends ChangeNotifier {
     String newAddress,
     String newPhone,
   ) async {
-    String? token = await _secureStorage.read(key: 'access_token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('access_token');
     if (token == null) {
       return "No token found";
     }
@@ -60,7 +62,9 @@ class UserProvider extends ChangeNotifier {
         name = newName;
         address = newAddress;
         phone = newPhone;
+
         notifyListeners();
+
         return result;
       } else {
         return "Error updating user: $result";
@@ -76,7 +80,8 @@ class UserProvider extends ChangeNotifier {
     address = "";
     phone = "";
 
-    await _secureStorage.delete(key: 'access_token');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('access_token');
 
     notifyListeners();
   }
