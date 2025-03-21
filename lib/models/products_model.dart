@@ -82,17 +82,4 @@ class ProductsModel {
   static List<ProductsModel> fromJsonList(List<dynamic> jsonList) {
     return jsonList.map((json) => ProductsModel.fromJson(json)).toList();
   }
-
-  // To JSON for sending requests
-  Map<String, dynamic> toJson() {
-    return {
-      "name": name,
-      "description": description,
-      "image": image,
-      "old_price": oldPrice,
-      "new_price": newPrice,
-      "category": category,
-      "quantity": maxQuantity,
-    };
-  }
 }

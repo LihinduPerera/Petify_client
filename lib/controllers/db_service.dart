@@ -454,19 +454,6 @@ class DBService {
   final Dio _dio = Dio();
   final String baseUrl = API_URL;
 
-  Future<ProductsModel> createProduct(ProductsModel product) async {
-    try {
-      final response = await _dio.post(
-        '$baseUrl/products/',
-        data: product.toJson(),
-      );
-
-      return ProductsModel.fromJson(response.data);
-    } catch (e) {
-      throw Exception('Failed to create product: $e');
-    }
-  }
-
   Future<List<ProductsModel>> getProducts() async {
     try {
       final response = await _dio.get('$baseUrl/products/');
@@ -482,22 +469,6 @@ class DBService {
       return ProductsModel.fromJson(response.data);
     } catch (e) {
       throw Exception('Product not found: $e');
-    }
-  }
-
-  Future<ProductsModel> updateProduct(
-    String productId,
-    ProductsModel product,
-  ) async {
-    try {
-      final response = await _dio.put(
-        '$baseUrl/products/$productId',
-        data: product.toJson(),
-      );
-
-      return ProductsModel.fromJson(response.data);
-    } catch (e) {
-      throw Exception('Failed to update product: $e');
     }
   }
 
