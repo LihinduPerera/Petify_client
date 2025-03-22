@@ -32,7 +32,7 @@ class CartProvider extends ChangeNotifier {
       await dbService.addToCart(userId, cartModel);
       readCartData();
     } catch (e) {
-      print('Error adding item to cart: $e');
+      return;
     }
   }
 
@@ -53,7 +53,6 @@ class CartProvider extends ChangeNotifier {
         notifyListeners();
       },
       onError: (e) {
-        print('Error fetching cart data: $e');
         isLoading = false;
         notifyListeners();
       },
@@ -67,7 +66,7 @@ class CartProvider extends ChangeNotifier {
         addCost(products, carts);
         calculateTotalQuantity();
       }, onError: (e) {
-        print('Error fetching product details: $e');
+        return;
       });
   }
 
@@ -90,7 +89,7 @@ class CartProvider extends ChangeNotifier {
       await dbService.deleteItemFromCart(userId, productId);
       readCartData();
     } catch (e) {
-      print('Error deleting item from cart: $e');
+      return;
     }
   }
 
@@ -99,7 +98,7 @@ class CartProvider extends ChangeNotifier {
       await dbService.decreaseCartQuantity(userId, productId);
       readCartData();
     } catch (e) {
-      print('Error decreasing cart quantity: $e');
+      return;
     }
   }
 
