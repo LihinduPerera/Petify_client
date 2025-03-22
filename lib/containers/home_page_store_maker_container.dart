@@ -22,7 +22,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return StreamBuilder(
-//       stream: DbService().readCategories(),
+//       stream: DBService().readCategories(),
 //       builder: (context, snapshot) {
 //         if (snapshot.connectionState == ConnectionState.waiting) {
 //           return Shimmer(
@@ -51,7 +51,7 @@
 //           }
 
 //           return StreamBuilder(
-//             stream: DbService().readBanners(),
+//             stream: DBService().readBanners(),
 //             builder: (context, bannerSnapshot) {
 //               if (bannerSnapshot.connectionState == ConnectionState.waiting) {
 //                 return Shimmer(

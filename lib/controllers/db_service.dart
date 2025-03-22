@@ -40,9 +40,9 @@
 //     return FirebaseFirestore.instance.collection("shop_promos").snapshots();
 //   }
 
-//   Stream<QuerySnapshot> readBanners() {
-//     return FirebaseFirestore.instance.collection("shop_banners").snapshots();
-//   }
+// Stream<QuerySnapshot> readBanners() {
+//   return FirebaseFirestore.instance.collection("shop_banners").snapshots();
+// }
 
 //   // DISCOUNTS
 //   Stream<QuerySnapshot> readDiscounts() {
@@ -453,17 +453,55 @@ import 'package:petify/controllers/baseUrl.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/categories_model.dart';
 import 'package:petify/models/products_model.dart';
+import 'package:petify/models/promo_banners_model.dart';
 
 class DBService {
   final Dio _dio = Dio();
   final String baseUrl = API_URL;
 
+  Stream<List<PromoBannersModel>> readPromos() async* {
+    try {
+      final response = await _dio.get('$baseUrl/promos/');
+
+      List<Map<String, dynamic>> promosJson = List<Map<String, dynamic>>.from(
+        response.data,
+      );
+      List<PromoBannersModel> promos = PromoBannersModel.fromJsonList(
+        promosJson,
+      );
+
+      yield promos;
+    } catch (e) {
+      throw Exception('Failed to fetch promos: $e');
+    }
+  }
+
+  Stream<List<PromoBannersModel>> readBanners() async* {
+    try {
+      final response = await _dio.get('$baseUrl/banners/');
+
+      List<Map<String, dynamic>> bannersJson = List<Map<String, dynamic>>.from(
+        response.data,
+      );
+      List<PromoBannersModel> banners = PromoBannersModel.fromJsonList(
+        bannersJson,
+      );
+
+      yield banners;
+    } catch (e) {
+      throw Exception('Failed to fetch banners: $e');
+    }
+  }
+
   // Category
-  Future<List<CategoriesModel>> readCategories() async {
+  Stream<List<CategoriesModel>> readCategories() async* {
     try {
       final response = await _dio.get('$baseUrl/categories/');
-      List<Map<String, dynamic>> categoriesJson = List<Map<String, dynamic>>.from(response.data);
-      return CategoriesModel.fromJsonList(categoriesJson, '');
+      List<Map<String, dynamic>> categoriesJson =
+          List<Map<String, dynamic>>.from(response.data);
+          
+      yield CategoriesModel.fromJsonList(categoriesJson, '');
+
     } catch (e) {
       throw Exception('Failed to fetch categories: $e');
     }

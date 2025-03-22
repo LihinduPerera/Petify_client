@@ -11,33 +11,25 @@ class CategoryContainer extends StatefulWidget {
 }
 
 class _CategoryContainerState extends State<CategoryContainer> {
-  Future<List<CategoriesModel>> fetchCategories() async {
-    return await DBService().readCategories();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<CategoriesModel>>(
-      future: fetchCategories(),
+    return StreamBuilder<List<CategoriesModel>>(
+      stream: DBService().readCategories(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Shimmer(
-            gradient: const LinearGradient(
-              colors: [
-                Color.fromARGB(255, 238, 238, 238),
-                Color.fromARGB(255, 255, 255, 255)
-              ],
-            ),
+            gradient: const LinearGradient(colors: [
+              Color.fromARGB(255, 238, 238, 238),
+              Color.fromARGB(255, 255, 255, 255),
+            ]),
             child: SizedBox(
               height: 90,
               width: double.infinity,
             ),
           );
         } else if (snapshot.hasError) {
-          // In case of an error, show an error message
           return Center(child: Text('Error: ${snapshot.error}'));
         } else if (snapshot.hasData) {
-          // If the data is available
           List<CategoriesModel> categories = snapshot.data!;
           if (categories.isEmpty) {
             return const SizedBox();
@@ -46,18 +38,13 @@ class _CategoryContainerState extends State<CategoryContainer> {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: categories
-                    .map(
-                      (cat) => CategoryButton(
-                        imagepath: cat.image,
-                        name: cat.name,
-                      ),
-                    )
+                    .map((cat) =>
+                        CategoryButton(imagepath: cat.image, name: cat.name))
                     .toList(),
               ),
             );
           }
         } else {
-          // In case of no data
           return const SizedBox();
         }
       },
@@ -65,22 +52,17 @@ class _CategoryContainerState extends State<CategoryContainer> {
   }
 }
 
-class CategoryButton extends StatefulWidget {
+class CategoryButton extends StatelessWidget {
   final String imagepath, name;
   const CategoryButton({super.key, required this.imagepath, required this.name});
 
-  @override
-  State<CategoryButton> createState() => _CategoryButtonState();
-}
-
-class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.pushNamed(
         context,
         "/specific",
-        arguments: {"name": widget.name},
+        arguments: {"name": name},
       ),
       child: Container(
         margin: const EdgeInsets.all(4),
@@ -96,14 +78,14 @@ class _CategoryButtonState extends State<CategoryButton> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Image.network(
-              widget.imagepath,
+              imagepath,
               height: 50,
             ),
             const SizedBox(
               height: 8,
             ),
             Text(
-              "${widget.name.substring(0, 1).toUpperCase()}${widget.name.substring(1)}",
+              "${name.substring(0, 1).toUpperCase()}${name.substring(1)}",
             ),
           ],
         ),
