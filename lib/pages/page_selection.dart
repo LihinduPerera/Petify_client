@@ -1,10 +1,10 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-// import 'package:petify/pages/cart_page.dart';
+import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/home_page.dart';
 import 'package:petify/pages/more_page.dart';
 import 'package:petify/pages/pet_ride.dart';
-// import 'package:petify/pages/store_page.dart';
+import 'package:petify/pages/store_page.dart';
 
 class pageSelection extends StatefulWidget {
   final int defaultPage;
@@ -17,8 +17,8 @@ class pageSelection extends StatefulWidget {
 class _pageSelectionState extends State<pageSelection> {
 
   final applicationPages = [
-    // const CartPage(),
-    // const StorePage(),
+    const CartPage(),
+    const StorePage(),
     const homePage(),
     const PetRidePage(),
     const MorePage()

@@ -106,6 +106,7 @@ import 'package:petify/pages/login.dart';
 import 'package:petify/pages/page_selection.dart';
 import 'package:petify/pages/signup.dart';
 import 'package:petify/pages/sub_pages.dart/update_profile.dart';
+import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/providers/products_provider.dart';
 import 'package:petify/providers/user_provider.dart';
@@ -134,11 +135,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => CartProvider(userProvider: UserProvider())),
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
         ChangeNotifierProvider(
           create: (context) => InternetConnectionProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => UserProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -151,14 +153,14 @@ class MyApp extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasData && snapshot.data != null) {
-                    return pageSelection(defaultPage: 0);
+                    return pageSelection(defaultPage: 2);
                   } else {
                     return LoginPage();
                   }
                 },
               ),
           "/signup": (context) => SingupPage(),
-          "/page_selection": (context) => pageSelection(defaultPage: 0),
+          "/page_selection": (context) => pageSelection(defaultPage: 2),
           "/update_profile": (context) => UpdateProfile(),
         },
       ),
