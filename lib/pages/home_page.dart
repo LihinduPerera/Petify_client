@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-// import 'package:petify/containers/promo_container.dart';
-// import 'package:petify/containers/trackers_container.dart';
-// import 'package:petify/containers/user_pets_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/styles/greeting.dart';
-// import 'package:petify/widgets/cart_widget.dart';
+import 'package:petify/widgets/cart_widget.dart';
 import 'package:provider/provider.dart';
 
 class homePage extends StatefulWidget {
@@ -38,10 +35,10 @@ class _homePageState extends State<homePage> {
                         height: 10,
                       ),
                       // const UserPetsContainer(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 18),
-                        // child: TrackersContainer(height: 170, isAddable: false, petName: "",),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(left: 10, top: 18),
+                      //   child: TrackersContainer(height: 170, isAddable: false, petName: "",),
+                      // ),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 20, top: 10, bottom: 10),
@@ -70,18 +67,18 @@ class _homePageState extends State<homePage> {
                           children: [
                             Container(
                               width: 250,
-                              // child: CartWidget(),
+                              child: CartWidget(),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              height: 150,
-                              width: 250,
-                              // child: PromoContainer(
-                              //   routeToTheStore: true,
-                              // ),
-                            ),
+                            // SizedBox(
+                            //   width: 10,
+                            // ),
+                            // Container(
+                            //   height: 150,
+                            //   width: 250,
+                            //   child: PromoContainer(
+                            //     routeToTheStore: true,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),

@@ -21,7 +21,7 @@ class UserProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('access_token');
     if (token == null) {
-      print("No token found, user not logged in.");
+      // print("No token found, user not logged in.");
       return;
     }
 
@@ -32,14 +32,14 @@ class UserProvider extends ChangeNotifier {
 
         name = data.name;
         email = data.email;
-        address = data.address ?? '';
-        phone = data.phone ?? '';
+        address = data.address;
+        phone = data.phone;
         userId = data.userId;
 
         notifyListeners();
       }
     } catch (e) {
-      print("Error loading user data: $e");
+      // print("Error loading user data: $e");
     }
   }
 
@@ -87,10 +87,5 @@ class UserProvider extends ChangeNotifier {
     await prefs.remove('access_token');
 
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

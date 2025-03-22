@@ -488,6 +488,15 @@ class DBService {
     }
   }
 
+  Future<List<ProductsModel>> getProductsByCategory(String category) async {
+    try {
+      final response = await _dio.get('$baseUrl/products/category/$category');
+      return ProductsModel.fromJsonList(response.data);
+    } catch (e) {
+      throw Exception('Failed to fetch products for category: $e');
+    }
+  }
+
   Future<void> deleteProduct(String productId) async {
     try {
       await _dio.delete('$baseUrl/products/$productId');

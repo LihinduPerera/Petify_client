@@ -4,7 +4,6 @@ import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:petify/styles/app_styles.dart';
 import 'package:petify/styles/default_search_bar.dart';
-// import 'package:petify/styles/default_search_bar.dart';
 import 'package:provider/provider.dart';
 
 class Greeting extends StatelessWidget {
