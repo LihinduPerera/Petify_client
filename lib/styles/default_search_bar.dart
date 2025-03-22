@@ -1,8 +1,7 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:petify/controllers/db_service.dart';
 import 'package:petify/models/products_model.dart';
-import 'package:petify/providers/products_provider.dart';
-import 'package:provider/provider.dart';
 
 class DefaultSearchBar extends StatefulWidget {
   const DefaultSearchBar({super.key});
@@ -14,6 +13,7 @@ class DefaultSearchBar extends StatefulWidget {
 class _DefaultSearchBarState extends State<DefaultSearchBar> {
   TextEditingController _controller = TextEditingController();
   List<ProductsModel> searchResults = [];
+  final DBService dbService = DBService();
 
   void _searchProducts(String query) async {
     if (query.isEmpty) {
@@ -22,9 +22,11 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
       });
       return;
     }
-    await context.read<ProductsProvider>().searchProductsByName(query);
+    
+    List<ProductsModel> results = await dbService.searchProductsByName(query);
+
     setState(() {
-      searchResults = context.read<ProductsProvider>().products;
+      searchResults = results;
     });
   }
 
@@ -36,15 +38,12 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
+      decoration: BoxDecoration(boxShadow: [
+        BoxShadow(
             color: const Color(0x0ff1d617).withOpacity(0.11),
             blurRadius: 40,
-            spreadRadius: 0.0,
-          ),
-        ],
-      ),
+            spreadRadius: 0.0)
+      ]), 
       child: Column(
         children: [
           TextField(
@@ -55,11 +54,11 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
               fillColor: const Color.fromARGB(255, 255, 255, 255),
               contentPadding: const EdgeInsets.all(15),
               hintText: 'Search Products',
-              hintStyle: const TextStyle(
-                color: Color.fromARGB(255, 139, 137, 137),
-                fontSize: 14,
+              hintStyle: const TextStyle(color: Color.fromARGB(255, 139, 137, 137), fontSize: 14),
+              prefixIcon: const Icon(
+                FluentSystemIcons.ic_fluent_search_regular,
+                color: Color(0xFFBFC285),
               ),
-              prefixIcon: const Icon(Icons.search, color: Color(0xFFBFC285)),
               suffixIcon: SizedBox(
                 width: 100,
                 child: IntrinsicHeight(
@@ -76,9 +75,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                         onTap: _clearSearch,
                         child: const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: Icon(
-                            FluentSystemIcons.ic_fluent_clear_formatting_filled,
-                          ),
+                          child: Icon(FluentSystemIcons.ic_fluent_clear_formatting_filled),
                         ),
                       ),
                     ],
@@ -107,31 +104,25 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                       );
                     },
                     child: Card(
-                      elevation: 2,
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 8,
-                        horizontal: 16,
-                      ),
+                      elevation: 2, 
+                      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12), 
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 8,
-                          horizontal: 10,
-                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
                         child: Row(
                           children: [
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
                                 searchResults[index].image,
-                                width: 60,
-                                height: 60,
+                                width: 60, 
+                                height: 60, 
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            SizedBox(width: 12),
+                            SizedBox(width: 12), 
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -139,7 +130,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                                   Text(
                                     searchResults[index].name,
                                     style: TextStyle(
-                                      fontSize: 14,
+                                      fontSize: 14, 
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black87,
                                     ),
@@ -148,7 +139,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                                   Text(
                                     '\$${searchResults[index].newPrice}',
                                     style: TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 13, 
                                       color: Colors.green,
                                       fontWeight: FontWeight.w500,
                                     ),
@@ -157,7 +148,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                                     Text(
                                       '\$${searchResults[index].oldPrice}',
                                       style: TextStyle(
-                                        fontSize: 12,
+                                        fontSize: 12, 
                                         decoration: TextDecoration.lineThrough,
                                         color: Colors.grey,
                                       ),
@@ -173,7 +164,7 @@ class _DefaultSearchBarState extends State<DefaultSearchBar> {
                 },
               ),
             ),
-          ],
+          ]
         ],
       ),
     );

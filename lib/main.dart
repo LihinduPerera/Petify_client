@@ -108,7 +108,6 @@ import 'package:petify/pages/signup.dart';
 import 'package:petify/pages/sub_pages.dart/update_profile.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
-import 'package:petify/providers/products_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -137,7 +136,6 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CartProvider(userProvider: UserProvider()),
         ),
-        ChangeNotifierProvider(create: (context) => ProductsProvider()),
         ChangeNotifierProvider(
           create: (context) => InternetConnectionProvider(),
         ),
