@@ -36,34 +36,39 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> readCartData() async {
+  void readCartData() {
     isLoading = true;
     notifyListeners();
-    try {
-      carts = await dbService.getUserCart(userId);
-      cartUids = carts.map((cart) => cart.productId).toList();
+    
+    dbService.getUserCart(userId).listen(
+      (cartList) {
+        carts = cartList;
+        cartUids = carts.map((cart) => cart.productId).toList();
 
-      if (carts.isNotEmpty) {
-        await readCartProducts(cartUids);
-      }
+        if (carts.isNotEmpty) {
+          readCartProducts(cartUids);
+        }
 
-      isLoading = false;
-      notifyListeners();
-    } catch (e) {
-      print('Error fetching cart data: $e');
-      isLoading = false;
-      notifyListeners();
-    }
+        isLoading = false;
+        notifyListeners();
+      },
+      onError: (e) {
+        print('Error fetching cart data: $e');
+        isLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
-  Future<void> readCartProducts(List<String> uids) async {
-    try {
-      products = await dbService.getProducts();
-      addCost(products, carts);
-      calculateTotalQuantity();
-    } catch (e) {
-      print('Error fetching product details: $e');
-    }
+  void readCartProducts(List<String> uids) {
+    dbService.readProducts('category-name')
+      .listen((productList) {
+        products = productList;
+        addCost(products, carts);
+        calculateTotalQuantity();
+      }, onError: (e) {
+        print('Error fetching product details: $e');
+      });
   }
 
   void addCost(List<ProductsModel> products, List<CartModel> carts) {

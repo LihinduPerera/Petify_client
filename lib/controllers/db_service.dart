@@ -507,31 +507,24 @@ class DBService {
     }
   }
 
-  // Product
-  Future<List<ProductsModel>> getProducts() async {
-    try {
-      final response = await _dio.get('$baseUrl/products/');
-      return ProductsModel.fromJsonList(response.data);
-    } catch (e) {
-      throw Exception('Failed to fetch products: $e');
-    }
-  }
+  //products
 
-  Future<ProductsModel> getProductById(String productId) async {
-    try {
-      final response = await _dio.get('$baseUrl/products/$productId');
-      return ProductsModel.fromJson(response.data);
-    } catch (e) {
-      throw Exception('Product not found: $e');
-    }
-  }
-
-  Future<List<ProductsModel>> getProductsByCategory(String category) async {
+  //readproducts by using categories
+  Stream<List<ProductsModel>> readProducts(String category) async* {
     try {
       final response = await _dio.get('$baseUrl/products/category/$category');
-      return ProductsModel.fromJsonList(response.data);
+      yield ProductsModel.fromJsonList(response.data);
     } catch (e) {
       throw Exception('Failed to fetch products for category: $e');
+    }
+  }
+
+  Stream<ProductsModel> getProductById(String productId) async* {
+    try {
+      final response = await _dio.get('$baseUrl/products/$productId');
+      yield ProductsModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Product not found: $e');
     }
   }
 
@@ -568,10 +561,10 @@ class DBService {
   }
 
   // Cart
-  Future<List<CartModel>> getUserCart(String userId) async {
+  Stream<List<CartModel>> getUserCart(String userId) async* {
     try {
       final response = await _dio.get('$baseUrl/$userId/cart');
-      return CartModel.fromJsonList(response.data);
+      yield CartModel.fromJsonList(response.data);
     } catch (e) {
       throw Exception('Failed to fetch cart: $e');
     }
