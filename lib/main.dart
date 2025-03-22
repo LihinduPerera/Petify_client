@@ -7,6 +7,7 @@ import 'package:petify/pages/page_selection.dart';
 import 'package:petify/pages/signup.dart';
 import 'package:petify/pages/sub_pages.dart/specific_products.dart';
 import 'package:petify/pages/sub_pages.dart/update_profile.dart';
+import 'package:petify/pages/sub_pages.dart/view_product.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/providers/user_provider.dart';
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
           "/login": (context) => LoginPage(),
           "/signup": (context) => SingupPage(),
           "/specific": (context) => SpecificProducts(),
-          // "/view_product": (context) => ViewProduct(),
+          "/view_product": (context) => ViewProduct(),
           "/cart": (context) => CartPage(),
           "/update_profile": (context) => UpdateProfile(),
           // "/pet_health_and_wellness_tracker": (context) =>
