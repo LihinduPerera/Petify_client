@@ -11,6 +11,7 @@ class AuthService {
     await prefs.setString('email', userDetails['email']);
     await prefs.setString('phone', userDetails['phone']);
     await prefs.setString('address', userDetails['address']);
+    await prefs.setString('user_id', userDetails['user_id']);
   }
 
   Future<String> createAccountWithEmail(
@@ -57,6 +58,7 @@ class AuthService {
         'email': response.data['email'] ?? email,
         'phone': response.data['phone'] ?? '',
         'address': response.data['address'] ?? '',
+        'user_id': response.data['user_id'] ?? '',
       };
       await _storeUserDetails(userDetails);
 
@@ -69,7 +71,9 @@ class AuthService {
   Future<Map<String, dynamic>?> getCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('access_token');
-    if (token == null) return null;
+    String? userId = prefs.getString('user_id');
+
+    if (token == null || userId == null) return null;
 
     try {
       String? name = prefs.getString('name');
@@ -81,16 +85,23 @@ class AuthService {
         return null;
       }
 
-      return {'name': name, 'email': email, 'phone': phone, 'address': address};
+      return {
+        'name': name,
+        'email': email,
+        'phone': phone,
+        'address': address,
+        'user_id': userId,
+      };
     } catch (e) {
       return null;
     }
   }
 
-  Future<String> updateUser(String name, String address, String phone) async {
+   Future<String> updateUser(String name, String address, String phone) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('access_token');
-    if (token == null) {
+    String? userId = prefs.getString('user_id');
+    if (token == null || userId == null) {
       return "User not logged in!";
     }
 
@@ -98,7 +109,9 @@ class AuthService {
       Response response = await _dio.put(
         '/update-user',
         data: {"name": name, "address": address, "phone": phone},
-        options: Options(headers: {'Authorization': 'Bearer $token'}),
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
       );
 
       if (response.statusCode == 200) {
@@ -107,6 +120,7 @@ class AuthService {
           'email': prefs.getString('email') ?? '',
           'phone': phone,
           'address': address,
+          'user_id': userId,
         };
         await _storeUserDetails(updatedUserDetails);
         return "User updated successfully!";
@@ -125,6 +139,7 @@ class AuthService {
     await prefs.remove('email');
     await prefs.remove('phone');
     await prefs.remove('address');
+    await prefs.remove('user_id');
   }
 
   Future<String> resetPassword(String email) async {

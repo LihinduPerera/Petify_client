@@ -38,7 +38,7 @@ class ProductsProvider with ChangeNotifier {
 
   Future<void> reduceProductQuantity(String productId, int quantity) async {
     try {
-      await _dbService.reduceQuantity(productId, quantity);
+      await _dbService.reduceProductQuantity(productId, quantity);
       notifyListeners();
     } catch (e) {
       print('Error reducing product quantity: $e');

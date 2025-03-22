@@ -11,6 +11,7 @@ class UserProvider extends ChangeNotifier {
   String email = "";
   String address = "";
   String phone = "";
+  String userId = "";
 
   UserProvider() {
     loadUserData();
@@ -33,6 +34,7 @@ class UserProvider extends ChangeNotifier {
         email = data.email;
         address = data.address ?? '';
         phone = data.phone ?? '';
+        userId = data.userId;
 
         notifyListeners();
       }
@@ -79,6 +81,7 @@ class UserProvider extends ChangeNotifier {
     email = "";
     address = "";
     phone = "";
+    userId = "";
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
