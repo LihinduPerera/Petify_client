@@ -459,6 +459,7 @@ class DBService {
   final Dio _dio = Dio();
   final String baseUrl = API_URL;
 
+  // Promo and Banners
   Stream<List<PromoBannersModel>> readPromos() async* {
     try {
       final response = await _dio.get('$baseUrl/promos/');
@@ -499,9 +500,8 @@ class DBService {
       final response = await _dio.get('$baseUrl/categories/');
       List<Map<String, dynamic>> categoriesJson =
           List<Map<String, dynamic>>.from(response.data);
-          
-      yield CategoriesModel.fromJsonList(categoriesJson, '');
 
+      yield CategoriesModel.fromJsonList(categoriesJson, '');
     } catch (e) {
       throw Exception('Failed to fetch categories: $e');
     }
