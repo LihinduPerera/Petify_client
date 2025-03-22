@@ -104,70 +104,70 @@
 //       .update({"quantity": FieldValue.increment(-quantity)});
 // }
 
-  // // CART
-  // Stream<QuerySnapshot> readUserCart() {
-  //   return FirebaseFirestore.instance
-  //       .collection("shop_users")
-  //       .doc(user!.uid)
-  //       .collection("cart")
-  //       .snapshots();
-  // }
+// // CART
+// Stream<QuerySnapshot> readUserCart() {
+//   return FirebaseFirestore.instance
+//       .collection("shop_users")
+//       .doc(user!.uid)
+//       .collection("cart")
+//       .snapshots();
+// }
 
-  // Future addToCart({required CartModel cartData}) async {
-  //   try {
-  //     // update
-  //     await FirebaseFirestore.instance
-  //         .collection("shop_users")
-  //         .doc(user!.uid)
-  //         .collection("cart")
-  //         .doc(cartData.productId)
-  //         .update({
-  //       "product_id": cartData.productId,
-  //       "quantity": FieldValue.increment(1)
-  //     });
-  //   } on FirebaseException catch (e) {
-  //     if (e.code == "not-found") {
-  //       // insert
-  //       await FirebaseFirestore.instance
-  //           .collection("shop_users")
-  //           .doc(user!.uid)
-  //           .collection("cart")
-  //           .doc(cartData.productId)
-  //           .set({"product_id": cartData.productId, "quantity": 1});
-  //     }
-  //   }
-  // }
+// Future addToCart({required CartModel cartData}) async {
+//   try {
+//     // update
+//     await FirebaseFirestore.instance
+//         .collection("shop_users")
+//         .doc(user!.uid)
+//         .collection("cart")
+//         .doc(cartData.productId)
+//         .update({
+//       "product_id": cartData.productId,
+//       "quantity": FieldValue.increment(1)
+//     });
+//   } on FirebaseException catch (e) {
+//     if (e.code == "not-found") {
+//       // insert
+//       await FirebaseFirestore.instance
+//           .collection("shop_users")
+//           .doc(user!.uid)
+//           .collection("cart")
+//           .doc(cartData.productId)
+//           .set({"product_id": cartData.productId, "quantity": 1});
+//     }
+//   }
+// }
 
-  // Future deleteItemFromCart({required String productId}) async {
-  //   await FirebaseFirestore.instance
-  //       .collection("shop_users")
-  //       .doc(user!.uid)
-  //       .collection("cart")
-  //       .doc(productId)
-  //       .delete();
-  // }
+// Future deleteItemFromCart({required String productId}) async {
+//   await FirebaseFirestore.instance
+//       .collection("shop_users")
+//       .doc(user!.uid)
+//       .collection("cart")
+//       .doc(productId)
+//       .delete();
+// }
 
-  // Future emptyCart() async {
-  //   await FirebaseFirestore.instance
-  //       .collection("shop_users")
-  //       .doc(user!.uid)
-  //       .collection("cart")
-  //       .get()
-  //       .then((value) {
-  //     for (DocumentSnapshot ds in value.docs) {
-  //       ds.reference.delete();
-  //     }
-  //   });
-  // }
+// Future emptyCart() async {
+//   await FirebaseFirestore.instance
+//       .collection("shop_users")
+//       .doc(user!.uid)
+//       .collection("cart")
+//       .get()
+//       .then((value) {
+//     for (DocumentSnapshot ds in value.docs) {
+//       ds.reference.delete();
+//     }
+//   });
+// }
 
-  // Future decreaseCount({required String productId}) async {
-  //   await FirebaseFirestore.instance
-  //       .collection("shop_users")
-  //       .doc(user!.uid)
-  //       .collection("cart")
-  //       .doc(productId)
-  //       .update({"quantity": FieldValue.increment(-1)});
-  // }
+// Future decreaseCount({required String productId}) async {
+//   await FirebaseFirestore.instance
+//       .collection("shop_users")
+//       .doc(user!.uid)
+//       .collection("cart")
+//       .doc(productId)
+//       .update({"quantity": FieldValue.increment(-1)});
+// }
 
 //   // ORDERS
 //   Future createOrder({required Map<String, dynamic> data}) async {
@@ -446,14 +446,28 @@
 //   }
 // }
 
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:petify/controllers/baseUrl.dart';
 import 'package:petify/models/cart_model.dart';
+import 'package:petify/models/categories_model.dart';
 import 'package:petify/models/products_model.dart';
 
 class DBService {
   final Dio _dio = Dio();
   final String baseUrl = API_URL;
+
+  // Category
+  Future<List<CategoriesModel>> readCategories() async {
+    try {
+      final response = await _dio.get('$baseUrl/categories/');
+      List<Map<String, dynamic>> categoriesJson = List<Map<String, dynamic>>.from(response.data);
+      return CategoriesModel.fromJsonList(categoriesJson, '');
+    } catch (e) {
+      throw Exception('Failed to fetch categories: $e');
+    }
+  }
 
   // Product
   Future<List<ProductsModel>> getProducts() async {
@@ -518,13 +532,13 @@ class DBService {
 
   Future<void> addToCart(String userId, CartModel cartData) async {
     try {
-      await _dio.post('$baseUrl/$userId/cart',data: cartData.toJson());
+      await _dio.post('$baseUrl/$userId/cart', data: cartData.toJson());
     } catch (e) {
       throw Exception('Failed to add to cart: $e');
     }
   }
 
-  Future<void> deleteItemFromCart(String userId , String productId) async {
+  Future<void> deleteItemFromCart(String userId, String productId) async {
     try {
       await _dio.delete('$baseUrl/$userId/cart/$productId');
     } catch (e) {
@@ -536,7 +550,7 @@ class DBService {
     try {
       await _dio.delete('$baseUrl/$userId/cart');
     } catch (e) {
-      throw Exception ('Failed to empty cart : $e');
+      throw Exception('Failed to empty cart : $e');
     }
   }
 

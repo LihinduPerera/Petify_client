@@ -136,7 +136,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => CartProvider(userProvider: UserProvider())),
+        ChangeNotifierProvider(
+          create: (context) => CartProvider(userProvider: UserProvider()),
+        ),
         ChangeNotifierProvider(create: (context) => ProductsProvider()),
         ChangeNotifierProvider(
           create: (context) => InternetConnectionProvider(),
@@ -146,24 +148,39 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(fontFamily: 'Poppins'),
         routes: {
-          "/":
-              (context) => FutureBuilder(
-                future: AuthService().getCurrentUser(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasData && snapshot.data != null) {
-                    return pageSelection(defaultPage: 2);
-                  } else {
-                    return LoginPage();
-                  }
-                },
-              ),
+          "/": (context) => CheckUser(),
+          "/login": (context) => LoginPage(),
           "/signup": (context) => SingupPage(),
           "/page_selection": (context) => pageSelection(defaultPage: 2),
           "/update_profile": (context) => UpdateProfile(),
         },
       ),
     );
+  }
+}
+
+class CheckUser extends StatefulWidget {
+  const CheckUser({super.key});
+
+  @override
+  State<CheckUser> createState() => _CheckUserState();
+}
+
+class _CheckUserState extends State<CheckUser> {
+  @override
+  void initState() {
+    super.initState();
+    AuthService().getCurrentUser().then((user) {
+      if (user != null) {
+        Navigator.pushReplacementNamed(context, "/page_selection");
+      } else {
+        Navigator.pushReplacementNamed(context, "/login");
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 }

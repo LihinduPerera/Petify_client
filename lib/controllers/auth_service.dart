@@ -25,7 +25,7 @@ class AuthService {
     }
 
     try {
-      Response response = await _dio.post(
+      await _dio.post(
         '/register',
         data: {
           "name": name,
@@ -97,7 +97,7 @@ class AuthService {
     }
   }
 
-   Future<String> updateUser(String name, String address, String phone) async {
+  Future<String> updateUser(String name, String address, String phone) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('access_token');
     String? userId = prefs.getString('user_id');
@@ -109,9 +109,7 @@ class AuthService {
       Response response = await _dio.put(
         '/update-user',
         data: {"name": name, "address": address, "phone": phone},
-        options: Options(
-          headers: {'Authorization': 'Bearer $token'},
-        ),
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
       );
 
       if (response.statusCode == 200) {

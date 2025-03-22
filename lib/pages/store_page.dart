@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:petify/containers/category_container.dart';
-import 'package:petify/containers/home_page_store_maker_container.dart';
-import 'package:petify/containers/promo_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/styles/app_styles.dart';
@@ -42,7 +40,7 @@ class _StorePageState extends State<StorePage> {
                     const SizedBox(height: 10),
                     _buildCategoryButtons(size),
                     const SizedBox(height: 10),
-                    // DefaultSearchBar(),
+                    DefaultSearchBar(),
                     const SizedBox(height: 10),
                     // const PromoContainer(routeToTheStore: false,),
                     const Text(
@@ -55,7 +53,7 @@ class _StorePageState extends State<StorePage> {
                   ],
                 ),
               ),
-              // CategoryContainer(),
+              CategoryContainer(),
               // HomePageMakerContainer(),
             ],
           ),
