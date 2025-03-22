@@ -31,8 +31,9 @@ class _CartContainerState extends State<CartContainer> {
       ));
       return;
     } else {
+      final userId = Provider.of<CartProvider>(context, listen: false).userId;
       Provider.of<CartProvider>(context, listen: false)
-          .addToCart(CartModel(productId: widget.productId, quantity: count));
+          .addToCart(CartModel(productId: widget.productId, quantity: count, userId: userId));
       setState(() {
         count++;
       });

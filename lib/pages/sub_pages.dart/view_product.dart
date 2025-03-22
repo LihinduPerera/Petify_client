@@ -15,8 +15,10 @@ class ViewProduct extends StatefulWidget {
 class _ViewProductState extends State<ViewProduct> {
   @override
   Widget build(BuildContext context) {
-    final arguments =
-        ModalRoute.of(context)!.settings.arguments as ProductsModel;
+    final arguments = ModalRoute.of(context)!.settings.arguments as ProductsModel;
+
+    final userId = Provider.of<CartProvider>(context, listen: false).userId;
+
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       appBar: AppBar(
@@ -38,32 +40,29 @@ class _ViewProductState extends State<ViewProduct> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Text(
                     arguments.name,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       Text(
                         "Rs. ${arguments.oldPrice}",
                         style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                            color: Color.fromARGB(255, 97, 97, 97),
-                            decoration: TextDecoration.lineThrough),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                          color: Color.fromARGB(255, 97, 97, 97),
+                          decoration: TextDecoration.lineThrough,
+                        ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Text(
                         "Rs. ${arguments.newPrice}",
                         style: const TextStyle(
@@ -71,9 +70,7 @@ class _ViewProductState extends State<ViewProduct> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       const Icon(
                         Icons.arrow_downward,
                         color: Color.fromARGB(255, 76, 175, 79),
@@ -82,40 +79,40 @@ class _ViewProductState extends State<ViewProduct> {
                       Text(
                         "${discountPercent(arguments.oldPrice, arguments.newPrice)} %",
                         style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 76, 175, 79)),
-                      )
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 76, 175, 79),
+                        ),
+                      ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   arguments.maxQuantity == 0
                       ? const Text(
                           "Out of Stock",
                           style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 244, 67, 54)),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 244, 67, 54),
+                          ),
                         )
                       : Text(
                           "Only ${arguments.maxQuantity} left in stock",
                           style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                              color: Color.fromARGB(255, 76, 175, 79)),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Color.fromARGB(255, 76, 175, 79),
+                          ),
                         ),
-                  const SizedBox(
-                    height: 10,
-                  ),
+                  const SizedBox(height: 10),
                   Text(
                     arguments.description,
                     style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Color.fromARGB(255, 97, 97, 97)),
-                  )
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color.fromARGB(255, 97, 97, 97),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -129,19 +126,36 @@ class _ViewProductState extends State<ViewProduct> {
                   height: 60,
                   width: MediaQuery.of(context).size.width * .5,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Provider.of<CartProvider>(context, listen: false)
-                          .addToCart(
-                              CartModel(productId: arguments.id, quantity: 1));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Added to cart")));
+                    onPressed: () async {
+                      String message = await Provider.of<CartProvider>(
+                        context,
+                        listen: false,
+                      ).addToCart(
+                        CartModel(
+                          productId: arguments.id,
+                          quantity: 1,
+                          userId: userId,
+                        ),
+                      );
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(message)));
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 30, 136, 229),
-                        foregroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        shape: const RoundedRectangleBorder()),
+                      backgroundColor: const Color.fromARGB(
+                        255,
+                        30,
+                        136,
+                        229,
+                      ),
+                      foregroundColor: const Color.fromARGB(
+                        255,
+                        255,
+                        255,
+                        255,
+                      ),
+                      shape: const RoundedRectangleBorder(),
+                    ),
                     child: const Text("Add to Cart"),
                   ),
                 ),
@@ -150,23 +164,39 @@ class _ViewProductState extends State<ViewProduct> {
                   width: MediaQuery.of(context).size.width * .5,
                   child: ElevatedButton(
                     onPressed: () {
-                      Provider.of<CartProvider>(context, listen: false)
-                          .addToCart(
-                              CartModel(productId: arguments.id, quantity: 1));
+                      Provider.of<CartProvider>(
+                        context,
+                        listen: false,
+                      ).addToCart(
+                        CartModel(
+                          productId: arguments.id,
+                          quantity: 1,
+                          userId: userId,
+                        ),
+                      );
                       Navigator.pushNamed(context, "/checkout");
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            const Color.fromARGB(255, 255, 255, 255),
-                        foregroundColor:
-                            const Color.fromARGB(255, 30, 136, 229),
-                        shape: const RoundedRectangleBorder()),
+                      backgroundColor: const Color.fromARGB(
+                        255,
+                        255,
+                        255,
+                        255,
+                      ),
+                      foregroundColor: const Color.fromARGB(
+                        255,
+                        30,
+                        136,
+                        229,
+                      ),
+                      shape: const RoundedRectangleBorder(),
+                    ),
                     child: const Text("Buy Now"),
                   ),
                 ),
               ],
             )
-          : SizedBox(),
+          : const SizedBox(),
     );
   }
 }
