@@ -190,68 +190,68 @@
 //         .snapshots();
 //   }
 
-//   //UserPets
-//   Future addPet(UserPetsModel pet) async {
-//     try {
-//       await FirebaseFirestore.instance
-//           .collection("shop_users")
-//           .doc(user!.uid)
-//           .collection("pets")
-//           .doc(pet.petId)
-//           .set({
-//         "pet_id": pet.petId,
-//         "pet_type": pet.petType,
-//         "pet_name": pet.petName,
-//         "pet_weight": pet.petWeight,
-//         "pet_age": pet.petAge,
-//       });
-//     } catch (e) {
-//       print("Error adding pet: $e");
-//     }
-//   }
+  // //UserPets
+  // Future addPet(UserPetsModel pet) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection("shop_users")
+  //         .doc(user!.uid)
+  //         .collection("pets")
+  //         .doc(pet.petId)
+  //         .set({
+  //       "pet_id": pet.petId,
+  //       "pet_type": pet.petType,
+  //       "pet_name": pet.petName,
+  //       "pet_weight": pet.petWeight,
+  //       "pet_age": pet.petAge,
+  //     });
+  //   } catch (e) {
+  //     print("Error adding pet: $e");
+  //   }
+  // }
 
-//   Stream<List<UserPetsModel>> getUserPets() {
-//     return FirebaseFirestore.instance
-//         .collection("shop_users")
-//         .doc(user!.uid)
-//         .collection("pets")
-//         .snapshots()
-//         .map((querySnapshot) => querySnapshot.docs
-//             .map((doc) =>
-//                 UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
-//             .toList());
-//   }
+  // Stream<List<UserPetsModel>> getUserPets() {
+  //   return FirebaseFirestore.instance
+  //       .collection("shop_users")
+  //       .doc(user!.uid)
+  //       .collection("pets")
+  //       .snapshots()
+  //       .map((querySnapshot) => querySnapshot.docs
+  //           .map((doc) =>
+  //               UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
+  //           .toList());
+  // }
 
-//   Future updatePet(UserPetsModel pet) async {
-//     try {
-//       await FirebaseFirestore.instance
-//           .collection("shop_users")
-//           .doc(user!.uid)
-//           .collection("pets")
-//           .doc(pet.petId)
-//           .update({
-//         "pet_name": pet.petName,
-//         "pet_weight": pet.petWeight,
-//         "pet_type": pet.petType,
-//         "pet_age": pet.petAge
-//       });
-//     } catch (e) {
-//       print("Error updating pet: $e");
-//     }
-//   }
+  // Future updatePet(UserPetsModel pet) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection("shop_users")
+  //         .doc(user!.uid)
+  //         .collection("pets")
+  //         .doc(pet.petId)
+  //         .update({
+  //       "pet_name": pet.petName,
+  //       "pet_weight": pet.petWeight,
+  //       "pet_type": pet.petType,
+  //       "pet_age": pet.petAge
+  //     });
+  //   } catch (e) {
+  //     print("Error updating pet: $e");
+  //   }
+  // }
 
-//   Future deletePet(String petId) async {
-//     try {
-//       await FirebaseFirestore.instance
-//           .collection("shop_users")
-//           .doc(user!.uid)
-//           .collection("pets")
-//           .doc(petId)
-//           .delete();
-//     } catch (e) {
-//       print("Error deleting pet: $e");
-//     }
-//   }
+  // Future deletePet(String petId) async {
+  //   try {
+  //     await FirebaseFirestore.instance
+  //         .collection("shop_users")
+  //         .doc(user!.uid)
+  //         .collection("pets")
+  //         .doc(petId)
+  //         .delete();
+  //   } catch (e) {
+  //     print("Error deleting pet: $e");
+  //   }
+  // }
 
 //   // Trackers - medications
 //   Future addMedications (MedicationsLogModel medication ,) async {
@@ -454,6 +454,7 @@ import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/categories_model.dart';
 import 'package:petify/models/products_model.dart';
 import 'package:petify/models/promo_banners_model.dart';
+import 'package:petify/models/user_pets_model.dart';
 
 class DBService {
   final Dio _dio = Dio();
@@ -599,6 +600,65 @@ class DBService {
       await _dio.patch('$baseUrl/$userId/cart/$productId/decrease');
     } catch (e) {
       throw Exception('Failed to decrease quantity: $e');
+    }
+  }
+
+ //pets
+  Stream<List<UserPetsModel>> getUserPets(String userId) async* {
+    try {
+      final response = await _dio.get('$baseUrl/$userId/pets');
+      List<UserPetsModel> pets = UserPetsModel.fromJsonList(
+        List<Map<String, dynamic>>.from(response.data),
+      );
+      yield pets;
+    } catch (e) {
+      throw Exception('Failed to fetch user pets: $e');
+    }
+  }
+
+  Future<UserPetsModel> addPet(String userId, UserPetsModel pet) async {
+    try {
+      final response = await _dio.post(
+        '$baseUrl/$userId/pets',
+        data: {
+          "name": pet.name,
+          "species": pet.species,
+          "breed": pet.breed,
+          "age": pet.age,
+          "gender": pet.gender,
+          "dob": pet.dob.toIso8601String(),
+        },
+      );
+      return UserPetsModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to add pet: $e');
+    }
+  }
+
+  Future<UserPetsModel> updatePet(String petId, UserPetsModel pet) async {
+    try {
+      final response = await _dio.put(
+        '$baseUrl/pets/$petId',
+        data: {
+          "name": pet.name,
+          "species": pet.species,
+          "breed": pet.breed,
+          "age": pet.age,
+          "gender": pet.gender,
+          "dob": pet.dob.toIso8601String(),
+        },
+      );
+      return UserPetsModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to update pet: $e');
+    }
+  }
+
+  Future<void> deletePet(String petId) async {
+    try {
+      await _dio.delete('$baseUrl/pets/$petId');
+    } catch (e) {
+      throw Exception('Failed to delete pet: $e');
     }
   }
 }
