@@ -12,7 +12,18 @@ class UserPetsProvider extends ChangeNotifier {
   StreamSubscription<List<UserPetsModel>>? _petsSubscription;
   bool isLoading = false;
 
-  UserPetsProvider({required this.userProvider});
+  UserPetsProvider({required this.userProvider}) {
+    if (userId != "") {
+      fetchUserPets();
+    }
+    userProvider.addListener(_onUserIdChanged);
+  }
+
+  void _onUserIdChanged() {
+    if (userId != "") {
+      fetchUserPets();
+    }
+  }
 
   List<UserPetsModel> get userPets => _userPets;
 
@@ -58,6 +69,8 @@ class UserPetsProvider extends ChangeNotifier {
 
   Future<void> updatePet(String petId, UserPetsModel pet) async {
     try {
+      String userId = this.userId;
+      pet.owner = userId;
       await dbService.updatePet(petId, pet);
       await fetchUserPets();
     } catch (e) {

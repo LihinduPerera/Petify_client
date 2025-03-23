@@ -646,6 +646,7 @@ class DBService {
       final response = await _dio.put(
         '$baseUrl/pets/$petId',
         data: {
+          "owner": pet.owner,
           "name": pet.name,
           "species": pet.species,
           "breed": pet.breed,

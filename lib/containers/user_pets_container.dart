@@ -453,9 +453,120 @@ class UserPetsContainer extends StatefulWidget {
 
 class _UserPetsContainerState extends State<UserPetsContainer> {
   @override
-  void initState() {
-    super.initState();
-    Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
+  Widget build(BuildContext context) {
+    return Consumer<UserPetsProvider>(
+      builder: (context, userPetsProvider, child) {
+        if (userPetsProvider.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: const Text(
+                  "Your Pets",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(width: 25),
+                  itemCount: userPetsProvider.userPets.isEmpty
+                      ? 1
+                      : userPetsProvider.userPets.length + 1,
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  itemBuilder: (context, index) {
+                    if (userPetsProvider.userPets.isEmpty || index == 0) {
+                      return GestureDetector(
+                        onTap: () {
+                          _showAddOrUpdatePetDialog();
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffc58BF2).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(70),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(Icons.add, size: 30, color: Colors.blue),
+                              Text("Add Pets"),
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      int petIndex = index - 1;
+                      String modelPic;
+                      if (userPetsProvider.userPets[petIndex].species == "Dog") {
+                        modelPic =
+                            "assets/images/user_pet_model_default_dog.png";
+                      } else if (userPetsProvider.userPets[petIndex].species == "Cat") {
+                        modelPic =
+                            "assets/images/user_pet_model_default_cat.png";
+                      } else {
+                        modelPic = "assets/images/user_pet_model_default.png";
+                      }
+
+                      return GestureDetector(
+                        onTap: () {
+                          _showAddOrUpdatePetDialog(
+                              pet: userPetsProvider.userPets[petIndex]);
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff92A3FD).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image: AssetImage(modelPic),
+                                    fit: BoxFit.cover,
+                                  ),
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  userPetsProvider.userPets[petIndex].name,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
   }
 
   void _showAddOrUpdatePetDialog({UserPetsModel? pet}) {
@@ -507,8 +618,8 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                     ),
                     Row(
                       children: [
-                        Text("Gender:", style: TextStyle(fontSize: 18)),
-                        SizedBox(width: 18),
+                        const Text("Gender:", style: TextStyle(fontSize: 18)),
+                        const SizedBox(width: 18),
                         DropdownButton<String>(
                           value: petGender,
                           onChanged: (String? newValue) {
@@ -516,7 +627,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                               petGender = newValue!;
                             });
                           },
-                          items: <String>['Male', 'Female']
+                          items: const <String>['Male', 'Female']
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -528,10 +639,10 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                     ),
                     Row(
                       children: [
-                        Text("Date of Birth:", style: TextStyle(fontSize: 18)),
-                        SizedBox(width: 18),
+                        const Text("Date of Birth:", style: TextStyle(fontSize: 18)),
+                        const SizedBox(width: 18),
                         IconButton(
-                          icon: Icon(Icons.calendar_today),
+                          icon: const Icon(Icons.calendar_today),
                           onPressed: () async {
                             final DateTime? selectedDate = await showDatePicker(
                               context: context,
@@ -633,123 +744,6 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
             );
           },
         );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Consumer<UserPetsProvider>(
-      builder: (context, userPetsProvider, child) {
-        if (userPetsProvider.isLoading) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20),
-                child: const Text(
-                  "Your Pets",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              SizedBox(
-                height: 100,
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(width: 25),
-                  itemCount: userPetsProvider.userPets.isEmpty
-                      ? 1
-                      : userPetsProvider.userPets.length + 1,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  itemBuilder: (context, index) {
-                    if (userPetsProvider.userPets.isEmpty || index == 0) {
-                      return GestureDetector(
-                        onTap: () {
-                          _showAddOrUpdatePetDialog();
-                        },
-                        child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffc58BF2).withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(70),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(Icons.add, size: 30, color: Colors.blue),
-                              Text("Add Pets"),
-                            ],
-                          ),
-                        ),
-                      );
-                    } else {
-                      int petIndex = index - 1;
-                      String modelPic;
-                      if (userPetsProvider.userPets[petIndex].species == "Dog") {
-                        modelPic =
-                            "assets/images/user_pet_model_default_dog.png";
-                      } else if (userPetsProvider.userPets[petIndex].species == "Cat") {
-                        modelPic =
-                            "assets/images/user_pet_model_default_cat.png";
-                      } else {
-                        modelPic = "assets/images/user_pet_model_default.png";
-                      }
-
-                      return GestureDetector(
-                        onTap: () {
-                          _showAddOrUpdatePetDialog(
-                              pet: userPetsProvider.userPets[petIndex]);
-                        },
-                        child: Container(
-                          width: 100,
-                          decoration: BoxDecoration(
-                            color: Color(0xff92A3FD).withOpacity(0.4),
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: AssetImage(modelPic),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  shape: BoxShape.circle,
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
-                                child: Text(
-                                  userPetsProvider.userPets[petIndex].name,
-                                  style: const TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Color.fromARGB(255, 0, 0, 0),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ),
-            ],
-          );
-        }
       },
     );
   }
