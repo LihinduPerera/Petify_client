@@ -190,68 +190,68 @@
 //         .snapshots();
 //   }
 
-  // //UserPets
-  // Future addPet(UserPetsModel pet) async {
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection("shop_users")
-  //         .doc(user!.uid)
-  //         .collection("pets")
-  //         .doc(pet.petId)
-  //         .set({
-  //       "pet_id": pet.petId,
-  //       "pet_type": pet.petType,
-  //       "pet_name": pet.petName,
-  //       "pet_weight": pet.petWeight,
-  //       "pet_age": pet.petAge,
-  //     });
-  //   } catch (e) {
-  //     print("Error adding pet: $e");
-  //   }
-  // }
+// //UserPets
+// Future addPet(UserPetsModel pet) async {
+//   try {
+//     await FirebaseFirestore.instance
+//         .collection("shop_users")
+//         .doc(user!.uid)
+//         .collection("pets")
+//         .doc(pet.petId)
+//         .set({
+//       "pet_id": pet.petId,
+//       "pet_type": pet.petType,
+//       "pet_name": pet.petName,
+//       "pet_weight": pet.petWeight,
+//       "pet_age": pet.petAge,
+//     });
+//   } catch (e) {
+//     print("Error adding pet: $e");
+//   }
+// }
 
-  // Stream<List<UserPetsModel>> getUserPets() {
-  //   return FirebaseFirestore.instance
-  //       .collection("shop_users")
-  //       .doc(user!.uid)
-  //       .collection("pets")
-  //       .snapshots()
-  //       .map((querySnapshot) => querySnapshot.docs
-  //           .map((doc) =>
-  //               UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
-  //           .toList());
-  // }
+// Stream<List<UserPetsModel>> getUserPets() {
+//   return FirebaseFirestore.instance
+//       .collection("shop_users")
+//       .doc(user!.uid)
+//       .collection("pets")
+//       .snapshots()
+//       .map((querySnapshot) => querySnapshot.docs
+//           .map((doc) =>
+//               UserPetsModel.fromJson(doc.data() as Map<String, dynamic>))
+//           .toList());
+// }
 
-  // Future updatePet(UserPetsModel pet) async {
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection("shop_users")
-  //         .doc(user!.uid)
-  //         .collection("pets")
-  //         .doc(pet.petId)
-  //         .update({
-  //       "pet_name": pet.petName,
-  //       "pet_weight": pet.petWeight,
-  //       "pet_type": pet.petType,
-  //       "pet_age": pet.petAge
-  //     });
-  //   } catch (e) {
-  //     print("Error updating pet: $e");
-  //   }
-  // }
+// Future updatePet(UserPetsModel pet) async {
+//   try {
+//     await FirebaseFirestore.instance
+//         .collection("shop_users")
+//         .doc(user!.uid)
+//         .collection("pets")
+//         .doc(pet.petId)
+//         .update({
+//       "pet_name": pet.petName,
+//       "pet_weight": pet.petWeight,
+//       "pet_type": pet.petType,
+//       "pet_age": pet.petAge
+//     });
+//   } catch (e) {
+//     print("Error updating pet: $e");
+//   }
+// }
 
-  // Future deletePet(String petId) async {
-  //   try {
-  //     await FirebaseFirestore.instance
-  //         .collection("shop_users")
-  //         .doc(user!.uid)
-  //         .collection("pets")
-  //         .doc(petId)
-  //         .delete();
-  //   } catch (e) {
-  //     print("Error deleting pet: $e");
-  //   }
-  // }
+// Future deletePet(String petId) async {
+//   try {
+//     await FirebaseFirestore.instance
+//         .collection("shop_users")
+//         .doc(user!.uid)
+//         .collection("pets")
+//         .doc(petId)
+//         .delete();
+//   } catch (e) {
+//     print("Error deleting pet: $e");
+//   }
+// }
 
 //   // Trackers - medications
 //   Future addMedications (MedicationsLogModel medication ,) async {
@@ -567,6 +567,7 @@ class DBService {
       final response = await _dio.get('$baseUrl/$userId/cart');
       yield CartModel.fromJsonList(response.data);
     } catch (e) {
+      yield [];
       throw Exception('Failed to fetch cart: $e');
     }
   }
@@ -603,7 +604,7 @@ class DBService {
     }
   }
 
- //pets
+  //pets
   Stream<List<UserPetsModel>> getUserPets(String userId) async* {
     try {
       final response = await _dio.get('$baseUrl/$userId/pets');
@@ -612,7 +613,11 @@ class DBService {
       );
       yield pets;
     } catch (e) {
-      throw Exception('Failed to fetch user pets: $e');
+      if (e is DioError && e.response?.statusCode == 404) {
+        yield [];
+      } else {
+        print('Failed to fetch user pets: $e');
+      }
     }
   }
 
@@ -621,12 +626,13 @@ class DBService {
       final response = await _dio.post(
         '$baseUrl/$userId/pets',
         data: {
+          "owner": pet.owner,
           "name": pet.name,
           "species": pet.species,
           "breed": pet.breed,
           "age": pet.age,
           "gender": pet.gender,
-          "dob": pet.dob.toIso8601String(),
+          // "dob": pet.dob
         },
       );
       return UserPetsModel.fromJson(response.data);
@@ -645,7 +651,7 @@ class DBService {
           "breed": pet.breed,
           "age": pet.age,
           "gender": pet.gender,
-          "dob": pet.dob.toIso8601String(),
+          // "dob": pet.dob.toIso8601String(),
         },
       );
       return UserPetsModel.fromJson(response.data);

@@ -19,33 +19,36 @@ class UserPetsProvider extends ChangeNotifier {
   String get userId => userProvider.userId;
 
   Future<void> fetchUserPets() async {
-    try {
-      isLoading = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+    if (userId != "") {
+      try {
+        isLoading = true;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          notifyListeners();
+        });
 
-      String userId = this.userId;
+        String userId = this.userId;
 
-      _petsSubscription = dbService.getUserPets(userId).listen((pets) {
-        _userPets = pets;
+        _petsSubscription = dbService.getUserPets(userId).listen((pets) {
+          _userPets = pets;
+          isLoading = false;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            notifyListeners();
+          });
+        });
+      } catch (e) {
+        print("Error fetching pets: $e");
         isLoading = false;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           notifyListeners();
         });
-      });
-    } catch (e) {
-      print("Error fetching pets: $e");
-      isLoading = false;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        notifyListeners();
-      });
+      }
     }
   }
 
   Future<void> addPet(UserPetsModel pet) async {
     try {
       String userId = this.userId;
+      pet.owner = userId;
       await dbService.addPet(userId, pet);
       await fetchUserPets();
     } catch (e) {

@@ -44,7 +44,8 @@ class CartProvider extends ChangeNotifier {
   }
 
   void readCartData() async{
-    isLoading = true;
+    if(userId != "") {
+      isLoading = true;
     notifyListeners();
 
     await dbService.getUserCart(userId).listen(
@@ -64,6 +65,7 @@ class CartProvider extends ChangeNotifier {
         notifyListeners();
       },
     );
+    }
   }
 
   void readCartProducts(List<String> uids) async {

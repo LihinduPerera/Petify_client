@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petify/containers/promo_container.dart';
+import 'package:petify/containers/user_pets_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/styles/greeting.dart';
@@ -35,7 +36,7 @@ class _homePageState extends State<homePage> {
                       const SizedBox(
                         height: 10,
                       ),
-                      // const UserPetsContainer(),
+                      const UserPetsContainer(),
                       // Padding(
                       //   padding: const EdgeInsets.only(left: 10, top: 18),
                       //   child: TrackersContainer(height: 170, isAddable: false, petName: "",),
@@ -67,18 +68,18 @@ class _homePageState extends State<homePage> {
                           scrollDirection: Axis.horizontal,
                           children: [
                             Container(
-                              width: 250,
-                              child: CartWidget(),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
                               height: 150,
                               width: 250,
                               child: PromoContainer(
                                 routeToTheStore: true,
                               ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Container(
+                              width: 250,
+                              child: CartWidget(),
                             ),
                           ],
                         ),
