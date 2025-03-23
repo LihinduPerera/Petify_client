@@ -64,7 +64,6 @@ class UserPetsProvider extends ChangeNotifier {
 
   Future<void> deletePet(String petId) async {
     try {
-      String userId = this.userId;
       await dbService.deletePet(petId);
       await fetchUserPets();
     } catch (e) {
