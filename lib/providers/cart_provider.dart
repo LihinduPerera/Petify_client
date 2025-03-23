@@ -28,91 +28,113 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<String> addToCart(CartModel cartModel) async {
+    isLoading = true;
+    notifyListeners();
     try {
       await dbService.addToCart(userId, cartModel);
-      readCartData();
+       readCartData();
+      isLoading = false;
+      notifyListeners();
       return "Added to cart successfully";
     } catch (e) {
+      isLoading = false;
+      notifyListeners();
       return "Error adding to cart";
     }
   }
 
-  void readCartData() {
+  void readCartData() async{
     isLoading = true;
     notifyListeners();
 
-    dbService
-        .getUserCart(userId)
-        .listen(
-          (cartList) {
-            carts = cartList;
-            cartUids = carts.map((cart) => cart.productId).toList();
+    await dbService.getUserCart(userId).listen(
+      (cartList) {
+        carts = cartList;
+        cartUids = carts.map((cart) => cart.productId).toList();
 
-            if (carts.isNotEmpty) {
-              readCartProducts(cartUids);
-            }
-
-            isLoading = false;
-            notifyListeners();
-          },
-          onError: (e) {
-            isLoading = false;
-            notifyListeners();
-          },
-        );
+        if (carts.isNotEmpty) {
+          readCartProducts(cartUids);
+        } else {
+          isLoading = false;
+          notifyListeners();
+        }
+      },
+      onError: (e) {
+        isLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
-  void readCartProducts(List<String> uids) {
+  void readCartProducts(List<String> uids) async {
+    isLoading = true;
+    notifyListeners();
+    
     products.clear();
 
     for (String productId in uids) {
-      dbService
-          .getProductById(productId)
-          .listen(
-            (product) {
-              products.add(product);
-
-              addCost(products, carts);
-              calculateTotalQuantity();
-            },
-            onError: (e) {
-              print('Error fetching product with ID $productId: $e');
-            },
-          );
-    }
-  }
-
-  void addCost(List<ProductsModel> products, List<CartModel> carts) {
-    totalCost = 0;
-    for (int i = 0; i < carts.length; i++) {
-      final product = products.firstWhere(
-        (prod) => prod.id == carts[i].productId,
+      await dbService.getProductById(productId).listen(
+        (product) {
+          products.add(product);
+          addCost(products, carts);
+          calculateTotalQuantity();
+        },
+        onError: (e) {
+          isLoading = false;
+          notifyListeners();
+          print('Error fetching product with ID $productId: $e');
+        },
       );
-      totalCost += carts[i].quantity * product.newPrice;
     }
+
+    isLoading = false;
     notifyListeners();
   }
+  void addCost(List<ProductsModel> products, List<CartModel> carts) {
+  totalCost = 0;
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    for (int i = 0; i < carts.length; i++) {
+      if (i < products.length) {
+        totalCost += carts[i].quantity * products[i].newPrice;
+      }
+    }
+    notifyListeners();
+  });
+}
 
   void calculateTotalQuantity() {
-    totalQuantity = carts.fold(0, (sum, cart) => sum + cart.quantity);
+    totalQuantity = 0;
+    for (int i = 0; i < carts.length; i++) {
+      totalQuantity += carts[i].quantity;
+    }
     notifyListeners();
   }
 
   Future<void> deleteItem(String productId) async {
+    isLoading = true;
+    notifyListeners();
     try {
       await dbService.deleteItemFromCart(userId, productId);
       readCartData();
+      isLoading = false;
+      notifyListeners();
     } catch (e) {
-      return;
+      isLoading = false;
+      notifyListeners();
     }
   }
 
   Future<void> decreaseCount(String productId) async {
+    isLoading = true;
+    notifyListeners();
     try {
       await dbService.decreaseCartQuantity(userId, productId);
       readCartData();
+      isLoading = false;
+      notifyListeners();
     } catch (e) {
-      return;
+      isLoading = false;
+      notifyListeners();
     }
   }
 

@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.5.4
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -31,30 +31,22 @@ dependencies:
   flutter:
     sdk: flutter
 
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   provider: ^6.1.2
+  dio: ^5.8.0+1
   fluentui_icons: ^1.0.0
-  fluentui_system_icons: ^1.1.270
-  flutter_svg: ^2.0.16
   carousel_slider: ^5.0.0
-  badges: ^3.1.2
-  # flutter_stripe: ^11.3.0
-  flutter_dotenv: ^5.2.1
-  mailer: ^6.3.0
-  shimmer: ^3.0.0
-  http: ^1.2.2
-  google_maps_flutter: ^2.10.0
+  google_maps_flutter: ^2.10.1
   location: ^7.0.1
   flutter_polyline_points: ^2.1.0
   flutter_launcher_icons: ^0.14.3
-  internet_connection_checker_plus: ^2.7.0
-  intl: ^0.20.2
-  dio: ^5.8.0+1
-  lottie: ^3.3.1
+  internet_connection_checker_plus: ^2.7.1
+  lottie: ^3.2.0
   shared_preferences: ^2.5.2
-  flutter_lints: ^5.0.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +64,7 @@ flutter_icons:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
+  flutter_lints: ^4.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
