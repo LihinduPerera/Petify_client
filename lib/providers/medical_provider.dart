@@ -17,8 +17,10 @@ class MedicalProvider extends ChangeNotifier {
 
   void _onUserPetsChanged() {
     _medicalsStreams.clear();
-    for (var pet in userPetsProvider.userPets) {
-      fetchMedicals(pet.petId);
+    if (userPetsProvider.userPets.isNotEmpty) {
+      for (var pet in userPetsProvider.userPets) {
+        fetchMedicals(pet.petId);
+      }
     }
   }
 
