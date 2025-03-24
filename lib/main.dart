@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:petify/containers/medical_container.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/login.dart';
@@ -10,6 +11,7 @@ import 'package:petify/pages/sub_pages.dart/update_profile.dart';
 import 'package:petify/pages/sub_pages.dart/view_product.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
+import 'package:petify/providers/medical_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +45,7 @@ class MyApp extends StatelessWidget {
           create: (context) => InternetConnectionProvider(),
         ),
         ChangeNotifierProvider(create: (context) => UserPetsProvider(userProvider: UserProvider())),
+        ChangeNotifierProvider(create: (context) => MedicalProvider(userPetsProvider: UserPetsProvider(userProvider: UserProvider())))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

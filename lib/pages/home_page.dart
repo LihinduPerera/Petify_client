@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petify/containers/medical_container.dart';
 import 'package:petify/containers/promo_container.dart';
 import 'package:petify/containers/user_pets_container.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
@@ -41,6 +42,7 @@ class _homePageState extends State<homePage> {
                       //   padding: const EdgeInsets.only(left: 10, top: 18),
                       //   child: TrackersContainer(height: 170, isAddable: false, petName: "",),
                       // ),
+                      const MedicalContainer(),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 20, top: 10, bottom: 10),

@@ -18,7 +18,7 @@ class MedicalModel {
     return MedicalModel(
       id: json["_id"] ?? "",
       pet: json["pet"] ?? "",
-      date: json["date"] ?? DateTime.now(),
+      date: json["date"] != null ? DateTime.parse(json["date"]) : DateTime.now(),
       medication: json["medication"] ?? "",
       notes: json["notes"] ?? "",
       status: json["status"] ?? "",

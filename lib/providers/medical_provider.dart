@@ -27,13 +27,16 @@ class MedicalProvider extends ChangeNotifier {
   Stream<List<MedicalModel>> fetchMedicals(String petId) {
     if (!_medicalsStreams.containsKey(petId)) {
       _medicalsStreams[petId] = dbService.getMedicals(petId);
-      notifyListeners();
+      Future.microtask(() {
+        notifyListeners();
+      });
     }
     return _medicalsStreams[petId]!;
   }
 
   @override
   void dispose() {
+    userPetsProvider.removeListener(_onUserPetsChanged);
     super.dispose();
   }
 }
