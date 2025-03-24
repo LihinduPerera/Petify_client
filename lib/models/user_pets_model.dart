@@ -19,7 +19,7 @@ class UserPetsModel {
 
   factory UserPetsModel.fromJson(Map<String, dynamic> json) {
     return UserPetsModel(
-      petId: json["_id"],
+      petId: json["_id"] ?? "",
       owner: json["owner"] ?? "",
       name: json["name"] ?? "",
       species: json["species"] ?? "",

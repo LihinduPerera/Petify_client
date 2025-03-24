@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           children: [
             Container(
-              child: Lottie.asset('assets/animations/groud_profile_lottie.json',
+              child: Lottie.asset('assets/animations/male_profile_lottie.json',
                   height: 250, fit: BoxFit.contain),
             ),
             Consumer<UserProvider>(

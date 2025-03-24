@@ -452,6 +452,7 @@ import 'package:dio/dio.dart';
 import 'package:petify/controllers/baseUrl.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/categories_model.dart';
+import 'package:petify/models/medical_model.dart';
 import 'package:petify/models/products_model.dart';
 import 'package:petify/models/promo_banners_model.dart';
 import 'package:petify/models/user_pets_model.dart';
@@ -615,8 +616,6 @@ class DBService {
     } catch (e) {
       if (e is DioError && e.response?.statusCode == 404) {
         yield [];
-      } else {
-        print('Failed to fetch user pets: $e');
       }
     }
   }
@@ -666,6 +665,21 @@ class DBService {
       await _dio.delete('$baseUrl/pets/$petId');
     } catch (e) {
       throw Exception('Failed to delete pet: $e');
+    }
+  }
+
+  //get Medicals
+  Stream<List<MedicalModel>> getMedicals(String petId) async* {
+    try {
+      final response = await _dio.get('$baseUrl/$petId/medicals');
+      List<MedicalModel> medicals = MedicalModel.fromJsonList(
+        List<Map<String,dynamic>>.from(response.data)
+      );
+      yield medicals;
+    } catch (e) {
+      if (e is DioError && e.response?.statusCode == 404) {
+        yield [];
+      }
     }
   }
 }

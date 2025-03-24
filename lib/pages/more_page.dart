@@ -1,17 +1,34 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
-// import 'package:petify/controllers/auth_service.dart';
-// import 'package:petify/pages/sub_pages.dart/profile_page.dart';
-// import 'package:petify/providers/cart_provider.dart';
-// import 'package:petify/providers/user_pets_provider.dart';
-// import 'package:petify/providers/user_provider.dart';
-// import 'package:provider/provider.dart';
 
-class MorePage extends StatelessWidget {
+class MorePage extends StatefulWidget {
   const MorePage({super.key});
+
+  @override
+  _MorePageState createState() => _MorePageState();
+}
+
+class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(vsync: this)
+      ..duration = Duration(milliseconds: 8000)
+      ..repeat(reverse: false);
+
+    _animationController.addListener(() {
+    });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +47,10 @@ class MorePage extends StatelessWidget {
                   children: [
                     Container(
                       child: Lottie.asset(
-                          'assets/animations/more_lottie_in_more.json',
-                          height: 70,
-                          fit: BoxFit.contain),
+                        'assets/animations/more_lottie_in_more.json',
+                        height: 70,
+                        fit: BoxFit.contain,
+                      ),
                     ),
                     Text("More",
                         style: TextStyle(
@@ -48,9 +66,14 @@ class MorePage extends StatelessWidget {
                   children: [
                     Container(
                       child: Lottie.asset(
-                          'assets/animations/male_profile_lottie.json',
-                          height: 80,
-                          fit: BoxFit.contain),
+                        'assets/animations/group_profile_lottie.json',
+                        height: 110,
+                        fit: BoxFit.fitHeight,
+                        controller: _animationController,
+                        repeat: true,
+                        animate: true,
+                        frameRate: FrameRate(30)
+                      ),
                     ),
                     SizedBox(
                       width: 15,
@@ -78,18 +101,18 @@ class MorePage extends StatelessWidget {
                       Container(
                         child: Lottie.asset(
                             'assets/animations/health_lottie_for_homepage.json',
-                            height: 45,
+                            height: 55,
                             fit: BoxFit.contain),
                       ),
                       SizedBox(
                         width: 15,
                       ),
-                      Text('Pet Health & Wellness Tracker'),
+                      Text('Pet Health & medical Tracker'),
                     ],
                   ),
                   onTap: () {
                     Navigator.pushNamed(
-                        context, "/pet_health_and_wellness_tracker");
+                        context, "/pet_health_and_medical_tracker");
                   }),
               Divider(),
               ListTile(
@@ -140,7 +163,7 @@ class MorePage extends StatelessWidget {
               Divider(),
               ListTile(
                 leading: Icon(Icons.feedback,
-                color: const Color.fromARGB(255, 250, 131, 131)),
+                    color: const Color.fromARGB(255, 250, 131, 131)),
                 title: Text('Give Feedback'),
                 subtitle: Text('Share your thoughts with us'),
                 onTap: () {},
@@ -151,7 +174,7 @@ class MorePage extends StatelessWidget {
                 title: Text('Log Out'),
                 subtitle: Text('Sign out of your account'),
                 onTap: () async {
-                  // Provider.of<UserProvider>(context, listen: false)
+                   // Provider.of<UserProvider>(context, listen: false)
                   //     .cancelProvider();
                   // Provider.of<CartProvider>(context, listen: false)
                   //     .cancelProvider();

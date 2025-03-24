@@ -6,8 +6,9 @@ class NoInternet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      // backgroundColor: const Color(0xFFeeedf2),
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
@@ -16,14 +17,14 @@ class NoInternet extends StatelessWidget {
             Container(
               child: Lottie.asset(
                 'assets/animations/loading.json',
-                height: 400,
+                height: screenWidth,
                 fit: BoxFit.fill,
               ),
             ),
             const Text(
               "No internet connection \n found  😿🛜",
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,

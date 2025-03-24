@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
           "/view_product": (context) => ViewProduct(),
           "/cart": (context) => CartPage(),
           "/update_profile": (context) => UpdateProfile(),
-          // "/pet_health_and_wellness_tracker": (context) =>
+          // "/pet_health_and_medical_tracker": (context) =>
           //     PetHealthAndWellnessTrackerPage(),
           "/from_anyware_to_store": (context) => pageSelection(defaultPage: 1),
           "/from_anyware_to_cart": (context) => pageSelection(defaultPage: 0),
