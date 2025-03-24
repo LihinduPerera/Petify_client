@@ -1,443 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:petify/models/user_pets_model.dart';
-// import 'package:provider/provider.dart';
-// import 'package:petify/providers/user_pets_provider.dart';
-
-// class UserPetsContainer extends StatefulWidget {
-//   const UserPetsContainer({super.key});
-
-//   @override
-//   State<UserPetsContainer> createState() => _UserPetsContainerState();
-// }
-
-// class _UserPetsContainerState extends State<UserPetsContainer> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
-//   }
-
-//   void _showAddOrUpdatePetDialog({UserPetsModel? pet}) {
-//     final TextEditingController petNameController = TextEditingController();
-//     final TextEditingController petWeightController = TextEditingController();
-//     String petType = "Dog";
-//     int petAge = 1;
-
-//     if (pet != null) {
-//       petNameController.text = pet.petName;
-//       petWeightController.text = pet.petWeight.toString();
-//       petType = pet.petType;
-//       petAge = pet.petAge;
-//     }
-
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return StatefulBuilder(
-//           builder: (context, setState) {
-//             return AlertDialog(
-//               title: Text(pet == null ? 'Add a New Pet' : 'Update Pet Details'),
-//               content: SingleChildScrollView(
-//                 child: Column(
-//                   mainAxisSize: MainAxisSize.min,
-//                   children: [
-//                     TextField(
-//                       controller: petNameController,
-//                       decoration: const InputDecoration(labelText: 'Pet Name'),
-//                        maxLength: 10,
-//                        maxLengthEnforcement: MaxLengthEnforcement.enforced,
-//                     ),
-//                     TextField(
-//                       controller: petWeightController,
-//                       decoration: const InputDecoration(labelText: 'Pet Weight'),
-//                       keyboardType:
-//                           TextInputType.numberWithOptions(decimal: false),
-//                     ),
-//                     Row(
-//                       children: [
-//                         Text("Pet Type:", style: TextStyle(fontSize: 18)),
-//                         SizedBox(width: 18),
-//                         DropdownButton<String>(
-//                           value: petType,
-//                           onChanged: (String? newValue) {
-//                             setState(() {
-//                               petType = newValue!;
-//                             });
-//                           },
-//                           items: <String>['Dog', 'Cat']
-//                               .map<DropdownMenuItem<String>>((String value) {
-//                             return DropdownMenuItem<String>(
-//                               value: value,
-//                               child: Text(value),
-//                             );
-//                           }).toList(),
-//                         ),
-//                       ],
-//                     ),
-//                     Row(
-//                       children: [
-//                         Text("Pet Age:", style: TextStyle(fontSize: 18)),
-//                         SizedBox(width: 18),
-//                         Expanded(
-//                           child: Container(
-//                             height: 50,
-//                             child: DropdownButton<int>(
-//                               value: petAge,
-//                               onChanged: (int? newValue) {
-//                                 setState(() {
-//                                   petAge = newValue!;
-//                                 });
-//                               },
-//                               items: List.generate(30, (index) => index + 1)
-//                                   .map<DropdownMenuItem<int>>((int value) {
-//                                 return DropdownMenuItem<int>(
-//                                   value: value,
-//                                   child: Text(value.toString()),
-//                                 );
-//                               }).toList(),
-//                               isExpanded: true,
-//                               dropdownColor: Colors.white,
-//                               elevation: 10,
-//                               iconSize: 30,
-//                               onTap: () {
-//                                 FocusScope.of(context).unfocus();
-//                               },
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     )
-//                   ],
-//                 ),
-//               ),
-//               actions: [
-//                 TextButton(
-//                   onPressed: () {
-//                     Navigator.of(context).pop();
-//                   },
-//                   child: const Text('Cancel'),
-//                 ),
-//                 if (pet != null)
-//                   TextButton(
-//                     onPressed: () {
-//                       showDialog(
-//                         context: context,
-//                         builder: (context) {
-//                           return AlertDialog(
-//                             title: const Text('Confirm Deletion'),
-//                             content: const Text(
-//                                 'Are you sure you want to delete this pet?'),
-//                             actions: [
-//                               TextButton(
-//                                 onPressed: () {
-//                                   Provider.of<UserPetsProvider>(context,
-//                                           listen: false)
-//                                       .deletePet(pet.petId);
-//                                   Navigator.of(context).pop();
-//                                   Navigator.of(context).pop();
-//                                 },
-//                                 child: const Text('Yes'),
-//                               ),
-//                               TextButton(
-//                                 onPressed: () {
-//                                   Navigator.of(context).pop();
-//                                 },
-//                                 child: const Text('No'),
-//                               ),
-//                             ],
-//                           );
-//                         },
-//                       );
-//                     },
-//                     child: const Text('Delete Pet'),
-//                   ),
-//                 TextButton(
-//                   onPressed: () {
-//                     String petName = petNameController.text.trim();
-//                     double petWeight =
-//                         double.tryParse(petWeightController.text.trim()) ?? 0;
-
-//                     if (petName.isNotEmpty) {
-//                       final updatedPet = UserPetsModel(
-//                         petId: pet?.petId ?? DateTime.now().toString(),
-//                         petName: petName,
-//                         petAge: petAge,
-//                         petType: petType,
-//                         petWeight: petWeight,
-//                       );
-
-//                       if (pet == null) {
-//                         Provider.of<UserPetsProvider>(context, listen: false)
-//                             .addPet(updatedPet);
-//                       } else {
-//                         Provider.of<UserPetsProvider>(context, listen: false)
-//                             .updatePet(updatedPet);
-//                       }
-
-//                       Navigator.of(context).pop();
-//                     } else {
-//                       ScaffoldMessenger.of(context).showSnackBar(
-//                         const SnackBar(
-//                             content: Text('Please fill in all fields.')),
-//                       );
-//                     }
-//                   },
-//                   child: Text(pet == null ? 'Add Pet' : 'Update Pet'),
-//                 ),
-//               ],
-//             );
-//           },
-//         );
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<UserPetsProvider>(
-//       builder: (context, userPetsProvider, child) {
-//         if (userPetsProvider.isLoading) {
-//           return const Center(child: CircularProgressIndicator());
-//         } else {
-//           return Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.only(left: 20),
-//                 child: const Text(
-//                   "Your Pets",
-//                   style: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.w600,
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(height: 5),
-//               SizedBox(
-//                 height: 100,
-//                 child: ListView.separated(
-//                   separatorBuilder: (context, index) => SizedBox(width: 25),
-//                   itemCount: userPetsProvider.userPets.isEmpty
-//                       ? 1
-//                       : userPetsProvider.userPets.length + 1,
-//                   scrollDirection: Axis.horizontal,
-//                   padding: EdgeInsets.only(left: 20, right: 20),
-//                   itemBuilder: (context, index) {
-//                     if (userPetsProvider.userPets.isEmpty || index == 0) {
-//                       return GestureDetector(
-//                         onTap: () {
-//                           _showAddOrUpdatePetDialog();
-//                         },
-//                         child: Container(
-//                           width: 100,
-//                           decoration: BoxDecoration(
-//                             color: const Color(0xffc58BF2).withOpacity(0.4),
-//                             borderRadius: BorderRadius.circular(70),
-//                           ),
-//                           child: Column(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: const [
-//                               Icon(Icons.add, size: 30, color: Colors.blue),
-//                               Text("Add Pets"),
-//                             ],
-//                           ),
-//                         ),
-//                       );
-//                     } else {
-//                       int petIndex = index - 1;
-//                       String modelPic;
-//                       if (userPetsProvider.userPets[petIndex].petType ==
-//                           "Dog") {
-//                         modelPic =
-//                             "assets/images/user_pet_model_default_dog.png";
-//                       } else if (userPetsProvider.userPets[petIndex].petType ==
-//                           "Cat") {
-//                         modelPic =
-//                             "assets/images/user_pet_model_default_cat.png";
-//                       } else {
-//                         modelPic = "assets/images/user_pet_model_default.png";
-//                       }
-
-//                       return GestureDetector(
-//                         onTap: () {
-//                           _showAddOrUpdatePetDialog(
-//                               pet: userPetsProvider.userPets[petIndex]);
-//                         },
-//                         child: Container(
-//                           width: 100,
-//                           decoration: BoxDecoration(
-//                             color: Color(0xff92A3FD).withOpacity(0.4),
-//                             borderRadius: BorderRadius.circular(16),
-//                           ),
-//                           child: Column(
-//                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                             children: [
-//                               Container(
-//                                 width: 50,
-//                                 height: 50,
-//                                 decoration: BoxDecoration(
-//                                   image: DecorationImage(
-//                                     image: AssetImage(modelPic),
-//                                     fit: BoxFit.cover,
-//                                   ),
-//                                   shape: BoxShape.circle,
-//                                 ),
-//                               ),
-//                               Padding(
-//                                 padding: const EdgeInsets.symmetric(horizontal: 5),
-//                                 child: Text(
-//                                   userPetsProvider.userPets[petIndex].petName,
-//                                   style: const TextStyle(
-//                                     overflow: TextOverflow.ellipsis,
-//                                     fontSize: 14,
-//                                     fontWeight: FontWeight.w400,
-//                                     color: Color.fromARGB(255, 0, 0, 0),
-//                                   ),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       );
-//                     }
-//                   },
-//                 ),
-//               ),
-//             ],
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
-
-// class UserPetsContainerForTracker extends StatefulWidget {
-//   final Function(String petName, double petWeight, int petAge, String petType)
-//       onPetSelected;
-
-//   const UserPetsContainerForTracker({super.key, required this.onPetSelected});
-
-//   @override
-//   State<UserPetsContainerForTracker> createState() =>
-//       _UserPetsContainerForTrackerState();
-// }
-
-// class _UserPetsContainerForTrackerState
-//     extends State<UserPetsContainerForTracker> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<UserPetsProvider>(
-//       builder: (context, userPetsProvider, child) {
-//         if (userPetsProvider.isLoading) {
-//           return const Center(child: CircularProgressIndicator());
-//         } else {
-//           return Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Padding(
-//                 padding: const EdgeInsets.only(left: 20),
-//                 child: const Text(
-//                   "Your Pets",
-//                   style: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 18,
-//                     fontWeight: FontWeight.w600,
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(height: 5),
-//               SizedBox(
-//                 height: 100,
-//                 child: ListView.separated(
-//                   separatorBuilder: (context, index) => SizedBox(width: 25),
-//                   itemCount: userPetsProvider.userPets.isEmpty
-//                       ? 1
-//                       : userPetsProvider.userPets.length,
-//                   scrollDirection: Axis.horizontal,
-//                   padding: EdgeInsets.only(left: 20, right: 20),
-//                   itemBuilder: (context, index) {
-//                     if (userPetsProvider.userPets.isEmpty) {
-//                       return Center(child: Text("No pets available"));
-//                     } else {
-//                       int petIndex = index;
-//                       String modelPic;
-//                       if (userPetsProvider.userPets[petIndex].petType ==
-//                           "Dog") {
-//                         modelPic =
-//                             "assets/images/user_pet_model_default_dog.png";
-//                       } else if (userPetsProvider.userPets[petIndex].petType ==
-//                           "Cat") {
-//                         modelPic =
-//                             "assets/images/user_pet_model_default_cat.png";
-//                       } else {
-//                         modelPic = "assets/images/user_pet_model_default.png";
-//                       }
-
-//                       return GestureDetector(
-//                         onTap: () {
-//                           widget.onPetSelected(
-//                               userPetsProvider.userPets[petIndex].petName,
-//                               userPetsProvider.userPets[petIndex].petWeight,
-//                               userPetsProvider.userPets[petIndex].petAge,
-//                               userPetsProvider.userPets[petIndex].petType
-//                               );
-//                         },
-//                         child: Container(
-//                           width: 100,
-//                           decoration: BoxDecoration(
-//                             color: Color(0xff92A3FD).withOpacity(0.4),
-//                             borderRadius: BorderRadius.circular(16),
-//                           ),
-//                           child: Column(
-//                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                             children: [
-//                               Container(
-//                                 width: 50,
-//                                 height: 50,
-//                                 decoration: BoxDecoration(
-//                                   shape: BoxShape.circle,
-//                                   image: DecorationImage(
-//                                     image: AssetImage(modelPic),
-//                                     fit: BoxFit.cover,
-//                                   ),
-//                                 ),
-//                               ),
-//                               Padding(
-//                                 padding: const EdgeInsets.symmetric(horizontal: 5),
-//                                 child: Text(
-//                                   userPetsProvider.userPets[petIndex].petName,
-//                                   style: const TextStyle(
-//                                     overflow: TextOverflow.ellipsis,
-//                                     fontSize: 14,
-//                                     fontWeight: FontWeight.w400,
-//                                     color: Color.fromARGB(255, 0, 0, 0),
-//                                   ),
-//                                 ),
-//                               ),
-//                             ],
-//                           ),
-//                         ),
-//                       );
-//                     }
-//                   },
-//                 ),
-//               ),
-//             ],
-//           );
-//         }
-//       },
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:petify/models/user_pets_model.dart';
@@ -477,7 +37,8 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
               SizedBox(
                 height: 100,
                 child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(width: 25),
+                  separatorBuilder: (context, index) =>
+                      const SizedBox(width: 25),
                   itemCount: userPetsProvider.userPets.isEmpty
                       ? 1
                       : userPetsProvider.userPets.length + 1,
@@ -507,10 +68,12 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                     } else {
                       int petIndex = index - 1;
                       String modelPic;
-                      if (userPetsProvider.userPets[petIndex].species == "Dog") {
+                      if (userPetsProvider.userPets[petIndex].species ==
+                          "Dog") {
                         modelPic =
                             "assets/images/user_pet_model_default_dog.png";
-                      } else if (userPetsProvider.userPets[petIndex].species == "Cat") {
+                      } else if (userPetsProvider.userPets[petIndex].species ==
+                          "Cat") {
                         modelPic =
                             "assets/images/user_pet_model_default_cat.png";
                       } else {
@@ -543,7 +106,8 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 5),
                                 child: Text(
                                   userPetsProvider.userPets[petIndex].name,
                                   style: const TextStyle(
@@ -571,19 +135,20 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
 
   void _showAddOrUpdatePetDialog({UserPetsModel? pet}) {
     final TextEditingController petNameController = TextEditingController();
-    final TextEditingController petSpeciesController = TextEditingController();
     final TextEditingController petBreedController = TextEditingController();
     final TextEditingController petAgeController = TextEditingController();
     String petGender = "Male";
-    DateTime petDob = DateTime.now();
+    String petSpecies = "Dog";
+
+    String? petNameError;
+    String? petAgeError;
 
     if (pet != null) {
       petNameController.text = pet.name;
-      petSpeciesController.text = pet.species;
+      petSpecies = pet.species;
       petBreedController.text = pet.breed;
       petAgeController.text = pet.age.toString();
       petGender = pet.gender;
-      // petDob = pet.dob;
     }
 
     showDialog(
@@ -599,22 +164,52 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                   children: [
                     TextField(
                       controller: petNameController,
-                      decoration: const InputDecoration(labelText: 'Pet Name'),
-                      maxLength: 20,
+                      decoration: InputDecoration(
+                        labelText: 'Pet Name',
+                        errorText: petNameError,
+                      ),
+                      maxLength: 10,
                       maxLengthEnforcement: MaxLengthEnforcement.enforced,
                     ),
-                    TextField(
-                      controller: petSpeciesController,
-                      decoration: const InputDecoration(labelText: 'Pet Species'),
+                    Row(
+                      children: [
+                        const Text("Species:", style: TextStyle(fontSize: 18)),
+                        const SizedBox(width: 18),
+                        DropdownButton<String>(
+                          value: petSpecies,
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              petSpecies = newValue!;
+                            });
+                          },
+                          items: const <String>['Dog', 'Cat', 'Other']
+                              .map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
                     ),
                     TextField(
+                      maxLength: 10,
                       controller: petBreedController,
-                      decoration: const InputDecoration(labelText: 'Pet Breed'),
+                      decoration: const InputDecoration(
+                        labelText: 'Pet Breed'
+                        ),
                     ),
                     TextField(
                       controller: petAgeController,
-                      decoration: const InputDecoration(labelText: 'Pet Age'),
+                      decoration: InputDecoration(
+                        labelText: 'Pet Age',
+                        errorText: petAgeError,
+                      ),
                       keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^[0-9]{1,2}$')),
+                      ],
                     ),
                     Row(
                       children: [
@@ -634,28 +229,6 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                               child: Text(value),
                             );
                           }).toList(),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Text("Date of Birth:", style: TextStyle(fontSize: 18)),
-                        const SizedBox(width: 18),
-                        IconButton(
-                          icon: const Icon(Icons.calendar_today),
-                          onPressed: () async {
-                            final DateTime? selectedDate = await showDatePicker(
-                              context: context,
-                              initialDate: petDob,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime.now(),
-                            );
-                            if (selectedDate != null && selectedDate != petDob) {
-                              setState(() {
-                                petDob = selectedDate;
-                              });
-                            }
-                          },
                         ),
                       ],
                     ),
@@ -706,11 +279,18 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                 TextButton(
                   onPressed: () {
                     String petName = petNameController.text.trim();
-                    String petSpecies = petSpeciesController.text.trim();
                     String petBreed = petBreedController.text.trim();
-                    int petAge = int.tryParse(petAgeController.text.trim()) ?? 0;
+                    int petAge =
+                        int.tryParse(petAgeController.text.trim()) ?? 0;
 
-                    if (petName.isNotEmpty && petSpecies.isNotEmpty) {
+                    setState(() {
+                      petNameError =
+                          petName.isEmpty ? 'Please enter a pet name' : null;
+                      petAgeError =
+                          petAge <= 0 ? 'Please enter a valid pet age' : null;
+                    });
+
+                    if (petName.isNotEmpty && petAge > 0) {
                       final updatedPet = UserPetsModel(
                         petId: pet?.petId ?? DateTime.now().toString(),
                         owner: "owner",
@@ -719,7 +299,6 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                         breed: petBreed,
                         age: petAge,
                         gender: petGender,
-                        // dob: petDob,
                       );
 
                       if (pet == null) {
@@ -734,7 +313,8 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
-                            content: Text('Please fill in all fields.')),
+                            content: Text(
+                                'Please fill the required fields correctly')),
                       );
                     }
                   },
