@@ -18,8 +18,8 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
-    final isConnectedToInternet =
-        Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
+    final isConnectedToInternet = true;
+        // Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
 
     return !isConnectedToInternet
         ? const NoInternet()
@@ -35,14 +35,16 @@ class _homePageState extends State<homePage> {
                       ),
                       const Greeting(),
                       const SizedBox(
-                        height: 10,
+                        height: 25,
                       ),
                       const UserPetsContainer(),
-                      // Padding(
-                      //   padding: const EdgeInsets.only(left: 10, top: 18),
-                      //   child: TrackersContainer(height: 170, isAddable: false, petName: "",),
-                      // ),
+                      const SizedBox(
+                        height: 25,
+                      ),
                       const MedicalContainer(),
+                      const SizedBox(
+                        height: 25,
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 20, top: 10, bottom: 10),

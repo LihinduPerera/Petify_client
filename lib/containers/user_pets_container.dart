@@ -38,7 +38,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
                 height: 100,
                 child: ListView.separated(
                   separatorBuilder: (context, index) =>
-                      const SizedBox(width: 25),
+                      const SizedBox(width: 23),
                   itemCount: userPetsProvider.userPets.isEmpty
                       ? 1
                       : userPetsProvider.userPets.length + 1,
