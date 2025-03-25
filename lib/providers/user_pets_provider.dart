@@ -90,7 +90,13 @@ class UserPetsProvider extends ChangeNotifier {
   void cancelFetchingPets() {
     _petsSubscription?.cancel();
     _petsSubscription = null;
-    print("Pet fetch operation has been canceled.");
+  }
+
+  void cancelProvider() {
+    _petsSubscription?.cancel();
+    _petsSubscription = null;
+    _userPets = [];
+    notifyListeners();
   }
 
   void clearPets() {

@@ -15,19 +15,19 @@ class MedicalProvider extends ChangeNotifier {
   MedicalProvider({required this.userPetsProvider}) {
     userPetsProvider.addListener(_onUserPetsChanged);
     if (userPetsProvider.userPets.isNotEmpty) {
-      _initializeMedicals();
+      initializeMedicals();
     }
   }
 
   void _onUserPetsChanged() {
     if (userPetsProvider.userPets.isNotEmpty) {
-      _initializeMedicals();
+      initializeMedicals();
     } else {
       _clearMedicals();
     }
   }
 
-  void _initializeMedicals() {
+  Future <void> initializeMedicals() async {
     for (var pet in userPetsProvider.userPets) {
       fetchMedicals(pet.petId);
     }
@@ -65,6 +65,13 @@ class MedicalProvider extends ChangeNotifier {
         notifyListeners();
       });
     }
+  }
+
+  void cancelProvider() {
+    _medicalsSubscription?.cancel();
+    _medicalsSubscription = null;
+    _medicals = [];
+    notifyListeners();
   }
 
   @override

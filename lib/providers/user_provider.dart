@@ -21,7 +21,7 @@ class UserProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('access_token');
     if (token == null) {
-      // print("No token found, user not logged in.");
+      print("No token found, user not logged in.");
       return;
     }
 
@@ -39,7 +39,7 @@ class UserProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      // print("Error loading user data: $e");
+      print("Error loading user data: $e");
     }
   }
 

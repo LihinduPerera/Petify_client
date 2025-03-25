@@ -1,8 +1,15 @@
+import 'dart:io';
+
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
+import 'package:petify/providers/cart_provider.dart';
+import 'package:petify/providers/medical_provider.dart';
+import 'package:petify/providers/user_pets_provider.dart';
+import 'package:petify/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class MorePage extends StatefulWidget {
   const MorePage({super.key});
@@ -145,8 +152,7 @@ class _MorePageState extends State<MorePage>
                       controller: _animationController,
                       repeat: true,
                       animate: true,
-                      frameRate: FrameRate(60)
-                      ),
+                      frameRate: FrameRate(60)),
                 ),
                 onTap: () {
                   Navigator.pushNamed(context, "/chatbot");
@@ -190,14 +196,18 @@ class _MorePageState extends State<MorePage>
                 title: Text('Log Out'),
                 subtitle: Text('Sign out of your account'),
                 onTap: () async {
-                  // Provider.of<UserProvider>(context, listen: false)
-                  //     .cancelProvider();
-                  // Provider.of<CartProvider>(context, listen: false)
-                  //     .cancelProvider();
-                  // Provider.of<UserPetsProvider>(context, listen: false)
-                  //     .cancelFetchingPets();
+                  Provider.of<UserProvider>(context, listen: false)
+                      .cancelProvider();
+                  Provider.of<UserPetsProvider>(context, listen: false)
+                      .cancelProvider();
+                  Provider.of<MedicalProvider>(context, listen: false)
+                      .cancelProvider();
+                  Provider.of<CartProvider>(context, listen: false)
+                      .cancelProvider();
 
                   await AuthService().logout();
+
+                  exit(0);
 
                   // Navigator.pushNamedAndRemoveUntil(
                   //     context, "/login", (route) => true);

@@ -42,7 +42,7 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void readCartData() {
+  Future<void> readCartData() async{
     if (userId.isEmpty) return;
 
     isLoading = true;
@@ -115,7 +115,7 @@ class CartProvider extends ChangeNotifier {
       await dbService.deleteItemFromCart(userId, productId);
       readCartData();
     } catch (e) {
-      // handle error
+
     }
   }
 
@@ -124,7 +124,6 @@ class CartProvider extends ChangeNotifier {
       await dbService.decreaseCartQuantity(userId, productId);
       readCartData();
     } catch (e) {
-      // handle error
     }
   }
 
@@ -138,13 +137,21 @@ class CartProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } catch (e) {
-      // handle error
+
     }
   }
 
   void cancelProvider() {
     _cartSubscription?.cancel();
     _productSubscription?.cancel();
+    _cartSubscription = null;
+    _productSubscription = null;
+    carts = [];
+    cartUids = [];
+    products = [];
+    totalCost = 0;
+    totalQuantity - 0;
+    notifyListeners();
   }
 
   @override

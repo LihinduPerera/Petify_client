@@ -25,7 +25,7 @@ class AuthService {
     }
 
     try {
-      await _dio.post(
+      Response response = await _dio.post(
         '/register',
         data: {
           "name": name,
@@ -35,6 +35,21 @@ class AuthService {
           "phone": "",
         },
       );
+
+      String token = response.data['access_token'];
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('access_token', token);
+
+      Map<String, dynamic> userDetails = {
+        'name': response.data["name"] ?? 'Unknown',
+        'email': response.data["email"] ?? email,
+        'phone': response.data["phone"] ?? '',
+        'address': response.data["address"] ?? '',
+        'user_id': response.data["user_id"] ?? '',
+      };
+
+      await _storeUserDetails(userDetails);
       return "Account Created";
     } catch (e) {
       return e.toString();
@@ -42,33 +57,32 @@ class AuthService {
   }
 
   Future<String> loginWithEmail(String email, String password) async {
-  try {
-    Response response = await _dio.post(
-      '/login',
-      data: {"email": email, "password": password},
-    );
+    try {
+      Response response = await _dio.post(
+        '/login',
+        data: {"email": email, "password": password},
+      );
 
-    String token = response.data['access_token'];
+      String token = response.data['access_token'];
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('access_token', token);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('access_token', token);
 
-    Map<String, dynamic> userDetails = {
-      'name': response.data["name"] ?? 'Unknown',
-      'email': response.data["email"] ?? email,
-      'phone': response.data["phone"] ?? '',    
-      'address': response.data["address"] ?? '',
-      'user_id': response.data["user_id"] ?? '',
-    };
+      Map<String, dynamic> userDetails = {
+        'name': response.data["name"] ?? 'Unknown',
+        'email': response.data["email"] ?? email,
+        'phone': response.data["phone"] ?? '',
+        'address': response.data["address"] ?? '',
+        'user_id': response.data["user_id"] ?? '',
+      };
 
-    await _storeUserDetails(userDetails);
+      await _storeUserDetails(userDetails);
 
-    return "Login Successful";
-  } catch (e) {
-    return e.toString();
+      return "Login Successful";
+    } catch (e) {
+      return e.toString();
+    }
   }
-}
-
 
   Future<Map<String, dynamic>?> getCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/providers/cart_provider.dart';
+import 'package:petify/providers/medical_provider.dart';
+import 'package:petify/providers/user_pets_provider.dart';
+import 'package:petify/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -40,11 +45,8 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .9,
                       child: TextFormField(
-                        validator:
-                            (value) =>
-                                value!.isEmpty
-                                    ? "Email cannot be empty."
-                                    : null,
+                        validator: (value) =>
+                            value!.isEmpty ? "Email cannot be empty." : null,
                         controller: _emailController,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
@@ -59,11 +61,9 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 width: MediaQuery.of(context).size.width * .9,
                 child: TextFormField(
-                  validator:
-                      (value) =>
-                          value!.length < 8
-                              ? "Password should have atleast 8 characters."
-                              : null,
+                  validator: (value) => value!.length < 8
+                      ? "Password should have atleast 8 characters."
+                      : null,
                   controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
@@ -118,39 +118,38 @@ class _LoginPageState extends State<LoginPage> {
                                   await AuthService()
                                       .resetPassword(_emailController.text)
                                       .then((value) {
-                                        if (value == "Mail Sent") {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                "Password reset link sent to your email",
-                                              ),
+                                    if (value == "Mail Sent") {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            "Password reset link sent to your email",
+                                          ),
+                                        ),
+                                      );
+                                      Navigator.pop(context);
+                                    } else {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            value,
+                                            style: TextStyle(
+                                              color: Colors.white,
                                             ),
-                                          );
-                                          Navigator.pop(context);
-                                        } else {
-                                          ScaffoldMessenger.of(
-                                            context,
-                                          ).showSnackBar(
-                                            SnackBar(
-                                              content: Text(
-                                                value,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                ),
-                                              ),
-                                              backgroundColor:
-                                                  const Color.fromARGB(
-                                                    255,
-                                                    239,
-                                                    83,
-                                                    80,
-                                                  ),
-                                            ),
-                                          );
-                                        }
-                                      });
+                                          ),
+                                          backgroundColor: const Color.fromARGB(
+                                            255,
+                                            239,
+                                            83,
+                                            80,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  });
                                 },
                                 child: const Text("Submit"),
                               ),
@@ -170,39 +169,46 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      AuthService()
-                          .loginWithEmail(
-                            _emailController.text,
-                            _passwordController.text,
-                          )
-                          .then((value) {
-                            if (value == "Login Successful") {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Login Successful")),
-                              );
-                              Navigator.restorablePushNamedAndRemoveUntil(
-                                context,
-                                "/page_selection",
-                                (route) => false,
-                              );
-                            } else {
-                              print(value);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    value,
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    239,
-                                    83,
-                                    80,
-                                  ),
-                                ),
-                              );
-                            }
-                          });
+                      AuthService().loginWithEmail(
+                        _emailController.text,
+                        _passwordController.text,
+                      ).then((value) async {
+                        if (value == "Login Successful") {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Login Successful")),
+                          );
+
+                          // Center(child: CircularProgressIndicator(),);
+
+                          // await Provider.of<UserProvider>(context, listen: false).loadUserData();
+                          // await Provider.of<CartProvider>(context, listen: false).readCartData();
+                          // await Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
+                          // await Provider.of<MedicalProvider>(context, listen: false).initializeMedicals();
+                          
+
+                          Navigator.restorablePushNamedAndRemoveUntil(
+                            context,
+                            "/page_selection",
+                            (route) => false,
+                          );
+                        } else {
+                          print(value);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                value,
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              backgroundColor: const Color.fromARGB(
+                                255,
+                                239,
+                                83,
+                                80,
+                              ),
+                            ),
+                          );
+                        }
+                      });
                     }
                   },
                   style: ElevatedButton.styleFrom(
