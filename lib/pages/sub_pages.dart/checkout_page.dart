@@ -167,7 +167,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             }
           },
           style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue, foregroundColor: Colors.white),
+              backgroundColor: const Color.fromARGB(255, 13, 64, 105), foregroundColor: Colors.white),
         ),
       ),
     );

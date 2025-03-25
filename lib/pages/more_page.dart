@@ -1,6 +1,7 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
 
 class MorePage extends StatefulWidget {
@@ -10,18 +11,18 @@ class MorePage extends StatefulWidget {
   _MorePageState createState() => _MorePageState();
 }
 
-class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin {
+class _MorePageState extends State<MorePage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(vsync: this)
-      ..duration = Duration(milliseconds: 8000)
+      ..duration = Duration(milliseconds: 9000)
       ..repeat(reverse: false);
 
-    _animationController.addListener(() {
-    });
+    _animationController.addListener(() {});
   }
 
   @override
@@ -47,10 +48,13 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                   children: [
                     Container(
                       child: Lottie.asset(
-                        'assets/animations/more_lottie_in_more.json',
-                        height: 70,
-                        fit: BoxFit.contain,
-                      ),
+                          'assets/animations/more_lottie_in_more.json',
+                          height: 70,
+                          fit: BoxFit.contain,
+                          controller: _animationController,
+                          repeat: true,
+                          animate: true,
+                          frameRate: FrameRate(60)),
                     ),
                     Text("More",
                         style: TextStyle(
@@ -66,14 +70,13 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                   children: [
                     Container(
                       child: Lottie.asset(
-                        'assets/animations/group_profile_lottie.json',
-                        height: 110,
-                        fit: BoxFit.fitHeight,
-                        controller: _animationController,
-                        repeat: true,
-                        animate: true,
-                        frameRate: FrameRate(30)
-                      ),
+                          'assets/animations/easter_profile.json',
+                          height: 110,
+                          fit: BoxFit.fitHeight,
+                          controller: _animationController,
+                          repeat: true,
+                          animate: true,
+                          frameRate: FrameRate(60)),
                     ),
                     SizedBox(
                       width: 15,
@@ -102,7 +105,11 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                         child: Lottie.asset(
                             'assets/animations/health_lottie_for_homepage.json',
                             height: 55,
-                            fit: BoxFit.contain),
+                            fit: BoxFit.contain,
+                            controller: _animationController,
+                            repeat: true,
+                            animate: true,
+                            frameRate: FrameRate(60)),
                       ),
                       SizedBox(
                         width: 15,
@@ -121,23 +128,25 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Icon(
-                        FluentSystemIcons
-                            .ic_fluent_book_formula_database_filled,
-                        color: const Color.fromARGB(255, 250, 139, 131),
+                        FluentSystemIcons.ic_fluent_chat_filled,
+                        color: const Color.fromARGB(255, 196, 131, 250),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      Text('Pet Care Education Center'),
+                      Text('Ask from Mr.Bot PETIFY'),
                     ],
                   ),
                 ),
                 subtitle: Container(
-                  child: Lottie.asset(
-                    'assets/animations/education_lottie_for_morepage.json',
-                    height: 200,
-                    fit: BoxFit.contain,
-                  ),
+                  child: Lottie.asset('assets/animations/mr_bot.json',
+                      height: 200,
+                      fit: BoxFit.fitHeight,
+                      controller: _animationController,
+                      repeat: true,
+                      animate: true,
+                      frameRate: FrameRate(60)
+                      ),
                 ),
                 onTap: () {
                   Navigator.pushNamed(context, "/chatbot");
@@ -170,8 +179,9 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                 subtitle: Text('Share your thoughts with us'),
                 onTap: () {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  duration: Duration(milliseconds: 6000),
-                    content: Text("Mail me @lihindu.indudunu.perera@gmail.com")));
+                      duration: Duration(milliseconds: 6000),
+                      content:
+                          Text("Mail me @lihindu.indudunu.perera@gmail.com")));
                 },
               ),
               Divider(),
@@ -180,14 +190,14 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                 title: Text('Log Out'),
                 subtitle: Text('Sign out of your account'),
                 onTap: () async {
-                   // Provider.of<UserProvider>(context, listen: false)
+                  // Provider.of<UserProvider>(context, listen: false)
                   //     .cancelProvider();
                   // Provider.of<CartProvider>(context, listen: false)
                   //     .cancelProvider();
                   // Provider.of<UserPetsProvider>(context, listen: false)
                   //     .cancelFetchingPets();
 
-                  // await AuthService().logout();
+                  await AuthService().logout();
 
                   // Navigator.pushNamedAndRemoveUntil(
                   //     context, "/login", (route) => true);
