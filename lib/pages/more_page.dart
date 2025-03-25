@@ -168,7 +168,11 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                     color: const Color.fromARGB(255, 250, 131, 131)),
                 title: Text('Give Feedback'),
                 subtitle: Text('Share your thoughts with us'),
-                onTap: () {},
+                onTap: () {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  duration: Duration(milliseconds: 6000),
+                    content: Text("Mail me @lihindu.indudunu.perera@gmail.com")));
+                },
               ),
               Divider(),
               ListTile(

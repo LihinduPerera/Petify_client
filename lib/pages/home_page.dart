@@ -43,7 +43,7 @@ class _homePageState extends State<homePage> {
                       ),
                       const MedicalContainer(defineHeight: 260, defineWeight: 200,),
                       const SizedBox(
-                        height: 25,
+                        height: 10,
                       ),
                       Padding(
                         padding: const EdgeInsets.only(

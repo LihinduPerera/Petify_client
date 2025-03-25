@@ -8,35 +8,69 @@ class MedicalProvider extends ChangeNotifier {
   final DBService dbService = DBService();
   final UserPetsProvider userPetsProvider;
 
-  Map<String, Stream<List<MedicalModel>>> _medicalsStreams = {};
+  List<MedicalModel> _medicals = [];
+  StreamSubscription<List<MedicalModel>>? _medicalsSubscription;
   bool isLoading = false;
 
   MedicalProvider({required this.userPetsProvider}) {
     userPetsProvider.addListener(_onUserPetsChanged);
+    if (userPetsProvider.userPets.isNotEmpty) {
+      _initializeMedicals();
+    }
   }
 
   void _onUserPetsChanged() {
-    _medicalsStreams.clear();
     if (userPetsProvider.userPets.isNotEmpty) {
-      for (var pet in userPetsProvider.userPets) {
-        fetchMedicals(pet.petId);
-      }
+      _initializeMedicals();
+    } else {
+      _clearMedicals();
     }
   }
 
-  Stream<List<MedicalModel>> fetchMedicals(String petId) {
-    if (!_medicalsStreams.containsKey(petId)) {
-      _medicalsStreams[petId] = dbService.getMedicals(petId).asBroadcastStream();
-      Future.microtask(() {
+  void _initializeMedicals() {
+    for (var pet in userPetsProvider.userPets) {
+      fetchMedicals(pet.petId);
+    }
+  }
+
+  void _clearMedicals() {
+    _medicals.clear();
+    if (_medicalsSubscription != null) {
+      _medicalsSubscription?.cancel();
+      _medicalsSubscription = null;
+    }
+    notifyListeners();
+  }
+
+  List<MedicalModel> get medicals => _medicals;
+
+  Future<void> fetchMedicals(String petId) async {
+    try {
+      isLoading = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+
+      _medicalsSubscription = dbService.getMedicals(petId).asBroadcastStream().listen((medicals) {
+        _medicals.addAll(medicals);
+        isLoading = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          notifyListeners();
+        });
+      });
+    } catch (e) {
+      print("Error fetching medicals: $e");
+      isLoading = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
         notifyListeners();
       });
     }
-    return _medicalsStreams[petId]!;
   }
 
   @override
   void dispose() {
     userPetsProvider.removeListener(_onUserPetsChanged);
+    _medicalsSubscription?.cancel();
     super.dispose();
   }
 }

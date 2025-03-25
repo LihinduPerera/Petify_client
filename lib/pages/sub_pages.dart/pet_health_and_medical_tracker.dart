@@ -40,31 +40,35 @@ class _PetHealthAndMedicalTrackerPageState
       ),
       backgroundColor: Color(0xFFeeedf2),
       body: SafeArea(
-        child: ListView(
+        child: Container(
           padding: EdgeInsets.all(8.0),
-          children: [
-            SizedBox(
-              height: 5,
-            ),
-            UserPetsContainerForTracker(onPetSelected: _updatePetDetails),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                _buildPetInfoCard(),
-                SizedBox(height: 5),
-                Divider(),
                 SizedBox(
-                  height: 20,
+                  height: 5,
                 ),
-                MedicalContainer(
-                  defineHeight: 400,
-                  defineWeight: 150,
+                UserPetsContainerForTracker(onPetSelected: _updatePetDetails),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: [
+                    _buildPetInfoCard(),
+                    SizedBox(height: 5),
+                    Divider(),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    MedicalContainer(
+                      defineHeight: 500,
+                      defineWeight: 150,
+                    )
+                  ],
                 )
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );

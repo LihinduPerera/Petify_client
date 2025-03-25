@@ -25,7 +25,7 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: const Text(
-                  "Your Pets",
+                  "Your Pets 🐕",
                   style: TextStyle(
                     color: Colors.black,
                     fontSize: 18,
