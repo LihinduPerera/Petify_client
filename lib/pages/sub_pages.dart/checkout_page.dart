@@ -11,27 +11,23 @@ class CheckoutPage extends StatefulWidget {
 }
 
 class _CheckoutPageState extends State<CheckoutPage> {
-  int discount = 0;  // Discount removed as coupon logic is removed
+  int discount = 0;
   bool paymentSuccess = false;
   Map<String, dynamic> dataOfOrder = {};
 
-  // Mock Payment function simulating payment success
   Future<void> mockPaymentProcess(int cost) async {
     try {
-      // Simulating a 3-second payment process
       await Future.delayed(Duration(seconds: 3), () {
-        // Simulating successful payment
         paymentSuccess = true;
       });
     } catch (e) {
-      // If an error occurs during payment simulation
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Payment Failed: $e')));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Accessing user data and cart data via Consumers
+    
     final userData = Provider.of<UserProvider>(context);
     final cartData = Provider.of<CartProvider>(context);
 
@@ -94,17 +90,17 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 style: TextStyle(fontSize: 16),
               ),
               Text(
-                "Sub Total: ₹ ${cartData.totalCost}",
+                "Sub Total: Rs ${cartData.totalCost}",
                 style: TextStyle(fontSize: 16),
               ),
               Divider(),
               Text(
-                "Extra Discount: - ₹ $discount",
+                "Extra Discount: - Rs $discount",
                 style: TextStyle(fontSize: 16),
               ),
               Divider(),
               Text(
-                "Total Payable: ₹ ${cartData.totalCost - discount}",
+                "Total Payable: Rs ${cartData.totalCost - discount}",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
             ],
@@ -127,11 +123,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
               return;
             }
 
-            // Simulate the payment process with mock payment function
             await mockPaymentProcess(cartData.totalCost - discount);
 
             if (paymentSuccess) {
-              // Simulate order data and confirm payment success
+
               final cart = Provider.of<CartProvider>(context, listen: false);
 
               Map<String, dynamic> orderData = {
@@ -148,10 +143,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
               dataOfOrder = orderData;
 
-              // Mock order creation (replace this with actual database logic)
               print("Order Data: $dataOfOrder");
 
-              // Mock success message
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(
                   "Payment Successful",
@@ -159,6 +152,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
                 backgroundColor: Colors.green,
               ));
+
+              await cartData.emptyCart();
 
               Navigator.pop(context);
             } else {

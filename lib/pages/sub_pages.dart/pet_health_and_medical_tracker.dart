@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
 import 'package:petify/containers/medical_container.dart';
 import 'package:petify/containers/user_pets_container.dart';
 
