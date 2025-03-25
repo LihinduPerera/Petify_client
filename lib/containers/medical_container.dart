@@ -5,7 +5,8 @@ import 'package:petify/providers/user_pets_provider.dart';
 import 'package:provider/provider.dart';
 
 class MedicalContainer extends StatelessWidget {
-  const MedicalContainer({super.key});
+  final double defineHeight , defineWeight;
+  const MedicalContainer({super.key , required this.defineHeight, required this.defineWeight});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,7 @@ class MedicalContainer extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Container(
-                        height: 200,
+                        height: defineHeight,
                         child: Card(
                           color: const Color(0xffc58BF2).withOpacity(0.4),
                           elevation: 8,
@@ -51,7 +52,10 @@ class MedicalContainer extends StatelessWidget {
                                         return const Center(child: CircularProgressIndicator());
                                       }
                                       if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                                        return Center(child: Text("No medical records available"));
+                                        return Center(child: Padding(
+                                          padding: const EdgeInsets.only(top: 20, left: 8 , right: 8),
+                                          child: Text("No medical records \n available", textAlign: TextAlign.center,),
+                                        ));
                                       }
                                       List<MedicalModel> medicals = snapshot.data!;
                                                       
@@ -70,8 +74,7 @@ class MedicalContainer extends StatelessWidget {
                                                   child: Column(
                                                     children: [
                                                       Container(
-                                                        
-                                                        width: 250,
+                                                        width: defineWeight,
                                                         child: ListTile(
                                                           title: Text("Medication: ${medical.medication}"),
                                                           subtitle: Column(

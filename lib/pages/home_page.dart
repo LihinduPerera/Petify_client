@@ -41,7 +41,7 @@ class _homePageState extends State<homePage> {
                       const SizedBox(
                         height: 25,
                       ),
-                      const MedicalContainer(),
+                      const MedicalContainer(defineHeight: 260, defineWeight: 200,),
                       const SizedBox(
                         height: 25,
                       ),
