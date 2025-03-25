@@ -39,7 +39,7 @@ class UserPetsProvider extends ChangeNotifier {
 
         String userId = this.userId;
 
-        _petsSubscription = dbService.getUserPets(userId).listen((pets) {
+        _petsSubscription = dbService.getUserPets(userId).asBroadcastStream().listen((pets) {
           _userPets = pets;
           isLoading = false;
           WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -26,7 +26,7 @@ class MedicalProvider extends ChangeNotifier {
 
   Stream<List<MedicalModel>> fetchMedicals(String petId) {
     if (!_medicalsStreams.containsKey(petId)) {
-      _medicalsStreams[petId] = dbService.getMedicals(petId);
+      _medicalsStreams[petId] = dbService.getMedicals(petId).asBroadcastStream();
       Future.microtask(() {
         notifyListeners();
       });
