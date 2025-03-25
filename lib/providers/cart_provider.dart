@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/db_service.dart';
 import 'package:petify/models/cart_model.dart';
@@ -32,7 +31,7 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
     try {
       await dbService.addToCart(userId, cartModel);
-       readCartData();
+      readCartData();
       isLoading = false;
       notifyListeners();
       return "Added to cart successfully";
@@ -43,28 +42,28 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  void readCartData() async{
-    if(userId != "") {
+  void readCartData() async {
+    if (userId != "") {
       isLoading = true;
-    notifyListeners();
+      notifyListeners();
 
-    await dbService.getUserCart(userId).listen(
-      (cartList) {
-        carts = cartList;
-        cartUids = carts.map((cart) => cart.productId).toList();
+      await dbService.getUserCart(userId).listen(
+        (cartList) {
+          carts = cartList;
+          cartUids = carts.map((cart) => cart.productId).toList();
 
-        if (carts.isNotEmpty) {
-          readCartProducts(cartUids);
-        } else {
+          if (carts.isNotEmpty) {
+            readCartProducts(cartUids);
+          } else {
+            isLoading = false;
+            notifyListeners();
+          }
+        },
+        onError: (e) {
           isLoading = false;
           notifyListeners();
-        }
-      },
-      onError: (e) {
-        isLoading = false;
-        notifyListeners();
-      },
-    );
+        },
+      );
     }
   }
 
@@ -92,17 +91,18 @@ class CartProvider extends ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
   void addCost(List<ProductsModel> products, List<CartModel> carts) {
-  totalCost = 0;
-  WidgetsBinding.instance.addPostFrameCallback((_) {
-    for (int i = 0; i < carts.length; i++) {
-      if (i < products.length) {
-        totalCost += carts[i].quantity * products[i].newPrice;
+    totalCost = 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      for (int i = 0; i < carts.length; i++) {
+        if (i < products.length) {
+          totalCost += carts[i].quantity * products[i].newPrice;
+        }
       }
-    }
-    notifyListeners();
-  });
-}
+      notifyListeners();
+    });
+  }
 
   void calculateTotalQuantity() {
     totalQuantity = 0;
@@ -137,6 +137,24 @@ class CartProvider extends ChangeNotifier {
     } catch (e) {
       isLoading = false;
       notifyListeners();
+    }
+  }
+
+  Future<void> emptyCart() async {
+    isLoading = true;
+    notifyListeners();
+    try {
+      await dbService.emptyCart(userId);
+      carts.clear();
+      products.clear();
+      totalCost = 0;
+      totalQuantity = 0;
+      isLoading = false;
+      notifyListeners();
+    } catch (e) {
+      isLoading = false;
+      notifyListeners();
+      print("Error emptying the cart: $e");
     }
   }
 

@@ -651,7 +651,6 @@ class DBService {
           "breed": pet.breed,
           "age": pet.age,
           "gender": pet.gender,
-          // "dob": pet.dob.toIso8601String(),
         },
       );
       return UserPetsModel.fromJson(response.data);
