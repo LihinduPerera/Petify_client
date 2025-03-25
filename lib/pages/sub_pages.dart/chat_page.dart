@@ -1,3 +1,4 @@
+import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:petify/consts.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -14,12 +15,12 @@ class _ChatPageState extends State<ChatPage> {
   late final ChatSession _chat;
   final ScrollController _scrollController = ScrollController();
   final TextEditingController _textController = TextEditingController();
-  final List<ChatMessage> _message = [];
+  final List<ChatMessage> _messages = [];
 
   @override
   void initState() {
     super.initState();
-    _model = GenerativeModel(model: 'gemini-1.5 flash', apiKey: GEMINI_API_KEY);
+    _model = GenerativeModel(model: 'gemini-2.0-flash', apiKey: GEMINI_API_KEY);
     _chat = _model.startChat();
   }
 
@@ -31,19 +32,21 @@ class _ChatPageState extends State<ChatPage> {
 
   Future<void> _sentChatMessage(String message) async {
     setState(() {
-      _message.add(ChatMessage(text: message, isUser: true));
+      _messages.add(ChatMessage(text: message, isUser: true));
     });
     try {
-      final response  = await _chat.sendMessage(Content.text(message));
+      final response = await _chat.sendMessage(Content.text(message));
       final text = response.text;
 
       setState(() {
-        _message.add(ChatMessage(text: text!, isUser: false));
+        _messages.add(ChatMessage(text: text!, isUser: false));
         _scrollDown();
       });
     } catch (e) {
       setState(() {
-        _message.add(ChatMessage(text: "Error occured", isUser: false));
+        _messages.add(ChatMessage(
+            text: "Something went wrong, Check your connection !",
+            isUser: false));
       });
     } finally {
       _textController.clear();
@@ -53,7 +56,52 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Chat Bot"),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  return ChatBubble(message: _messages[index]);
+                }),
+          ),
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _textController,
+                    decoration: InputDecoration(
+                        hintText: "Ask Anything",
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                              color: const Color.fromARGB(255, 243, 33, 243),
+                              width: 2),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: BorderSide(
+                              color: Colors.grey,
+                              width: 2),
+                        )),
+                  ),
+                ),
+                IconButton(
+                    onPressed: () => _sentChatMessage(_textController.text),
+                    icon: Icon(FluentSystemIcons.ic_fluent_send_filled))
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
@@ -72,6 +120,28 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.25),
+        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+        decoration: BoxDecoration(
+            color: message.isUser ? Colors.green[200] : Colors.blue[100],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(12),
+              topRight: Radius.circular(12),
+              bottomLeft: message.isUser ? Radius.circular(25) : Radius.zero,
+              bottomRight: message.isUser ? Radius.zero : Radius.circular(25),
+            )),
+        child: Text(
+          message.text,
+          style: TextStyle(
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
   }
 }

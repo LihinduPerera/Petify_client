@@ -139,7 +139,9 @@ class _MorePageState extends State<MorePage> with SingleTickerProviderStateMixin
                     fit: BoxFit.contain,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, "/chatbot");
+                },
               ),
               Divider(),
               SizedBox(
