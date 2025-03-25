@@ -56,8 +56,10 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFeeedf2),
       appBar: AppBar(
-        title: Text("Chat Bot"),
+        backgroundColor: const Color(0xFFeeedf2),
+        title: Text("Bot PETIFY"),
       ),
       body: Column(
         children: [
@@ -69,35 +71,38 @@ class _ChatPageState extends State<ChatPage> {
                   return ChatBubble(message: _messages[index]);
                 }),
           ),
-          Padding(
-            padding: EdgeInsets.all(8),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: _textController,
-                    decoration: InputDecoration(
-                        hintText: "Ask Anything",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                              color: const Color.fromARGB(255, 243, 33, 243),
-                              width: 2),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                              color: Colors.grey,
-                              width: 2),
-                        )),
+          Container(
+            color: const Color(0xFFeeedf2),
+            child: Padding(
+              padding: EdgeInsets.only(bottom: 20, top: 5 , left: 15 , right: 15),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _textController,
+                      decoration: InputDecoration(
+                          hintText: "Ask Anything",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 243, 33, 243),
+                                width: 2),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 2),
+                          )),
+                    ),
                   ),
-                ),
-                IconButton(
-                    onPressed: () => _sentChatMessage(_textController.text),
-                    icon: Icon(FluentSystemIcons.ic_fluent_send_filled))
-              ],
+                  IconButton(
+                      onPressed: () => _sentChatMessage(_textController.text),
+                      icon: Icon(FluentSystemIcons.ic_fluent_send_filled, color:const Color.fromARGB(255, 243, 33, 243)))
+                ],
+              ),
             ),
           )
         ],
@@ -121,7 +126,7 @@ class ChatBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
+      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
       alignment: message.isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
         constraints:
