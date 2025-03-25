@@ -32,8 +32,8 @@ class _CartContainerState extends State<CartContainer> {
       return;
     } else {
       final userId = Provider.of<CartProvider>(context, listen: false).userId;
-      Provider.of<CartProvider>(context, listen: false)
-          .addToCart(CartModel(productId: widget.productId, quantity: count, userId: userId));
+      Provider.of<CartProvider>(context, listen: false).addToCart(CartModel(
+          productId: widget.productId, quantity: count, userId: userId));
       setState(() {
         count++;
       });
@@ -61,7 +61,10 @@ class _CartContainerState extends State<CartContainer> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Colors.grey.shade300,
+        // color: Colors.grey.shade300,
+        color: const Color(0xffc58BF2).withOpacity(0.4),
+        elevation: 8,
+        shadowColor: Colors.blueGrey.withOpacity(0.4),
         child: Container(
           width: double.infinity,
           child: Column(
@@ -117,7 +120,7 @@ class _CartContainerState extends State<CartContainer> {
                             ),
                             Icon(
                               Icons.arrow_downward,
-                              color: Colors.green,
+                              color: const Color.fromARGB(255, 26, 156, 31),
                               size: 20,
                             ),
                             Text(
@@ -125,7 +128,7 @@ class _CartContainerState extends State<CartContainer> {
                               style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.green),
+                                  color: const Color.fromARGB(255, 46, 199, 51)),
                             ),
                           ],
                         )
@@ -139,7 +142,7 @@ class _CartContainerState extends State<CartContainer> {
                       },
                       icon: Icon(
                         Icons.delete,
-                        color: Colors.red.shade400,
+                        color: const Color.fromARGB(255, 219, 90, 88),
                       ))
                 ],
               ),
@@ -160,7 +163,7 @@ class _CartContainerState extends State<CartContainer> {
                     width: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade400,
+                      color: const Color.fromARGB(255, 161, 157, 218),
                     ),
                     child: IconButton(
                         onPressed: () async {
@@ -183,7 +186,7 @@ class _CartContainerState extends State<CartContainer> {
                     width: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.grey.shade400,
+                      color: const Color.fromARGB(255, 161, 157, 218),
                     ),
                     child: IconButton(
                         onPressed: () async {

@@ -31,7 +31,7 @@ class MedicalContainer extends StatelessWidget {
                         height: defineHeight,
                         child: Container(
                           decoration: BoxDecoration(
-                            color: const Color(0xffc58BF2).withOpacity(0.4),
+                            color: Color(0xff92A3FD).withOpacity(0.4),
                             borderRadius: BorderRadius.circular(30)
                           ),
                           // color: const Color(0xffc58BF2).withOpacity(0.4),
@@ -104,13 +104,16 @@ class MedicalContainer extends StatelessWidget {
                                                               )
                                                             ],
                                                           ),
+                                                          Divider(
+                                                            thickness: 2,
+                                                            color: const Color(0xffc58BF2),
+                                                          ),
                                                         ],
                                                       ),
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: const Color.fromARGB(96, 133, 0, 221),
-                                                      borderRadius: BorderRadius.circular(20),
-                                                    ),
+                                                    ),                                          // decoration: BoxDecoration(
+                                                    //   color: Color.fromARGB(255, 91, 113, 223).withOpacity(0.4),
+                                                    //   borderRadius: BorderRadius.circular(20),
+                                                    // ),
                                                   ),
                                                   const SizedBox(height: 10),
                                                 ],
