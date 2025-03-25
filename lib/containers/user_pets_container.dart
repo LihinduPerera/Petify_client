@@ -328,3 +328,129 @@ class _UserPetsContainerState extends State<UserPetsContainer> {
     );
   }
 }
+
+class UserPetsContainerForTracker extends StatefulWidget {
+  final Function(String petId, String name, String breed, int age, String gender)
+      onPetSelected;
+
+  const UserPetsContainerForTracker({super.key, required this.onPetSelected});
+
+  @override
+  State<UserPetsContainerForTracker> createState() =>
+      _UserPetsContainerForTrackerState();
+}
+
+class _UserPetsContainerForTrackerState
+    extends State<UserPetsContainerForTracker> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<UserPetsProvider>(
+      builder: (context, userPetsProvider, child) {
+        if (userPetsProvider.isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        } else {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: const Text(
+                  "Your Pets",
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 5),
+              SizedBox(
+                height: 100,
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(width: 25),
+                  itemCount: userPetsProvider.userPets.isEmpty
+                      ? 1
+                      : userPetsProvider.userPets.length,
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(left: 20, right: 20),
+                  itemBuilder: (context, index) {
+                    if (userPetsProvider.userPets.isEmpty) {
+                      return Center(child: Text("No pets available"));
+                    } else {
+                      int petIndex = index;
+                      String modelPic;
+                      if (userPetsProvider.userPets[petIndex].species ==
+                          "Dog") {
+                        modelPic =
+                            "assets/images/user_pet_model_default_dog.png";
+                      } else if (userPetsProvider.userPets[petIndex].species ==
+                          "Cat") {
+                        modelPic =
+                            "assets/images/user_pet_model_default_cat.png";
+                      } else {
+                        modelPic = "assets/images/user_pet_model_default.png";
+                      }
+
+                      return GestureDetector(
+                        onTap: () {
+                          widget.onPetSelected(
+                              userPetsProvider.userPets[petIndex].petId,
+                              userPetsProvider.userPets[petIndex].name,
+                              userPetsProvider.userPets[petIndex].breed,
+                              userPetsProvider.userPets[petIndex].age,
+                              userPetsProvider.userPets[petIndex].gender
+                              );
+                        },
+                        child: Container(
+                          width: 100,
+                          decoration: BoxDecoration(
+                            color: Color(0xff92A3FD).withOpacity(0.4),
+                            borderRadius: BorderRadius.circular(16),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: 50,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    image: AssetImage(modelPic),
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                child: Text(
+                                  userPetsProvider.userPets[petIndex].name,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ),
+            ],
+          );
+        }
+      },
+    );
+  }
+}

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:petify/containers/medical_container.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/login.dart';

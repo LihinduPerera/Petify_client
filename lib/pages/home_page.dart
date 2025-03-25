@@ -18,8 +18,8 @@ class homePage extends StatefulWidget {
 class _homePageState extends State<homePage> {
   @override
   Widget build(BuildContext context) {
-    final isConnectedToInternet = true;
-        // Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
+    final isConnectedToInternet = 
+        Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
 
     return !isConnectedToInternet
         ? const NoInternet()
