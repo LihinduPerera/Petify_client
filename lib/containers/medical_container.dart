@@ -69,7 +69,7 @@ class MedicalContainer extends StatelessWidget {
                                           child: Padding(
                                             padding: const EdgeInsets.only(top: 20, left: 8, right: 8),
                                             child: Text(
-                                              "No medical records available",
+                                              "No medical \n records available",
                                               textAlign: TextAlign.center,
                                             ),
                                           ),
@@ -93,7 +93,17 @@ class MedicalContainer extends StatelessWidget {
                                                         crossAxisAlignment: CrossAxisAlignment.start,
                                                         children: [
                                                           Text("Date: ${medical.date.toLocal().toString().split(' ')[0]}"),
-                                                          Text("Status: ${medical.status}"),
+                                                          Row(
+                                                            children: [
+                                                              Text("Status: ",
+                                                              ),
+                                                              Text("${medical.status}",
+                                                              style: TextStyle(
+                                                                color: medical.status == "Completed" ? const Color.fromARGB(255, 73, 54, 244) : const Color.fromARGB(255, 0, 158, 5),
+                                                              ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
                                                     ),

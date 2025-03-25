@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/db_service.dart';
 import 'package:petify/models/cart_model.dart';
@@ -8,7 +10,11 @@ class CartProvider extends ChangeNotifier {
   final DBService dbService = DBService();
   final UserProvider userProvider;
 
+  StreamSubscription<List<CartModel>>? _cartSubscription;
+  StreamSubscription<List<ProductsModel>>? _productSubscription;
+
   bool isLoading = true;
+
   List<CartModel> carts = [];
   List<String> cartUids = [];
   List<ProductsModel> products = [];
@@ -18,8 +24,8 @@ class CartProvider extends ChangeNotifier {
   String get userId => userProvider.userId;
 
   CartProvider({required this.userProvider}) {
-    readCartData();
     userProvider.addListener(_onUserIdChanged);
+    readCartData();
   }
 
   void _onUserIdChanged() {
@@ -27,69 +33,61 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<String> addToCart(CartModel cartModel) async {
-    isLoading = true;
-    notifyListeners();
     try {
       await dbService.addToCart(userId, cartModel);
       readCartData();
-      isLoading = false;
-      notifyListeners();
       return "Added to cart successfully";
     } catch (e) {
-      isLoading = false;
-      notifyListeners();
       return "Error adding to cart";
     }
   }
 
-  void readCartData() async {
-    if (userId != "") {
-      isLoading = true;
-      notifyListeners();
+  void readCartData() {
+    if (userId.isEmpty) return;
 
-      await dbService.getUserCart(userId).listen(
-        (cartList) {
-          carts = cartList;
-          cartUids = carts.map((cart) => cart.productId).toList();
-
-          if (carts.isNotEmpty) {
-            readCartProducts(cartUids);
-          } else {
-            isLoading = false;
-            notifyListeners();
-          }
-        },
-        onError: (e) {
-          isLoading = false;
-          notifyListeners();
-        },
-      );
-    }
-  }
-
-  void readCartProducts(List<String> uids) async {
     isLoading = true;
     notifyListeners();
-    
-    products.clear();
 
-    for (String productId in uids) {
-      await dbService.getProductById(productId).listen(
-        (product) {
-          products.add(product);
-          addCost(products, carts);
-          calculateTotalQuantity();
-        },
-        onError: (e) {
+    _cartSubscription?.cancel();
+    _cartSubscription = dbService.getUserCart(userId).listen(
+      (cartList) {
+        carts = cartList;
+        cartUids = carts.map((cart) => cart.productId).toList();
+
+        if (carts.isNotEmpty) {
+          readCartProducts(cartUids);
+        } else {
           isLoading = false;
           notifyListeners();
-          print('Error fetching product with ID $productId: $e');
-        },
-      );
-    }
+        }
+      },
+      onError: (e) {
+        isLoading = false;
+        notifyListeners();
+      },
+    );
+  }
 
-    isLoading = false;
+  void readCartProducts(List<String> uids) {
+    if (uids.isEmpty) return;
+
+    isLoading = true;
     notifyListeners();
+
+    _productSubscription?.cancel();
+    _productSubscription = dbService.getProductsByIds(uids).listen(
+      (productsList) {
+        products = productsList;
+        addCost(products, carts);
+        calculateTotalQuantity();
+        isLoading = false;
+        notifyListeners();
+      },
+      onError: (e) {
+        isLoading = false;
+        notifyListeners();
+      },
+    );
   }
 
   void addCost(List<ProductsModel> products, List<CartModel> carts) {
@@ -113,36 +111,24 @@ class CartProvider extends ChangeNotifier {
   }
 
   Future<void> deleteItem(String productId) async {
-    isLoading = true;
-    notifyListeners();
     try {
       await dbService.deleteItemFromCart(userId, productId);
       readCartData();
-      isLoading = false;
-      notifyListeners();
     } catch (e) {
-      isLoading = false;
-      notifyListeners();
+      // handle error
     }
   }
 
   Future<void> decreaseCount(String productId) async {
-    isLoading = true;
-    notifyListeners();
     try {
       await dbService.decreaseCartQuantity(userId, productId);
       readCartData();
-      isLoading = false;
-      notifyListeners();
     } catch (e) {
-      isLoading = false;
-      notifyListeners();
+      // handle error
     }
   }
 
   Future<void> emptyCart() async {
-    isLoading = true;
-    notifyListeners();
     try {
       await dbService.emptyCart(userId);
       carts.clear();
@@ -152,15 +138,19 @@ class CartProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } catch (e) {
-      isLoading = false;
-      notifyListeners();
-      print("Error emptying the cart: $e");
+      // handle error
     }
+  }
+
+  void cancelProvider() {
+    _cartSubscription?.cancel();
+    _productSubscription?.cancel();
   }
 
   @override
   void dispose() {
     userProvider.removeListener(_onUserIdChanged);
+    cancelProvider();
     super.dispose();
   }
 }
