@@ -36,12 +36,6 @@ class UserProvider extends ChangeNotifier {
         phone = data.phone;
         userId = data.userId;
 
-        print(name);
-        print(email);
-        print(address);
-        print(phone);
-        print(userId);
-
         notifyListeners();
       }
     } catch (e) {

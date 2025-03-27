@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/pages/cart_page.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/medical_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
@@ -169,24 +170,35 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      AuthService().loginWithEmail(
+                      AuthService()
+                          .loginWithEmail(
                         _emailController.text,
                         _passwordController.text,
-                      ).then((value) async {
+                      )
+                          .then((value) async {
                         if (value == "Login Successful") {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Login Successful")),
                           );
-                          
-                          await Provider.of<UserProvider>(context, listen: false).loadUserData();
-                          await Provider.of<CartProvider>(context, listen: false).readCartData();
-                          await Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
-                          await Provider.of<MedicalProvider>(context, listen: false).initializeMedicals();
-                          
+
+                          await Provider.of<UserProvider>(context,
+                                  listen: false)
+                              .loadUserData();
+
+                          String userId = Provider.of<UserProvider>(context, listen: false).userId;
+
+
+
+                          await Provider.of<UserPetsProvider>(context,
+                                  listen: false)
+                              .fetchUserPets();
+                          await Provider.of<MedicalProvider>(context,
+                                  listen: false)
+                              .initializeMedicals();
 
                           Navigator.restorablePushNamedAndRemoveUntil(
                             context,
-                            "/page_selection",
+                            "/",
                             (route) => false,
                           );
                         } else {
