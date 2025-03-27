@@ -7,6 +7,7 @@ import 'package:petify/pages/page_selection.dart';
 import 'package:petify/pages/signup.dart';
 import 'package:petify/pages/sub_pages.dart/chat_page.dart';
 import 'package:petify/pages/sub_pages.dart/checkout_page.dart';
+import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/pages/sub_pages.dart/pet_health_and_medical_tracker.dart';
 import 'package:petify/pages/sub_pages.dart/specific_products.dart';
 import 'package:petify/pages/sub_pages.dart/update_profile.dart';
@@ -27,7 +28,9 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_,) {
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
+    _,
+  ) {
     runApp(const MyApp());
   });
 }
@@ -40,13 +43,14 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
-        ChangeNotifierProvider(create: (_) => CartProvider(),
+        ChangeNotifierProvider(
+          create: (_) => CartProvider(),
         ),
         ChangeNotifierProvider(
           create: (_) => InternetConnectionProvider(),
         ),
         ChangeNotifierProvider(create: (_) => UserPetsProvider()),
-        ChangeNotifierProvider(create: (_) => MedicalProvider(userPetsProvider: UserPetsProvider()))
+        ChangeNotifierProvider(create: (_) => MedicalProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -85,23 +89,58 @@ class _CheckUserState extends State<CheckUser> {
   @override
   void initState() {
     super.initState();
-    AuthService().getCurrentUser().then((user) {
-      if (user != null) {
+    _checkUserAndLoadData();
+  }
 
-        String userId = user['user_id'];
+  Future<void> _checkUserAndLoadData() async {
+    var user = await AuthService().getCurrentUser();
 
-        Provider.of<CartProvider>(context, listen: false).readCartData(userId);
-        Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets(userId);
+    if (user != null) {
+      String userId = user['user_id'];
 
-        Navigator.pushReplacementNamed(context, "/page_selection");
-      } else {
-        Navigator.pushReplacementNamed(context, "/login");
+      await Provider.of<CartProvider>(context, listen: false)
+          .readCartData(userId);
+      await Provider.of<UserPetsProvider>(context, listen: false)
+          .fetchUserPets(userId);
+
+      await _waitForPetsToLoad();
+
+      await Provider.of<MedicalProvider>(context, listen: false)
+          .initializeMedicals(context);
+
+      Navigator.pushReplacementNamed(context, "/page_selection");
+    } else {
+      Navigator.pushReplacementNamed(context, "/login");
+    }
+  }
+
+  Future<void> _waitForPetsToLoad() async {
+    await Future.doWhile(() async {
+      if (Provider.of<UserPetsProvider>(context, listen: false).isLoading) {
+        await Future.delayed(Duration(milliseconds: 200));
+        return true;
       }
+      return false;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: CircularProgressIndicator()));
+    final isConnectedToInternet =
+        Provider.of<InternetConnectionProvider>(context).isConnectedToInternet;
+
+    return !isConnectedToInternet
+        ? const NoInternet()
+        : Scaffold(
+            body: Consumer<UserPetsProvider>(
+              builder: (context, userPetsProvider, child) {
+                if (userPetsProvider.isLoading) {
+                  return Center(child: CircularProgressIndicator());
+                } else {
+                  return Center(child: CircularProgressIndicator());
+                }
+              },
+            ),
+          );
   }
 }

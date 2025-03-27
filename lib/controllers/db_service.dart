@@ -238,9 +238,7 @@ class DBService {
           List<Map<String, dynamic>>.from(response.data));
       yield medicals;
     } catch (e) {
-      if (e is DioError && e.response?.statusCode == 404) {
-        yield [];
-      }
+      // if use 404 it will send qmpty list ( you need to change it in the future)
       print("Failed to get medicals $e");
     }
   }

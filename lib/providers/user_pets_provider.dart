@@ -2,7 +2,9 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/db_service.dart';
 import 'package:petify/models/user_pets_model.dart';
+import 'package:petify/providers/medical_provider.dart';
 import 'package:petify/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 // class UserPetsProvider extends ChangeNotifier {
 //   final DBService dbService = DBService();
@@ -117,36 +119,38 @@ class UserPetsProvider extends ChangeNotifier {
   List<UserPetsModel> _userPets = [];
   StreamSubscription<List<UserPetsModel>>? _petsSubscription;
 
-  bool isLoading = false;
+  bool isLoading = true;
   String userId = "";
 
   List<UserPetsModel> get userPets => _userPets;
 
-
   Future<void> fetchUserPets(String newUid) async {
     userId = newUid;
-      try {
-        isLoading = true;
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          notifyListeners();
-        });
+    try {
+      isLoading = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
 
-        String userId = this.userId;
+      String userId = this.userId;
 
-        _petsSubscription = dbService.getUserPets(userId).asBroadcastStream().listen((pets) {
-          _userPets = pets;
-          isLoading = false;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            notifyListeners();
-          });
-        });
-      } catch (e) {
-        print("Error fetching pets: $e");
+      _petsSubscription =
+          dbService.getUserPets(userId).asBroadcastStream().listen((pets) {
+        _userPets = pets;
+
         isLoading = false;
         WidgetsBinding.instance.addPostFrameCallback((_) {
+          isLoading = false;
           notifyListeners();
         });
-      }
+      });
+    } catch (e) {
+      print("Error fetching pets: $e");
+      isLoading = false;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        notifyListeners();
+      });
+    }
   }
 
   Future<void> addPet(UserPetsModel pet) async {
@@ -189,11 +193,7 @@ class UserPetsProvider extends ChangeNotifier {
     _petsSubscription?.cancel();
     _petsSubscription = null;
     _userPets = [];
-    notifyListeners();
-  }
-
-  void clearPets() {
-    _userPets = [];
+    userId = "";
     notifyListeners();
   }
 

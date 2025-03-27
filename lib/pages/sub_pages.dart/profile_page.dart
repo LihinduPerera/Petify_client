@@ -40,7 +40,8 @@ class _ProfilePageState extends State<ProfilePage> {
               builder: (context, value, child) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Card(
-                  color: const Color.fromARGB(255, 246, 180, 255).withOpacity(0.4),
+                  color:
+                      const Color.fromARGB(255, 246, 180, 255).withOpacity(0.4),
                   elevation: 8,
                   shadowColor: Colors.blueGrey.withOpacity(0.4),
                   child: ListTile(
@@ -61,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               title: Text("Orders"),
               leading: Icon(Icons.local_shipping_outlined,
-              color: const Color.fromARGB(255, 131, 139, 250)),
+                  color: const Color.fromARGB(255, 131, 139, 250)),
               onTap: () {
                 Navigator.pushNamed(context, "/orders");
               },
@@ -72,9 +73,11 @@ class _ProfilePageState extends State<ProfilePage> {
               indent: 10,
             ),
             ListTile(
-              title: Text("Discount & Offers",),
+              title: Text(
+                "Discount & Offers",
+              ),
               leading: Icon(Icons.discount_outlined,
-              color: const Color.fromARGB(255, 122, 250, 122)),
+                  color: const Color.fromARGB(255, 122, 250, 122)),
               onTap: () {
                 Navigator.pushNamed(context, "/discount");
               },
@@ -87,11 +90,12 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               title: Text("Help & Support"),
               leading: Icon(Icons.support_agent,
-              color: const Color.fromARGB(255, 248, 121, 121)),
+                  color: const Color.fromARGB(255, 248, 121, 121)),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                  duration: Duration(milliseconds: 6000),
-                    content: Text("Mail me @lihindu.indudunu.perera@gmail.com")));
+                    duration: Duration(milliseconds: 6000),
+                    content:
+                        Text("Mail me @lihindu.indudunu.perera@gmail.com")));
               },
             ),
             Divider(
@@ -102,32 +106,20 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               title: Text("Logout"),
               leading: Icon(Icons.logout_outlined),
-              onTap: () async{
-
+              onTap: () async {
                 Provider.of<UserProvider>(context, listen: false)
-                      .cancelProvider();
-                  Provider.of<UserPetsProvider>(context, listen: false)
-                      .cancelProvider();
-                  Provider.of<MedicalProvider>(context, listen: false)
-                      .cancelProvider();
-                  Provider.of<CartProvider>(context, listen: false)
-                      .cancelProvider();
+                    .cancelProvider();
+                Provider.of<UserPetsProvider>(context, listen: false)
+                    .cancelProvider();
+                Provider.of<MedicalProvider>(context, listen: false)
+                    .cancelProvider();
+                Provider.of<CartProvider>(context, listen: false)
+                    .cancelProvider();
 
-                  await AuthService().logout();
+                await AuthService().logout();
 
-                  exit(0);
-
-                // Provider.of<UserProvider>(context, listen: false)
-                //     .cancelProvider();
-                // // Provider.of<CartProvider>(context, listen: false)
-                // //     .cancelProvider();
-                // // Provider.of<UserPetsProvider>(context, listen: false)
-                // //     .cancelFetchingPets();
-        
-                // await AuthService().logout();
-        
-                // Navigator.pushNamedAndRemoveUntil(
-                //     context, "/login", (route) => true);
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/login", (route) => false);
               },
             ),
           ],

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -206,8 +204,6 @@ class _MorePageState extends State<MorePage>
                       .cancelProvider();
 
                   await AuthService().logout();
-
-                  // exit(0);
 
                   Navigator.pushNamedAndRemoveUntil(
                       context, "/login", (route) => false);
