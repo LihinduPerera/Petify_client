@@ -87,8 +87,11 @@ class _CheckUserState extends State<CheckUser> {
     super.initState();
     AuthService().getCurrentUser().then((user) {
       if (user != null) {
+
         String userId = user['user_id'];
+
         Provider.of<CartProvider>(context, listen: false).readCartData(userId);
+
         Navigator.pushReplacementNamed(context, "/page_selection");
       } else {
         Navigator.pushReplacementNamed(context, "/login");

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:petify/controllers/db_service.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/products_model.dart';
-import 'package:petify/providers/user_provider.dart';
 
 // class CartProvider extends ChangeNotifier {
 //   final DBService dbService = DBService();

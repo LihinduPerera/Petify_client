@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 class SingupPage extends StatefulWidget {
   const SingupPage({super.key});
@@ -119,8 +121,11 @@ class _SingupPageState extends State<SingupPage> {
                             if (value == "Account Created") {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text("Account Created")));
+
+                              Provider.of<UserProvider>(context, listen: false).loadUserData();
+
                               Navigator.restorablePushNamedAndRemoveUntil(
-                                  context, "/page_selection", (route) => false);
+                                  context, "/", (route) => false);
                             } else {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(SnackBar(
