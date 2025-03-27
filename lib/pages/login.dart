@@ -177,24 +177,9 @@ class _LoginPageState extends State<LoginPage> {
                       )
                           .then((value) async {
                         if (value == "Login Successful") {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Login Successful")),
-                          );
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login Successful")),);
 
-                          await Provider.of<UserProvider>(context,
-                                  listen: false)
-                              .loadUserData();
-
-                          String userId = Provider.of<UserProvider>(context, listen: false).userId;
-
-
-
-                          await Provider.of<UserPetsProvider>(context,
-                                  listen: false)
-                              .fetchUserPets();
-                          await Provider.of<MedicalProvider>(context,
-                                  listen: false)
-                              .initializeMedicals();
+                          await Provider.of<UserProvider>(context,listen: false) .loadUserData();
 
                           Navigator.restorablePushNamedAndRemoveUntil(
                             context,

@@ -45,8 +45,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (_) => InternetConnectionProvider(),
         ),
-        ChangeNotifierProvider(create: (_) => UserPetsProvider(userProvider: UserProvider())),
-        ChangeNotifierProvider(create: (_) => MedicalProvider(userPetsProvider: UserPetsProvider(userProvider: UserProvider())))
+        ChangeNotifierProvider(create: (_) => UserPetsProvider()),
+        ChangeNotifierProvider(create: (_) => MedicalProvider(userPetsProvider: UserPetsProvider()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -91,6 +91,7 @@ class _CheckUserState extends State<CheckUser> {
         String userId = user['user_id'];
 
         Provider.of<CartProvider>(context, listen: false).readCartData(userId);
+        Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets(userId);
 
         Navigator.pushReplacementNamed(context, "/page_selection");
       } else {
