@@ -345,7 +345,6 @@ class _UserPetsContainerForTrackerState
   @override
   void initState() {
     super.initState();
-    // Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
   }
 
   @override

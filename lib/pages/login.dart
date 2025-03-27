@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
-import 'package:petify/pages/cart_page.dart';
-import 'package:petify/providers/cart_provider.dart';
-import 'package:petify/providers/medical_provider.dart';
-import 'package:petify/providers/user_pets_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -28,21 +25,29 @@ class _LoginPageState extends State<LoginPage> {
           key: formKey,
           child: Column(
             children: [
-              const SizedBox(height: 120),
+              SizedBox(
+                height: 30,
+              ),
               SizedBox(
                 width: MediaQuery.of(context).size.width * .9,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Container(
+                      child: Lottie.asset(
+                        'assets/animations/hellow_world.json',
+                        width: MediaQuery.of(context).size.width,
+                        fit: BoxFit.fitWidth
+                      ),
+                    ),
                     const Text(
                       "Login",
                       style: TextStyle(
-                        fontSize: 40,
+                        fontSize: 30,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const Text("Get started with your account"),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .9,
                       child: TextFormField(
@@ -159,7 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       );
                     },
-                    child: Text("Forget Password"),
+                    child: Text("Forget Password",
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 114, 133, 228)
+                    ),),
                   ),
                 ],
               ),
@@ -207,8 +215,8 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 143, 204, 179),
-                    foregroundColor: const Color.fromARGB(255, 255, 255, 255),
+                    backgroundColor: Color.fromARGB(255, 219, 197, 74).withOpacity(0.6),
+                    foregroundColor: Colors.black
                   ),
                   child: const Text("Login", style: TextStyle(fontSize: 16)),
                 ),
@@ -222,7 +230,10 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, "/signup");
                     },
-                    child: const Text("Sign Up"),
+                    child: const Text("Sign Up", 
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 114, 133, 228)
+                    ),),
                   ),
                 ],
               ),

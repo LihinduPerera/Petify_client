@@ -34,12 +34,6 @@ class MedicalContainer extends StatelessWidget {
                             color: Color(0xff92A3FD).withOpacity(0.4),
                             borderRadius: BorderRadius.circular(30)
                           ),
-                          // color: const Color(0xffc58BF2).withOpacity(0.4),
-                          // elevation: 8,
-                          // shape: RoundedRectangleBorder(
-                          //   borderRadius: BorderRadius.circular(30),
-                          // ),
-                          
                           child: SingleChildScrollView(
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
@@ -110,10 +104,7 @@ class MedicalContainer extends StatelessWidget {
                                                           ),
                                                         ],
                                                       ),
-                                                    ),                                          // decoration: BoxDecoration(
-                                                    //   color: Color.fromARGB(255, 91, 113, 223).withOpacity(0.4),
-                                                    //   borderRadius: BorderRadius.circular(20),
-                                                    // ),
+                                                    ),
                                                   ),
                                                   const SizedBox(height: 10),
                                                 ],

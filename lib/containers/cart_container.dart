@@ -62,7 +62,7 @@ class _CartContainerState extends State<CartContainer> {
       padding: const EdgeInsets.all(8.0),
       child: Card(
         // color: Colors.grey.shade300,
-        color: const Color(0xffc58BF2).withOpacity(0.4),
+        color: const Color.fromARGB(255, 216, 184, 241).withOpacity(0.4),
         elevation: 8,
         shadowColor: Colors.blueGrey.withOpacity(0.4),
         child: Container(

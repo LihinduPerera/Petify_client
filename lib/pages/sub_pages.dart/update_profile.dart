@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -30,6 +31,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFeeedf2),
       appBar: AppBar(
         title: Text("Update Profile"),
         scrolledUnderElevation: 0,
@@ -39,9 +41,14 @@ class _UpdateProfileState extends State<UpdateProfile> {
         child: Form(
           key: formKey,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 13),
             child: Column(
               children: [
+                Container(
+                  child: Lottie.asset(
+                    'assets/animations/CuttiePack_Note.json'
+                  ),
+                ),
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
@@ -53,7 +60,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       (value) =>
                           value!.isEmpty ? "Name cannot be empty." : null,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 TextFormField(
                   controller: _emailController,
                   readOnly: true,
@@ -66,7 +73,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       (value) =>
                           value!.isEmpty ? "Email cannot be empty." : null,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 TextFormField(
                   maxLines: 3,
                   controller: _addressController,
@@ -79,7 +86,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       (value) =>
                           value!.isEmpty ? "Address cannot be empty." : null,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 TextFormField(
                   controller: _phoneController,
                   decoration: InputDecoration(
@@ -91,7 +98,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       (value) =>
                           value!.isEmpty ? "Phone cannot be empty." : null,
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 SizedBox(
                   height: 60,
                   width: MediaQuery.of(context).size.width * .9,
@@ -125,8 +132,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      foregroundColor: Colors.white,
+                      elevation: 8,
+                      backgroundColor: const Color.fromARGB(255, 246, 180, 255).withOpacity(0.4),
+                      foregroundColor: Colors.black
                     ),
                     child: Text(
                       "Update Profile",

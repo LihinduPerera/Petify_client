@@ -98,7 +98,7 @@ class _StorePageState extends State<StorePage> {
         borderRadius: BorderRadius.circular(50),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1), // Adjust shadow color and opacity
+            color: Colors.black.withOpacity(0.1),
             spreadRadius: 3,
             blurRadius: 5,
             offset: const Offset(0, 3),

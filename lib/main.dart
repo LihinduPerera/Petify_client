@@ -132,12 +132,13 @@ class _CheckUserState extends State<CheckUser> {
     return !isConnectedToInternet
         ? const NoInternet()
         : Scaffold(
+          backgroundColor: const Color(0xFFeeedf2),
             body: Consumer<UserPetsProvider>(
               builder: (context, userPetsProvider, child) {
                 if (userPetsProvider.isLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(color: Colors.red,));
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(child: CircularProgressIndicator(color: Colors.red,));
                 }
               },
             ),

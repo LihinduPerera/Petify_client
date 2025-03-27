@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -20,25 +21,29 @@ class _SingupPageState extends State<SingupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFeeedf2),
       body: SingleChildScrollView(
         child: Form(
           key: formKey,
           child: Column(
             children: [
               SizedBox(
-                height: 120,
-              ),
-              SizedBox(
                 width: MediaQuery.of(context).size.width * .9,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Container(
+                      child: Lottie.asset(
+                        'assets/animations/hellow_world.json',
+                        width: MediaQuery.of(context).size.width/1.25,
+                        fit: BoxFit.fitWidth
+                      ),
+                    ),
                     Text(
                       "Sign Up",
                       style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.w700),
+                          TextStyle(fontSize: 30, fontWeight: FontWeight.w700),
                     ),
-                    Text("Create a new account and get started"),
                     SizedBox(
                       height: 10,
                     ),
@@ -121,9 +126,9 @@ class _SingupPageState extends State<SingupPage> {
                             if (value == "Account Created") {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text("Account Created")));
-
+          
                               Provider.of<UserProvider>(context, listen: false).loadUserData();
-
+          
                               Navigator.restorablePushNamedAndRemoveUntil(
                                   context, "/", (route) => false);
                             } else {
@@ -140,8 +145,8 @@ class _SingupPageState extends State<SingupPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          foregroundColor: Colors.white),
+                          backgroundColor: Color.fromARGB(255, 219, 197, 74).withOpacity(0.6),
+                          foregroundColor: Colors.black),
                       child: Text(
                         "Sign Up",
                         style: TextStyle(fontSize: 16),
