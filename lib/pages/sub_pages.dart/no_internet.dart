@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
-class NoInternet extends StatelessWidget {
+class NoInternet extends StatefulWidget {
   const NoInternet({super.key});
+
+  @override
+  State<NoInternet> createState() => _NoInternetState();
+}
+
+class _NoInternetState extends State<NoInternet> {
 
   @override
   Widget build(BuildContext context) {

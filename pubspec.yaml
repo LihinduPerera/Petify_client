@@ -41,7 +41,6 @@ dependencies:
   fluentui_icons: ^1.0.0
   carousel_slider: ^5.0.0
   google_maps_flutter: ^2.10.1
-  location: ^7.0.1
   flutter_polyline_points: ^2.1.0
   flutter_launcher_icons: ^0.14.3
   internet_connection_checker_plus: ^2.7.1
@@ -50,6 +49,7 @@ dependencies:
   shimmer: ^3.0.0
   http: ^1.3.0
   google_generative_ai: ^0.4.6
+  location: ^7.0.1
 
 dev_dependencies:
   flutter_test:

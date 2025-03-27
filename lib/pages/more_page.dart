@@ -207,10 +207,10 @@ class _MorePageState extends State<MorePage>
 
                   await AuthService().logout();
 
-                  exit(0);
+                  // exit(0);
 
-                  // Navigator.pushNamedAndRemoveUntil(
-                  //     context, "/login", (route) => true);
+                  Navigator.pushNamedAndRemoveUntil(
+                      context, "/login", (route) => false);
                 },
               ),
             ],

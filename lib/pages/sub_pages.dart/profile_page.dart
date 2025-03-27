@@ -1,5 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/providers/cart_provider.dart';
+import 'package:petify/providers/medical_provider.dart';
+import 'package:petify/providers/user_pets_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -96,7 +102,21 @@ class _ProfilePageState extends State<ProfilePage> {
             ListTile(
               title: Text("Logout"),
               leading: Icon(Icons.logout_outlined),
-              onTap: () async {
+              onTap: () async{
+
+                Provider.of<UserProvider>(context, listen: false)
+                      .cancelProvider();
+                  Provider.of<UserPetsProvider>(context, listen: false)
+                      .cancelProvider();
+                  Provider.of<MedicalProvider>(context, listen: false)
+                      .cancelProvider();
+                  Provider.of<CartProvider>(context, listen: false)
+                      .cancelProvider();
+
+                  await AuthService().logout();
+
+                  exit(0);
+
                 // Provider.of<UserProvider>(context, listen: false)
                 //     .cancelProvider();
                 // // Provider.of<CartProvider>(context, listen: false)

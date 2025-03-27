@@ -8,7 +8,7 @@ import 'package:petify/providers/user_provider.dart';
 
 class CartProvider extends ChangeNotifier {
   final DBService dbService = DBService();
-  final UserProvider userProvider;
+  UserProvider userProvider;
 
   StreamSubscription<List<CartModel>>? _cartSubscription;
   StreamSubscription<List<ProductsModel>>? _productSubscription;
@@ -42,13 +42,12 @@ class CartProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> readCartData() async{
+  Future<void> readCartData() async {
     if (userId.isEmpty) return;
 
     isLoading = true;
     notifyListeners();
 
-    _cartSubscription?.cancel();
     _cartSubscription = dbService.getUserCart(userId).listen(
       (cartList) {
         carts = cartList;
@@ -63,6 +62,9 @@ class CartProvider extends ChangeNotifier {
       },
       onError: (e) {
         isLoading = false;
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          notifyListeners();
+        });
         notifyListeners();
       },
     );
@@ -114,17 +116,14 @@ class CartProvider extends ChangeNotifier {
     try {
       await dbService.deleteItemFromCart(userId, productId);
       readCartData();
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   Future<void> decreaseCount(String productId) async {
     try {
       await dbService.decreaseCartQuantity(userId, productId);
       readCartData();
-    } catch (e) {
-    }
+    } catch (e) {}
   }
 
   Future<void> emptyCart() async {
@@ -136,9 +135,7 @@ class CartProvider extends ChangeNotifier {
       totalQuantity = 0;
       isLoading = false;
       notifyListeners();
-    } catch (e) {
-
-    }
+    } catch (e) {}
   }
 
   void cancelProvider() {
@@ -150,7 +147,7 @@ class CartProvider extends ChangeNotifier {
     cartUids = [];
     products = [];
     totalCost = 0;
-    totalQuantity - 0;
+    totalQuantity = 0;
     notifyListeners();
   }
 

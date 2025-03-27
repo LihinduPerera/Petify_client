@@ -39,15 +39,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(
-          create: (context) => CartProvider(userProvider: UserProvider()),
+          create: (_) => CartProvider(userProvider: UserProvider()),
         ),
         ChangeNotifierProvider(
-          create: (context) => InternetConnectionProvider(),
+          create: (_) => InternetConnectionProvider(),
         ),
-        ChangeNotifierProvider(create: (context) => UserPetsProvider(userProvider: UserProvider())),
-        ChangeNotifierProvider(create: (context) => MedicalProvider(userPetsProvider: UserPetsProvider(userProvider: UserProvider())))
+        ChangeNotifierProvider(create: (_) => UserPetsProvider(userProvider: UserProvider())),
+        ChangeNotifierProvider(create: (_) => MedicalProvider(userPetsProvider: UserPetsProvider(userProvider: UserProvider())))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -177,13 +177,11 @@ class _LoginPageState extends State<LoginPage> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Login Successful")),
                           );
-
-                          // Center(child: CircularProgressIndicator(),);
-
-                          // await Provider.of<UserProvider>(context, listen: false).loadUserData();
-                          // await Provider.of<CartProvider>(context, listen: false).readCartData();
-                          // await Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
-                          // await Provider.of<MedicalProvider>(context, listen: false).initializeMedicals();
+                          
+                          await Provider.of<UserProvider>(context, listen: false).loadUserData();
+                          await Provider.of<CartProvider>(context, listen: false).readCartData();
+                          await Provider.of<UserPetsProvider>(context, listen: false).fetchUserPets();
+                          await Provider.of<MedicalProvider>(context, listen: false).initializeMedicals();
                           
 
                           Navigator.restorablePushNamedAndRemoveUntil(
