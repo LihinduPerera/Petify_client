@@ -6,20 +6,20 @@ import 'package:petify/pages/more_page.dart';
 import 'package:petify/pages/pet_ride.dart';
 import 'package:petify/pages/store_page.dart';
 
-class pageSelection extends StatefulWidget {
+class PageSelection extends StatefulWidget {
   final int defaultPage;
-  const pageSelection({super.key, required this.defaultPage});
+  const PageSelection({super.key, required this.defaultPage});
 
   @override
-  State<pageSelection> createState() => _pageSelectionState();
+  State<PageSelection> createState() => _PageSelectionState();
 }
 
-class _pageSelectionState extends State<pageSelection> {
+class _PageSelectionState extends State<PageSelection> {
 
   final applicationPages = [
     const CartPage(),
     const StorePage(),
-    const homePage(),
+    const HomePage(),
     const PetRidePage(),
     const MorePage()
   ];

@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(fontFamily: 'Poppins'),
         routes: {
           "/": (context) => CheckUser(),
-          "/page_selection": (context) => pageSelection(
+          "/page_selection": (context) => PageSelection(
                 defaultPage: 2,
               ),
           "/login": (context) => LoginPage(),
@@ -70,8 +70,8 @@ class MyApp extends StatelessWidget {
           "/update_profile": (context) => UpdateProfile(),
           "/pet_health_and_medical_tracker": (context) =>
               PetHealthAndMedicalTrackerPage(),
-          "/from_anyware_to_store": (context) => pageSelection(defaultPage: 1),
-          "/from_anyware_to_cart": (context) => pageSelection(defaultPage: 0),
+          "/from_anyware_to_store": (context) => PageSelection(defaultPage: 1),
+          "/from_anyware_to_cart": (context) => PageSelection(defaultPage: 0),
           "/checkout": (context) => CheckoutPage(),
           "/chatbot": (context) => ChatPage(),
         },
