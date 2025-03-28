@@ -24,6 +24,7 @@ class ShopProvider extends ChangeNotifier{
 
   ShopProvider() {
     fetchCategories();
+    fetchBanners();
   }
   
   Future<void> fetchCategories() async{
