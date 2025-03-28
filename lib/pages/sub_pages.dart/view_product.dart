@@ -142,18 +142,8 @@ class _ViewProductState extends State<ViewProduct> {
                       ).showSnackBar(SnackBar(content: Text(message)));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                        255,
-                        30,
-                        136,
-                        229,
-                      ),
-                      foregroundColor: const Color.fromARGB(
-                        255,
-                        255,
-                        255,
-                        255,
-                      ),
+                      backgroundColor: const Color.fromARGB(255,30,136,229,),
+                      foregroundColor: const Color.fromARGB(255,255,255,255),
                       shape: const RoundedRectangleBorder(),
                     ),
                     child: const Text("Add to Cart"),
@@ -177,18 +167,8 @@ class _ViewProductState extends State<ViewProduct> {
                       Navigator.pushNamed(context, "/checkout");
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(
-                        255,
-                        255,
-                        255,
-                        255,
-                      ),
-                      foregroundColor: const Color.fromARGB(
-                        255,
-                        30,
-                        136,
-                        229,
-                      ),
+                      backgroundColor: const Color.fromARGB(255,255,255,255),
+                      foregroundColor: const Color.fromARGB(255,30,136,229),
                       shape: const RoundedRectangleBorder(),
                     ),
                     child: const Text("Buy Now"),

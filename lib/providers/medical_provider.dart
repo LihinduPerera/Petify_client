@@ -21,15 +21,6 @@ class MedicalProvider extends ChangeNotifier {
     }
   }
 
-  void _clearMedicals() {
-    _medicals.clear();
-    if (_medicalsSubscription != null) {
-      _medicalsSubscription?.cancel();
-      _medicalsSubscription = null;
-    }
-    notifyListeners();
-  }
-
   Future<void> fetchMedicals(String petId) async {
     try {
       isLoading = true;
