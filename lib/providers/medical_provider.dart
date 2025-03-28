@@ -10,7 +10,7 @@ class MedicalProvider extends ChangeNotifier {
 
   List<MedicalModel> _medicals = [];
   StreamSubscription<List<MedicalModel>>? _medicalsSubscription;
-  bool isLoading = false;
+  bool isLoading = true;
 
   Future<void> initializeMedicals(BuildContext context) async {
     final userPetsProvider = Provider.of<UserPetsProvider>(context, listen: false);

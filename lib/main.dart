@@ -15,6 +15,7 @@ import 'package:petify/pages/sub_pages.dart/view_product.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/providers/medical_provider.dart';
+import 'package:petify/providers/shop_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (_) => UserPetsProvider()),
         ChangeNotifierProvider(create: (_) => MedicalProvider()),
+        ChangeNotifierProvider(create: (context) => ShopProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
