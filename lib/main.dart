@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/controllers/notification_service.dart';
 import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/login.dart';
 import 'package:petify/pages/page_selection.dart';
@@ -29,6 +30,9 @@ void main() async {
       statusBarIconBrightness: Brightness.dark,
     ),
   );
+  
+  //init Notifications
+  NotificationService().initNotification();
 
   //Turn off auto rotating
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
