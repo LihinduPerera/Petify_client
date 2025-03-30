@@ -74,13 +74,14 @@ class NotificationService {
     required String title,
     required String body,
     required String payload,
+    required DateTime date,
   }) async {
     tz.initializeTimeZones();
     await _flutterLocalNotificationsPlugin.zonedSchedule(
         2,
         title,
         body,
-        tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+        tz.TZDateTime.from(date, tz.local),
         const NotificationDetails(
             android: AndroidNotificationDetails(
                 'channel 3', 'your channel name',
@@ -92,7 +93,7 @@ class NotificationService {
         payload: payload);
   }
 
-  //Close a specific channel notification
+  //Cancel the notifications
   static Future cancel(int id) async {
     await _flutterLocalNotificationsPlugin.cancel(id);
   }

@@ -5,6 +5,8 @@ class MedicalModel {
   String medication;
   String notes;
   String status;
+  bool? isNotified;
+  bool? isNewMedical;
 
   MedicalModel(
       {required this.id,
@@ -12,7 +14,9 @@ class MedicalModel {
       required this.date,
       required this.medication,
       required this.notes,
-      required this.status,});
+      required this.status,
+      required this.isNotified,
+      required this.isNewMedical});
 
   factory MedicalModel.fromJson(Map<String, dynamic> json) {
     return MedicalModel(
@@ -22,6 +26,8 @@ class MedicalModel {
       medication: json["medication"] ?? "",
       notes: json["notes"] ?? "",
       status: json["status"] ?? "",
+      isNotified: json["isNotified"] ?? true,
+      isNewMedical: json["isNewMedical"] ?? false,
     );
   }
 

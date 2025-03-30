@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:petify/controllers/baseUrl.dart';
@@ -230,7 +231,7 @@ class DBService {
     }
   }
 
-  //get Medicals
+  // Medicals
   Stream<List<MedicalModel>> getMedicals(String petId) async* {
     try {
       final response = await _dio.get('$baseUrl/$petId/medicals');
@@ -242,4 +243,40 @@ class DBService {
       print("Failed to get medicals $e");
     }
   }
+
+  Future<bool> updateNotificationFlags(String medicalId, bool? isNotified, bool? isNewMedical) async {
+  try {
+    Map<String, dynamic> notificationData = {};
+
+    if (isNotified != null) {
+      notificationData['isNotified'] = isNotified;
+    }
+    if (isNewMedical != null) {
+      notificationData['isNewMedical'] = isNewMedical;
+    }
+
+    if (notificationData.isEmpty) {
+      throw Exception("At least one flag ('isNotified' or 'isNewMedical') must be provided.");
+    }
+    print('Sending payload: $notificationData');
+
+
+    final response = await _dio.patch(
+      '$baseUrl/medicals/$medicalId/notification',
+      data: jsonEncode(notificationData),
+      options: Options(headers: {'Content-Type': 'application/json'}),
+    );
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print('Failed to update notification flags: ${response.data}');
+      return false;
+    }
+  } catch (e) {
+    print('Error updating notification flags: $e');
+    return false;
+  }
+}
+
 }
