@@ -12,6 +12,8 @@ class MedicalProvider extends ChangeNotifier {
   StreamSubscription<List<MedicalModel>>? _medicalsSubscription;
   bool isLoading = true;
 
+  List<MedicalModel> get medicals => _medicals;
+
   Future<void> initializeMedicals(BuildContext context) async {
     final userPetsProvider = Provider.of<UserPetsProvider>(context, listen: false);
     final userPets = userPetsProvider.userPets;
@@ -43,8 +45,6 @@ class MedicalProvider extends ChangeNotifier {
       });
     }
   }
-
-  List<MedicalModel> get medicals => _medicals;
 
   void cancelProvider() {
     _medicalsSubscription?.cancel();

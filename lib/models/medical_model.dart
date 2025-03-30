@@ -12,7 +12,7 @@ class MedicalModel {
       required this.date,
       required this.medication,
       required this.notes,
-      required this.status});
+      required this.status,});
 
   factory MedicalModel.fromJson(Map<String, dynamic> json) {
     return MedicalModel(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/providers/user_provider.dart';
@@ -16,7 +17,8 @@ class _SingupPageState extends State<SingupPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +35,9 @@ class _SingupPageState extends State<SingupPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Lottie.asset(
-                        'assets/animations/hellow_world.json',
-                        width: MediaQuery.of(context).size.width/1.25,
-                        fit: BoxFit.fitWidth
-                      ),
+                      child: Lottie.asset('assets/animations/hellow_world.json',
+                          width: MediaQuery.of(context).size.width / 1.25,
+                          fit: BoxFit.fitWidth),
                     ),
                     Text(
                       "Sign Up",
@@ -57,6 +57,8 @@ class _SingupPageState extends State<SingupPage> {
                             border: OutlineInputBorder(),
                             label: Text("Name"),
                           ),
+                          maxLength: 15,
+                          maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         )),
                     SizedBox(
                       height: 10,
@@ -94,9 +96,10 @@ class _SingupPageState extends State<SingupPage> {
                     SizedBox(
                         width: MediaQuery.of(context).size.width * .9,
                         child: TextFormField(
-                          validator: (value) => value != _passwordController.text
-                              ? "Passwords do not match!"
-                              : null, // Confirm password validation
+                          validator: (value) =>
+                              value != _passwordController.text
+                                  ? "Passwords do not match!"
+                                  : null, // Confirm password validation
                           controller: _confirmPasswordController,
                           obscureText: true,
                           decoration: InputDecoration(
@@ -121,14 +124,16 @@ class _SingupPageState extends State<SingupPage> {
                                   _nameController.text,
                                   _emailController.text,
                                   _passwordController.text,
-                                  _confirmPasswordController.text) // Pass confirmPassword
+                                  _confirmPasswordController
+                                      .text) // Pass confirmPassword
                               .then((value) {
                             if (value == "Account Created") {
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text("Account Created")));
-          
-                              Provider.of<UserProvider>(context, listen: false).loadUserData();
-          
+
+                              Provider.of<UserProvider>(context, listen: false)
+                                  .loadUserData();
+
                               Navigator.restorablePushNamedAndRemoveUntil(
                                   context, "/", (route) => false);
                             } else {
@@ -145,7 +150,8 @@ class _SingupPageState extends State<SingupPage> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 219, 197, 74).withOpacity(0.6),
+                          backgroundColor: Color.fromARGB(255, 219, 197, 74)
+                              .withOpacity(0.6),
                           foregroundColor: Colors.black),
                       child: Text(
                         "Sign Up",

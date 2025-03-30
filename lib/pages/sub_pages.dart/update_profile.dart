@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -56,6 +57,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     hintText: "Name",
                     border: OutlineInputBorder(),
                   ),
+                  maxLength: 15,
+                  maxLengthEnforcement: MaxLengthEnforcement.enforced,
                   validator:
                       (value) =>
                           value!.isEmpty ? "Name cannot be empty." : null,

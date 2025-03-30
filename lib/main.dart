@@ -32,7 +32,7 @@ void main() async {
   );
   
   //init Notifications
-  NotificationService().initNotification();
+  await NotificationService.init();
 
   //Turn off auto rotating
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((
