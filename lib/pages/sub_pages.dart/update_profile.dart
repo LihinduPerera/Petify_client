@@ -91,6 +91,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 ),
                 SizedBox(height: 15),
                 TextFormField(
+                  maxLength: 10,
                   controller: _phoneController,
                   decoration: InputDecoration(
                     labelText: "Phone",

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
-import 'package:petify/pages/home_page.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -19,19 +18,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    Future googleSignIn() async{
-      final user = await GoogleSignInApi.login();
-
-      if(user == null) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sign In Failed")));
-      } else  {
-        print(user.email);
-        print(user.displayName);
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
-      }
-    }
-
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       body: SingleChildScrollView(
@@ -59,26 +45,78 @@ class _LoginPageState extends State<LoginPage> {
                           height: 40,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                shadowColor: Colors.black,
-                                backgroundColor: Color.fromARGB(255, 255, 255, 255)),
-                            onPressed: () {
-                              googleSignIn();
+                              elevation: 4,
+                              shadowColor: Colors.black,
+                              backgroundColor: Color.fromARGB(255, 229, 255, 254).withOpacity(0.6)),
+                            onPressed: () async {
+                              AuthService authService = new AuthService();
+                              await authService
+                                  .loginUsingGoogleAuth()
+                                  .then((value) async {
+                                if (value == "Login Successful") {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text("Login Successful")),
+                                  );
+
+                                  await Provider.of<UserProvider>(context,
+                                          listen: false)
+                                      .loadUserData();
+
+                                  Navigator.restorablePushNamedAndRemoveUntil(
+                                    context,
+                                    "/",
+                                    (route) => false,
+                                  );
+                                } else {
+                                  print(value);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(
+                                        value,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 239, 83, 80),
+                                    ),
+                                  );
+                                }
+                              });
                             },
-                            child: Container(height: 35, child: Image.asset("assets/images/google_login.png")),
+                            child: Container(
+                                height: 30,
+                                child: Image.asset("assets/images/google_login.png")),
                           ),
                         ),
                         Container(
                           height: 40,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                              elevation: 4,
                                 shadowColor: Colors.black,
-                                backgroundColor: Color.fromARGB(255, 255, 255, 255)),
-                            onPressed: () {},
+                                backgroundColor:Color.fromARGB(255, 255, 229, 231).withOpacity(0.6)),
+                            onPressed: () {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("This Feature is not available yet !"),
+                                backgroundColor: const Color.fromARGB(255, 54, 82, 244),),
+                              );
+                            },
                             child: Row(
                               children: [
-                                Container( height:35, child: Image.asset("assets/images/apple_logo.png")),
-                                SizedBox(width: 5,),
-                                Text("Apple ID", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.black),)
+                                Container(
+                                    height: 30,
+                                    child: Image.asset(
+                                        "assets/images/apple_logo.png")),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  "Apple ID",
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.black),
+                                )
                               ],
                             ),
                           ),
@@ -302,4 +340,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

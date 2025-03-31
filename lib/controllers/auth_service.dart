@@ -15,76 +15,6 @@ class AuthService {
     await prefs.setString('user_id', userDetails['user_id']);
   }
 
-  // Future<String> createAccountWithEmail(
-  //   String name,
-  //   String email,
-  //   String password,
-  //   String confirmPassword,
-  // ) async {
-  //   if (password != confirmPassword) {
-  //     return "Passwords do not match!";
-  //   }
-
-  //   try {
-  //     Response response = await _dio.post(
-  //       '/register',
-  //       data: {
-  //         "name": name,
-  //         "email": email,
-  //         "password": password,
-  //         "address": "",
-  //         "phone": "",
-  //       },
-  //     );
-
-  //     String token = response.data['access_token'];
-
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     await prefs.setString('access_token', token);
-
-  //     Map<String, dynamic> userDetails = {
-  //       'name': response.data["name"] ?? 'Unknown',
-  //       'email': response.data["email"] ?? email,
-  //       'phone': response.data["phone"] ?? '',
-  //       'address': response.data["address"] ?? '',
-  //       'user_id': response.data["user_id"] ?? '',
-  //     };
-
-  //     await _storeUserDetails(userDetails);
-  //     return "Account Created";
-  //   } catch (e) {
-  //     return e.toString();
-  //   }
-  // }
-
-  // Future<String> loginWithEmail(String email, String password) async {
-  //   try {
-  //     Response response = await _dio.post(
-  //       '/login',
-  //       data: {"email": email, "password": password},
-  //     );
-
-  //     String token = response.data['access_token'];
-
-  //     SharedPreferences prefs = await SharedPreferences.getInstance();
-  //     await prefs.setString('access_token', token);
-
-  //     Map<String, dynamic> userDetails = {
-  //       'name': response.data["name"] ?? 'Unknown',
-  //       'email': response.data["email"] ?? email,
-  //       'phone': response.data["phone"] ?? '',
-  //       'address': response.data["address"] ?? '',
-  //       'user_id': response.data["user_id"] ?? '',
-  //     };
-
-  //     await _storeUserDetails(userDetails);
-
-  //     return "Login Successful";
-  //   } catch (e) {
-  //     return e.toString();
-  //   }
-  // }
-
   bool isValidEmail(String email) {
     final RegExp emailRegExp = RegExp(
       r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$",
@@ -98,12 +28,10 @@ class AuthService {
     String password,
     String confirmPassword,
   ) async {
-    // Validate the email format
     if (!isValidEmail(email)) {
       return "Invalid email format!";
     }
 
-    // Check if passwords match
     if (password != confirmPassword) {
       return "Passwords do not match!";
     }
@@ -140,6 +68,37 @@ class AuthService {
     }
   }
 
+   Future<String> loginUsingGoogleAuth() async {
+    final user = await GoogleSignInApi.login();
+
+    if (user == null) {
+      return "Login Failed";
+    } else {
+      try {
+        Response response = await _dio
+            .post("/googleauth", data: {"email": user.email, "name": user.displayName});
+        String token = response.data['access_token'];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('access_token', token);
+
+        Map<String, dynamic> userDetails = {
+          'name': response.data['name'] ?? 'Unknown',
+          'email': response.data['email'] ?? user.email,
+          'phone': response.data["phone"] ?? '',
+          'address': response.data["address"] ?? '',
+          'user_id': response.data["user_id"] ?? '',
+        };
+
+        await _storeUserDetails(userDetails);
+
+        return "Login Successful";
+      } catch (e) {
+        return e.toString();
+      }
+    }
+  }
+
   Future<String> loginWithEmail(String email, String password) async {
     if (!isValidEmail(email)) {
       return "Invalid email format!";
@@ -168,6 +127,9 @@ class AuthService {
 
       return "Login Successful";
     } catch (e) {
+      if (e is DioError && e.response?.statusCode == 401) {
+        return "Wrong Email or Password !";
+      }
       return e.toString();
     }
   }
@@ -235,6 +197,16 @@ class AuthService {
   }
 
   Future<void> logout() async {
+    bool isSignedIn = await GoogleSignInApi.googleSignIn.isSignedIn();
+
+    if (isSignedIn) {
+      try {
+        await GoogleSignInApi.logout();
+      } catch (e) {
+        print("Error during Google Sign-Out: $e");
+      }
+    }
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
     await prefs.remove('name');
@@ -251,13 +223,13 @@ class AuthService {
     } catch (e) {
       return e.toString();
     }
-  } 
+  }
 }
 
 class GoogleSignInApi {
-  static final _googleSignIn = GoogleSignIn();
+  static final googleSignIn = GoogleSignIn();
 
-  static Future<GoogleSignInAccount?> login() => _googleSignIn.signIn();
+  static Future<GoogleSignInAccount?> login() => googleSignIn.signIn();
 
-  static Future logout() => _googleSignIn.disconnect();
+  static Future logout() => googleSignIn.disconnect();
 }

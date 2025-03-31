@@ -195,7 +195,6 @@ class DBService {
           "breed": pet.breed,
           "age": pet.age,
           "gender": pet.gender,
-          // "dob": pet.dob
         },
       );
       return UserPetsModel.fromJson(response.data);
