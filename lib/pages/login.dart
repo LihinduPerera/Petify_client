@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/pages/home_page.dart';
 import 'package:petify/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +19,19 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Future googleSignIn() async{
+      final user = await GoogleSignInApi.login();
+
+      if(user == null) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Sign In Failed")));
+      } else  {
+        print(user.email);
+        print(user.displayName);
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => HomePage()));
+      }
+    }
+
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       body: SingleChildScrollView(
@@ -34,18 +48,56 @@ class _LoginPageState extends State<LoginPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Container(
-                      child: Lottie.asset(
-                        'assets/animations/hellow_world.json',
-                        width: MediaQuery.of(context).size.width,
-                        fit: BoxFit.fitWidth
-                      ),
+                      child: Lottie.asset('assets/animations/hellow_world.json',
+                          width: MediaQuery.of(context).size.width,
+                          fit: BoxFit.fitWidth),
                     ),
-                    const Text(
-                      "Login",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          height: 40,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.black,
+                                backgroundColor: Color.fromARGB(255, 255, 255, 255)),
+                            onPressed: () {
+                              googleSignIn();
+                            },
+                            child: Container(height: 35, child: Image.asset("assets/images/google_login.png")),
+                          ),
+                        ),
+                        Container(
+                          height: 40,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shadowColor: Colors.black,
+                                backgroundColor: Color.fromARGB(255, 255, 255, 255)),
+                            onPressed: () {},
+                            child: Row(
+                              children: [
+                                Container( height:35, child: Image.asset("assets/images/apple_logo.png")),
+                                SizedBox(width: 5,),
+                                Text("Apple ID", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: Colors.black),)
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      children: [
+                        const Text(
+                          "LogIn",
+                          style: TextStyle(
+                            fontSize: 25,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 5),
                     SizedBox(
@@ -164,10 +216,11 @@ class _LoginPageState extends State<LoginPage> {
                         },
                       );
                     },
-                    child: Text("Forget Password",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 114, 133, 228)
-                    ),),
+                    child: Text(
+                      "Forget Password",
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 114, 133, 228)),
+                    ),
                   ),
                 ],
               ),
@@ -185,9 +238,13 @@ class _LoginPageState extends State<LoginPage> {
                       )
                           .then((value) async {
                         if (value == "Login Successful") {
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Login Successful")),);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Login Successful")),
+                          );
 
-                          await Provider.of<UserProvider>(context,listen: false) .loadUserData();
+                          await Provider.of<UserProvider>(context,
+                                  listen: false)
+                              .loadUserData();
 
                           Navigator.restorablePushNamedAndRemoveUntil(
                             context,
@@ -215,9 +272,9 @@ class _LoginPageState extends State<LoginPage> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color.fromARGB(255, 219, 197, 74).withOpacity(0.6),
-                    foregroundColor: Colors.black
-                  ),
+                      backgroundColor:
+                          Color.fromARGB(255, 219, 197, 74).withOpacity(0.6),
+                      foregroundColor: Colors.black),
                   child: const Text("Login", style: TextStyle(fontSize: 16)),
                 ),
               ),
@@ -230,10 +287,11 @@ class _LoginPageState extends State<LoginPage> {
                     onPressed: () {
                       Navigator.pushNamed(context, "/signup");
                     },
-                    child: const Text("Sign Up", 
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 114, 133, 228)
-                    ),),
+                    child: const Text(
+                      "Sign Up",
+                      style:
+                          TextStyle(color: Color.fromARGB(255, 114, 133, 228)),
+                    ),
                   ),
                 ],
               ),
@@ -244,3 +302,4 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+

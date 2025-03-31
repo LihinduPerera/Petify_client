@@ -204,6 +204,7 @@ class _MorePageState extends State<MorePage>
                       .cancelProvider();
 
                   await AuthService().logout();
+                  await GoogleSignInApi.logout();
 
                   Navigator.pushNamedAndRemoveUntil(
                       context, "/login", (route) => false);

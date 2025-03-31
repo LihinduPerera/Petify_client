@@ -38,6 +38,7 @@ migrate_working_dir/
 pubspec.lock
 **/assets/
 /lib/controllers/baseUrl.dart
+/android/app/mykey.jks
 
 
 # Symbolication related

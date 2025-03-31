@@ -53,6 +53,7 @@ dependencies:
   flutter_timezone: ^4.1.0
   rxdart: ^0.28.0
   flutter_local_notifications: ^19.0.0
+  google_sign_in: ^6.2.2
 
 dev_dependencies:
   flutter_test:
