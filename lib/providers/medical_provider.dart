@@ -38,7 +38,7 @@ class MedicalProvider extends ChangeNotifier {
           notifyListeners();
         });
 
-        _medicals.forEach((medical) {
+        _medicals.forEach((medical) async{
           if (medical.isNewMedical == true) {
             NotificationService.showSimpleNotification(
               title: "New Medical Available",
@@ -46,10 +46,10 @@ class MedicalProvider extends ChangeNotifier {
               payload: medical.id,
             );
 
-            updateNotificationFlags(medical.id, false, false);
+            await updateNotificationFlags(medical.id, false, false);
           }
 
-          if (medical.isNotified == false && medical.date.isAfter(DateTime.now())) {
+          if (medical.isNotified == false && medical.date.isAfter(DateTime.now())){
               DateTime scheduleDate = DateTime(medical.date.year, medical.date.month, medical.date.day, 8, 0);
               NotificationService.showScheduleNotification(
                 title: "Medical Reminder",
@@ -58,7 +58,7 @@ class MedicalProvider extends ChangeNotifier {
                 date: scheduleDate,
               );
 
-              updateNotificationFlags(medical.id, true, false);
+              await updateNotificationFlags(medical.id, true, false);
           }
         });
       });
