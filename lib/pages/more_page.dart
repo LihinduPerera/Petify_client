@@ -2,7 +2,9 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:petify/controllers/auth_service.dart';
+import 'package:petify/controllers/notification_service.dart';
 import 'package:petify/pages/sub_pages.dart/profile_page.dart';
+import 'package:petify/providers/Notification_provider.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/medical_provider.dart';
 import 'package:petify/providers/user_pets_provider.dart';
@@ -23,6 +25,11 @@ class _MorePageState extends State<MorePage>
   @override
   void initState() {
     super.initState();
+
+    //to get notification State
+    Provider.of<NotificationProvider>(context, listen: false).loadNotificationState();
+
+    // Animate lottie animations
     _animationController = AnimationController(vsync: this)
       ..duration = Duration(milliseconds: 9000)
       ..repeat(reverse: false);
@@ -38,6 +45,8 @@ class _MorePageState extends State<MorePage>
 
   @override
   Widget build(BuildContext context) {
+    final medicalProvider = Provider.of<MedicalProvider>(context);
+
     return Scaffold(
       backgroundColor: Color(0xFFeeedf2),
       body: SafeArea(
@@ -165,6 +174,23 @@ class _MorePageState extends State<MorePage>
                 leading: Icon(Icons.notifications,
                     color: const Color.fromARGB(255, 131, 250, 137)),
                 title: Text('Notifications & Alerts'),
+                subtitle: Text("Medicals will reload"),
+                trailing: Consumer<NotificationProvider>(
+                      builder: (context, provider , child) {
+                        return Switch(
+                          value: provider.notificationEnabled,
+                          onChanged: (value) {
+                            if(value == false) {
+                              NotificationService.cancelAll();
+                            } else {
+                              medicalProvider.cancelProvider();
+                              medicalProvider.initializeMedicals(context);
+                            }
+                            provider.toggleNotifications(value);
+                          }
+                        );
+                      },
+                    ),
                 onTap: () {},
               ),
               Divider(),

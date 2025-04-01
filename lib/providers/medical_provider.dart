@@ -5,6 +5,7 @@ import 'package:petify/controllers/notification_service.dart';
 import 'package:petify/models/medical_model.dart';
 import 'package:petify/providers/user_pets_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MedicalProvider extends ChangeNotifier {
   final DBService dbService = DBService();
@@ -16,9 +17,10 @@ class MedicalProvider extends ChangeNotifier {
   List<MedicalModel> get medicals => _medicals;
 
   Future<void> initializeMedicals(BuildContext context) async {
-    final userPetsProvider = Provider.of<UserPetsProvider>(context, listen: false);
+    final userPetsProvider =
+        Provider.of<UserPetsProvider>(context, listen: false);
     final userPets = userPetsProvider.userPets;
-    
+
     for (var pet in userPets) {
       fetchMedicals(pet.petId);
     }
@@ -31,34 +33,44 @@ class MedicalProvider extends ChangeNotifier {
         notifyListeners();
       });
 
-      _medicalsSubscription = dbService.getMedicals(petId).asBroadcastStream().listen((medicals) {
+      _medicalsSubscription =
+          dbService.getMedicals(petId).asBroadcastStream().listen((medicals) {
         _medicals.addAll(medicals);
         isLoading = false;
         WidgetsBinding.instance.addPostFrameCallback((_) {
           notifyListeners();
         });
 
-        _medicals.forEach((medical) async{
-          if (medical.isNewMedical == true) {
-            NotificationService.showSimpleNotification(
-              title: "New Medical Available",
-              body: "Your pet have a new medical :${medical.medication}",
-              payload: medical.id,
-            );
+        _medicals.forEach((medical) async {
+          final prefs = await SharedPreferences.getInstance();
+          final notificationEnabled =
+              prefs.getBool('notificationsEnabled') ?? true;
 
-            await updateNotificationFlags(medical.id, false, false);
-          }
+          if (notificationEnabled) {
+            if (medical.isNewMedical == true) {
+              NotificationService.showSimpleNotification(
+                title: "New Medical Available",
+                body: "Your pet have a new medical :${medical.medication}",
+                payload: medical.id,
+              );
 
-          if (medical.isNotified == false && medical.date.isAfter(DateTime.now())){
-              DateTime scheduleDate = DateTime(medical.date.year, medical.date.month, medical.date.day, 8, 0);
+              await updateNotificationFlags(medical.id, false, false);
+            }
+
+            if (medical.isNotified == false &&
+                medical.date.isAfter(DateTime.now())) {
+              DateTime scheduleDate = DateTime(medical.date.year,
+                  medical.date.month, medical.date.day, 8, 0);
               NotificationService.showScheduleNotification(
                 title: "Medical Reminder",
-                body: "Don't forget to complete the medical : ${medical.medication}",
+                body:
+                    "Don't forget to complete the medical : ${medical.medication}",
                 payload: medical.id,
                 date: scheduleDate,
               );
 
               await updateNotificationFlags(medical.id, true, false);
+            }
           }
         });
       });
@@ -71,7 +83,8 @@ class MedicalProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> updateNotificationFlags(String medicalId, bool? isNotified, bool? isNewMedical) async {
+  Future<bool> updateNotificationFlags(
+      String medicalId, bool? isNotified, bool? isNewMedical) async {
     try {
       Map<String, dynamic> notificationData = {};
 
@@ -83,10 +96,12 @@ class MedicalProvider extends ChangeNotifier {
       }
 
       if (notificationData.isEmpty) {
-        throw Exception("At least one flag ('isNotified' or 'isNewMedical') must be provided.");
+        throw Exception(
+            "At least one flag ('isNotified' or 'isNewMedical') must be provided.");
       }
 
-      final response = await dbService.updateNotificationFlags(medicalId, isNotified, isNewMedical);
+      final response = await dbService.updateNotificationFlags(
+          medicalId, isNotified, isNewMedical);
 
       if (response) {
         return true;

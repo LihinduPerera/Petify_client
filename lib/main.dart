@@ -16,6 +16,7 @@ import 'package:petify/pages/sub_pages.dart/pet_health_and_medical_tracker.dart'
 import 'package:petify/pages/sub_pages.dart/specific_products.dart';
 import 'package:petify/pages/sub_pages.dart/update_profile.dart';
 import 'package:petify/pages/sub_pages.dart/view_product.dart';
+import 'package:petify/providers/Notification_provider.dart';
 import 'package:petify/providers/cart_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/providers/medical_provider.dart';
@@ -61,7 +62,8 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(create: (_) => UserPetsProvider()),
         ChangeNotifierProvider(create: (_) => MedicalProvider()),
-        ChangeNotifierProvider(create: (context) => ShopProvider())
+        ChangeNotifierProvider(create: (context) => ShopProvider()),
+        ChangeNotifierProvider(create: (_) => NotificationProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,5 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -38,6 +39,12 @@ class NotificationService {
     required String body,
     required String payload,
   }) async {
+
+    final prefs = await SharedPreferences.getInstance();
+    final notificationEnabled = prefs.getBool('notificationsEnabled') ?? true;
+
+    if(!notificationEnabled) return;
+
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('your channel id', 'your channel name',
             channelDescription: 'your channel description',
@@ -56,6 +63,12 @@ class NotificationService {
     required String body,
     required String payload,
   }) async {
+
+    final prefs = await SharedPreferences.getInstance();
+    final notificationEnabled = prefs.getBool('notificationsEnabled') ?? true;
+
+    if(!notificationEnabled) return;
+
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails('channel 1', 'your channel name',
             channelDescription: 'your channel description',
@@ -76,6 +89,12 @@ class NotificationService {
     required String payload,
     required DateTime date,
   }) async {
+
+    final prefs = await SharedPreferences.getInstance();
+    final notificationEnabled = prefs.getBool('notificationsEnabled') ?? true;
+
+    if(!notificationEnabled) return;
+
     tz.initializeTimeZones();
     await _flutterLocalNotificationsPlugin.zonedSchedule(
         2,
