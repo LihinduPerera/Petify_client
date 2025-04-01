@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:petify/pages/cart_page.dart';
 import 'package:petify/pages/home_page.dart';
 import 'package:petify/pages/more_page.dart';
-import 'package:petify/pages/pet_ride.dart';
+import 'package:petify/pages/lost_and_find.dart';
 import 'package:petify/pages/store_page.dart';
 
 class PageSelection extends StatefulWidget {
@@ -20,7 +20,7 @@ class _PageSelectionState extends State<PageSelection> {
     const CartPage(),
     const StorePage(),
     const HomePage(),
-    const PetRidePage(),
+    const LostAndFind(),
     const MorePage()
   ];
 
@@ -81,7 +81,7 @@ class _PageSelectionState extends State<PageSelection> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.delivery_dining_outlined),
-              label: 'Pet Ride',
+              label: 'Lost & Find',
             ),
             BottomNavigationBarItem(
               icon: Icon(FluentSystemIcons.ic_fluent_more_filled),

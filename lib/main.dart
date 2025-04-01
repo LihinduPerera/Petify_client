@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:permission_handler/permission_handler.dart' as ph;
+import 'package:permission_handler/permission_handler.dart' as loc;
+import 'package:permission_handler/permission_handler.dart';
 import 'package:petify/controllers/auth_service.dart';
 import 'package:petify/controllers/notification_service.dart';
 import 'package:petify/pages/cart_page.dart';
@@ -96,8 +99,26 @@ class _CheckUserState extends State<CheckUser> {
   @override
   void initState() {
     super.initState();
+    requestPermissions();
     _checkUserAndLoadData();
   }
+  
+  Future<void> requestPermissions() async {
+
+  loc.PermissionStatus locationPermission = await Permission.location.request();
+  if (locationPermission.isGranted) {
+    print('Location permission granted');
+  } else {
+    print('Location permission denied');
+  }
+
+  ph.PermissionStatus notificationPermission = await Permission.notification.request();
+  if (notificationPermission.isGranted) {
+    print('Notification permission granted');
+  } else {
+    print('Notification permission denied');
+  }
+}
 
   Future<void> _checkUserAndLoadData() async {
     var user = await AuthService().getCurrentUser();
