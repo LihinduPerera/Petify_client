@@ -193,14 +193,14 @@ class _MorePageState extends State<MorePage>
                     ),
                 onTap: () {},
               ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.settings,
-                    color: const Color.fromARGB(255, 131, 139, 250)),
-                title: Text('App Settings'),
-                subtitle: Text('Manage app preferences'),
-                onTap: () {},
-              ),
+              // Divider(),
+              // ListTile(
+              //   leading: Icon(Icons.settings,
+              //       color: const Color.fromARGB(255, 131, 139, 250)),
+              //   title: Text('App Settings'),
+              //   subtitle: Text('Manage app preferences'),
+              //   onTap: () {},
+              // ),
               Divider(),
               ListTile(
                 leading: Icon(Icons.feedback,

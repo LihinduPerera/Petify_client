@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:petify/controllers/baseUrl.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/categories_model.dart';
+import 'package:petify/models/feedback_model.dart';
 import 'package:petify/models/medical_model.dart';
 import 'package:petify/models/products_model.dart';
 import 'package:petify/models/promo_banners_model.dart';
@@ -75,24 +77,23 @@ class DBService {
   }
 
   Stream<List<ProductsModel>> getProductsByIds(List<String> productIds) async* {
-  try {
-    final response = await _dio.get(
-      '$baseUrl/products/by_ids',
-      queryParameters: {
-        'doc_ids': productIds,
-      },
-    );
+    try {
+      final response = await _dio.get(
+        '$baseUrl/products/by_ids',
+        queryParameters: {
+          'doc_ids': productIds,
+        },
+      );
 
-    List<ProductsModel> products = (response.data as List)
-        .map((item) => ProductsModel.fromJson(item))
-        .toList();
+      List<ProductsModel> products = (response.data as List)
+          .map((item) => ProductsModel.fromJson(item))
+          .toList();
 
-    yield products;
-  } catch (e) {
-    throw Exception('Products not found: $e');
+      yield products;
+    } catch (e) {
+      throw Exception('Products not found: $e');
+    }
   }
-}
-
 
   Future<void> deleteProduct(String productId) async {
     try {
@@ -243,39 +244,78 @@ class DBService {
     }
   }
 
-  Future<bool> updateNotificationFlags(String medicalId, bool? isNotified, bool? isNewMedical) async {
-  try {
-    Map<String, dynamic> notificationData = {};
+  Future<bool> updateNotificationFlags(
+      String medicalId, bool? isNotified, bool? isNewMedical) async {
+    try {
+      Map<String, dynamic> notificationData = {};
 
-    if (isNotified != null) {
-      notificationData['isNotified'] = isNotified;
-    }
-    if (isNewMedical != null) {
-      notificationData['isNewMedical'] = isNewMedical;
-    }
+      if (isNotified != null) {
+        notificationData['isNotified'] = isNotified;
+      }
+      if (isNewMedical != null) {
+        notificationData['isNewMedical'] = isNewMedical;
+      }
 
-    if (notificationData.isEmpty) {
-      throw Exception("At least one flag ('isNotified' or 'isNewMedical') must be provided.");
-    }
-    print('Sending payload: $notificationData');
+      if (notificationData.isEmpty) {
+        throw Exception(
+            "At least one flag ('isNotified' or 'isNewMedical') must be provided.");
+      }
+      print('Sending payload: $notificationData');
 
+      final response = await _dio.patch(
+        '$baseUrl/medicals/$medicalId/notification',
+        data: jsonEncode(notificationData),
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
 
-    final response = await _dio.patch(
-      '$baseUrl/medicals/$medicalId/notification',
-      data: jsonEncode(notificationData),
-      options: Options(headers: {'Content-Type': 'application/json'}),
-    );
-
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      print('Failed to update notification flags: ${response.data}');
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        print('Failed to update notification flags: ${response.data}');
+        return false;
+      }
+    } catch (e) {
+      print('Error updating notification flags: $e');
       return false;
     }
-  } catch (e) {
-    print('Error updating notification flags: $e');
-    return false;
   }
-}
 
+  //Feedback
+  Stream<List<FeedbackModel>> getFeedbacks(String userId) async* {
+    try {
+      final response = await _dio.get('$baseUrl/$userId/feedbacks');
+      List<FeedbackModel> feedbacks = FeedbackModel.fromJsonList(
+        List<Map<String, dynamic>>.from(response.data),
+      );
+      yield feedbacks;
+    } catch (e) {
+      if (e is DioError && e.response?.statusCode == 404) {
+        yield [];
+      } else {
+        print('Error fetching feedbacks: $e');
+      }
+    }
+  }
+
+  Future<FeedbackModel> addFeedback(String userId, FeedbackModel feedback) async {
+    try {
+      final response = await _dio.post('$baseUrl/$userId/feedbacks',
+      data:{
+        'user': feedback.user,
+        'feedback': feedback.feedback,
+        'time': feedback.time.toIso8601String(),
+      });
+      return FeedbackModel.fromJson(response.data);
+    } catch (e) {
+      throw Exception('Failed to add feedback: $e');
+    }
+  }
+
+  Future<void> deleteFeedback(String feedbackId) async {
+    try {
+      await _dio.delete('$baseUrl/feedbacks/$feedbackId');
+    } catch (e) {
+      throw Exception("Failed to delete feedback : $e");
+    }
+  }
 }

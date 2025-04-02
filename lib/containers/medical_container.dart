@@ -31,7 +31,8 @@ class MedicalContainer extends StatelessWidget {
                         height: defineHeight,
                         child: Container(
                           decoration: BoxDecoration(
-                              color: Color(0xff92A3FD).withOpacity(0.4),
+                              color: Color(0xff92A3FD).withOpacity(0.25),
+                              // color: Color.fromARGB(255, 216, 253, 146).withOpacity(0.4),
                               borderRadius: BorderRadius.circular(30)),
                           child: SingleChildScrollView(
                             child: Padding(

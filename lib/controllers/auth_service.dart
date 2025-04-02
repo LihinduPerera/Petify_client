@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:petify/controllers/notification_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'baseUrl.dart';
 
@@ -206,6 +207,8 @@ class AuthService {
         print("Error during Google Sign-Out: $e");
       }
     }
+
+    NotificationService.cancelAll();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('access_token');
