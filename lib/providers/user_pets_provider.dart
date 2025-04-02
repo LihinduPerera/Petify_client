@@ -22,8 +22,6 @@ class UserPetsProvider extends ChangeNotifier {
         notifyListeners();
       });
 
-      String userId = this.userId;
-
       _petsSubscription =
           dbService.getUserPets(userId).asBroadcastStream().listen((pets) {
         _userPets = pets;
@@ -45,7 +43,6 @@ class UserPetsProvider extends ChangeNotifier {
 
   Future<void> addPet(UserPetsModel pet) async {
     try {
-      String userId = this.userId;
       pet.owner = userId;
       await dbService.addPet(userId, pet);
       await fetchUserPets(userId);
@@ -56,7 +53,6 @@ class UserPetsProvider extends ChangeNotifier {
 
   Future<void> updatePet(String petId, UserPetsModel pet) async {
     try {
-      String userId = this.userId;
       pet.owner = userId;
       await dbService.updatePet(petId, pet);
       await fetchUserPets(userId);

@@ -18,6 +18,7 @@ import 'package:petify/pages/sub_pages.dart/update_profile.dart';
 import 'package:petify/pages/sub_pages.dart/view_product.dart';
 import 'package:petify/providers/Notification_provider.dart';
 import 'package:petify/providers/cart_provider.dart';
+import 'package:petify/providers/feedback_provider.dart';
 import 'package:petify/providers/internet_connection_provider.dart';
 import 'package:petify/providers/medical_provider.dart';
 import 'package:petify/providers/shop_provider.dart';
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MedicalProvider()),
         ChangeNotifierProvider(create: (context) => ShopProvider()),
         ChangeNotifierProvider(create: (_) => NotificationProvider()),
+        ChangeNotifierProvider(create: (_) => FeedbackProvider(),)
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -137,6 +139,9 @@ class _CheckUserState extends State<CheckUser> {
 
       await Provider.of<MedicalProvider>(context, listen: false)
           .initializeMedicals(context);
+
+      await Provider.of<FeedbackProvider>(context, listen: false)
+          .fetchFeedbacks(userId);
 
       Navigator.pushReplacementNamed(context, "/page_selection");
     } else {
