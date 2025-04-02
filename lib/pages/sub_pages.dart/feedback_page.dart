@@ -29,7 +29,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFeeedf2),
       appBar: AppBar(
-        title: const Text("Give Feedback"),
+        title: const Text("Your Feedbacks"),
         backgroundColor: const Color(0xFFeeedf2),
       ),
       body: Column(
@@ -38,7 +38,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width / 1.8,
+                width: MediaQuery.of(context).size.width / 2,
                 child: Lottie.asset("assets/animations/feedback.json"),
               ),
             ],
@@ -49,11 +49,11 @@ class _FeedbackPageState extends State<FeedbackPage> {
           ),
           Consumer<FeedbackProvider>(
             builder: (context, provider, child) {
-              if (provider.isLoading) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
+              // if (provider.isLoading) {
+              //   return const Center(
+              //     child: CircularProgressIndicator(),
+              //   );
+              // } else {
                 return Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
@@ -65,13 +65,14 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         time: feedback.time,
                         feedbackId: feedback.id,
                         onDelete: () {
+                          provider.removeFeedbackFromTheListForBetterLoadings(index);
                           provider.deleteFeedback(feedback.id);
                         },
                       );
                     },
                   ),
                 );
-              }
+              // }
             },
           ),
           Consumer<FeedbackProvider>(
@@ -122,7 +123,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                         },
                         icon: Icon(
                           FluentSystemIcons.ic_fluent_send_filled,
-                          color: const Color.fromARGB(255, 243, 33, 243),
+                          color: const Color.fromARGB(255, 37, 33, 243),
                         ),
                       ),
                     ],

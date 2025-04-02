@@ -61,6 +61,11 @@ class FeedbackProvider extends ChangeNotifier{
     }
   }
 
+  void removeFeedbackFromTheListForBetterLoadings(int index) {
+    _feedbacks.removeAt(index);
+    notifyListeners();
+  }
+
   void cancelProvider() {
     _feedbacksSubscription?.cancel();
     _feedbacksSubscription = null;
