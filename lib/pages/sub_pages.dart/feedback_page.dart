@@ -161,7 +161,7 @@ class FeedbackBubble extends StatelessWidget {
             BoxConstraints(maxWidth: MediaQuery.of(context).size.width / 1.25),
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: const Color.fromARGB(255, 190, 73, 65),
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(12),
             topRight: Radius.circular(12),

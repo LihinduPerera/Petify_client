@@ -208,10 +208,7 @@ class _MorePageState extends State<MorePage>
                 title: Text('Give Feedback'),
                 subtitle: Text('Share your thoughts with us'),
                 onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      duration: Duration(milliseconds: 6000),
-                      content:
-                          Text("Mail me @lihindu.indudunu.perera@gmail.com")));
+                  Navigator.pushNamed(context, "/feedback");
                 },
               ),
               Divider(),

@@ -70,30 +70,36 @@ class _ProfilePageState extends State<ProfilePage> {
               endIndent: 10,
               indent: 10,
             ),
-            ListTile(
-              title: Text(
-                "Discount & Offers",
-              ),
-              leading: Icon(Icons.discount_outlined,
-                  color: const Color.fromARGB(255, 122, 250, 122)),
-              onTap: () {
-                Navigator.pushNamed(context, "/discount");
-              },
-            ),
-            Divider(
-              thickness: 1,
-              endIndent: 10,
-              indent: 10,
-            ),
+            // ListTile(
+            //   title: Text(
+            //     "Discount & Offers",
+            //   ),
+            //   leading: Icon(Icons.discount_outlined,
+            //       color: const Color.fromARGB(255, 122, 250, 122)),
+            //   onTap: () {
+            //     Navigator.pushNamed(context, "/discount");
+            //   },
+            // ),
+            // Divider(
+            //   thickness: 1,
+            //   endIndent: 10,
+            //   indent: 10,
+            // ),
             ListTile(
               title: Text("Help & Support"),
               leading: Icon(Icons.support_agent,
                   color: const Color.fromARGB(255, 248, 121, 121)),
               onTap: () {
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    duration: Duration(milliseconds: 6000),
-                    content:
-                        Text("Mail me @lihindu.indudunu.perera@gmail.com")));
+                  backgroundColor: const Color.fromARGB(255, 246, 180, 255).withOpacity(0.4),
+                  duration: Duration(seconds: 10),
+                  content: Text(
+                    "For Help & Support Mail me \n @lihindu.indudunu.perera@gmail.com",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.black
+                    ),
+                  )));
               },
             ),
             Divider(

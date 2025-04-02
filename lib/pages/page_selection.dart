@@ -5,7 +5,6 @@ import 'package:petify/pages/home_page.dart';
 import 'package:petify/pages/more_page.dart';
 import 'package:petify/pages/lost_and_find.dart';
 import 'package:petify/pages/store_page.dart';
-import 'package:petify/pages/sub_pages.dart/feedback_page.dart';
 
 class PageSelection extends StatefulWidget {
   final int defaultPage;
@@ -20,8 +19,7 @@ class _PageSelectionState extends State<PageSelection> {
   final applicationPages = [
     const CartPage(),
     const StorePage(),
-    const FeedbackPage(),
-    // const HomePage(),
+    const HomePage(),
     const LostAndFind(),
     const MorePage()
   ];

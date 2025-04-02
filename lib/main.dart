@@ -11,6 +11,7 @@ import 'package:petify/pages/page_selection.dart';
 import 'package:petify/pages/signup.dart';
 import 'package:petify/pages/sub_pages.dart/chat_page.dart';
 import 'package:petify/pages/sub_pages.dart/checkout_page.dart';
+import 'package:petify/pages/sub_pages.dart/feedback_page.dart';
 import 'package:petify/pages/sub_pages.dart/no_internet.dart';
 import 'package:petify/pages/sub_pages.dart/pet_health_and_medical_tracker.dart';
 import 'package:petify/pages/sub_pages.dart/specific_products.dart';
@@ -86,6 +87,7 @@ class MyApp extends StatelessWidget {
           "/from_anyware_to_cart": (context) => PageSelection(defaultPage: 0),
           "/checkout": (context) => CheckoutPage(),
           "/chatbot": (context) => ChatPage(),
+          "/feedback": (context) => FeedbackPage(),
         },
       ),
     );
