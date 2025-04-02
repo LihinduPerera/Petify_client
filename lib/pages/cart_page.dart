@@ -31,9 +31,9 @@ class _CartPageState extends State<CartPage> {
       ),
       body: Consumer<CartProvider>(
         builder: (context, value, child) {
-          if (value.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
+          // if (value.isLoading) {
+          //   return const Center(child: CircularProgressIndicator());
+          // } else {
             if (value.carts.isEmpty) {
               return const Center(child: Text("No items in cart"));
             } else {
@@ -54,7 +54,7 @@ class _CartPageState extends State<CartPage> {
                 return Text("No items in cart");
               }
             }
-          }
+          // }
         },
       ),
       bottomNavigationBar: Consumer<CartProvider>(

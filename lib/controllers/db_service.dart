@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:petify/controllers/baseUrl.dart';
 import 'package:petify/models/cart_model.dart';
 import 'package:petify/models/categories_model.dart';
@@ -138,9 +137,13 @@ class DBService {
     }
   }
 
-  Future<void> addToCart(String userId, CartModel cartData) async {
+  Stream<void> addToCart(String userId, CartModel cartData) async* {
     try {
       await _dio.post('$baseUrl/$userId/cart', data: cartData.toJson());
+
+      // Emit a value to signal that the cart has been updated
+      yield "cart is updated";
+      
     } catch (e) {
       throw Exception('Failed to add to cart: $e');
     }

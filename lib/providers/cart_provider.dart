@@ -20,16 +20,6 @@ class CartProvider extends ChangeNotifier {
   int totalQuantity = 0;
   String userId = '';
 
-  Future<String> addToCart(CartModel cartModel) async {
-    try {
-      await dbService.addToCart(userId, cartModel);
-      readCartData(userId);
-      return "Added to cart successfully";
-    } catch (e) {
-      return "Error adding to cart";
-    }
-  }
-
   Future<void> readCartData(String newUid) async {
     userId = newUid;
 
@@ -58,6 +48,20 @@ class CartProvider extends ChangeNotifier {
         notifyListeners();
       },
     );
+  }
+
+  // Updated addToCart to work with Stream<void>
+  Future<String> addToCart(CartModel cartModel) async {
+    try {
+      // Call the DBService addToCart method, which now returns a Stream<void>
+      await for (var _ in dbService.addToCart(userId, cartModel)) {
+        // Once the stream completes, read the updated cart data
+        readCartData(userId);
+      }
+      return "Added to cart successfully";
+    } catch (e) {
+      return "Error adding to cart";
+    }
   }
 
   void readCartProducts(List<String> uids) {
