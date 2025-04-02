@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:petify/providers/feedback_provider.dart';
 import 'package:petify/models/feedback_model.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart'; 
+import 'package:intl/intl.dart';
 
 class FeedbackPage extends StatefulWidget {
   const FeedbackPage({super.key});
@@ -32,107 +32,106 @@ class _FeedbackPageState extends State<FeedbackPage> {
         title: const Text("Give Feedback"),
         backgroundColor: const Color(0xFFeeedf2),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.8,
-                  child: Lottie.asset("assets/animations/feedback.json"),
-                ),
-              ],
-            ),
-            const Text(
-              "Share your thoughts with us",
-              style: TextStyle(fontSize: 18),
-            ),
-            Consumer<FeedbackProvider>(
-              builder: (context, provider, child) {
-                if (provider.isLoading) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return Column(
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        controller: _scrollController,
-                        itemCount: provider.feedbacks.length,
-                        itemBuilder: (context, index) {
-                          FeedbackModel feedback = provider.feedbacks[index];
-                          return FeedbackBubble(
-                            feedback: feedback.feedback,
-                            time: feedback.time,
-                            feedbackId: feedback.id,
-                            onDelete: () {
-                              provider.deleteFeedback(feedback.id);
-                            },
-                          );
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width / 1.8,
+                child: Lottie.asset("assets/animations/feedback.json"),
+              ),
+            ],
+          ),
+          const Text(
+            "Share your thoughts with us",
+            style: TextStyle(fontSize: 18),
+          ),
+          Consumer<FeedbackProvider>(
+            builder: (context, provider, child) {
+              if (provider.isLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return Expanded(
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: provider.feedbacks.length,
+                    itemBuilder: (context, index) {
+                      FeedbackModel feedback = provider.feedbacks[index];
+                      return FeedbackBubble(
+                        feedback: feedback.feedback,
+                        time: feedback.time,
+                        feedbackId: feedback.id,
+                        onDelete: () {
+                          provider.deleteFeedback(feedback.id);
                         },
-                      ),
-                      Container(
-                        color: const Color(0xFFeeedf2),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              bottom: 20, top: 5, left: 15, right: 15),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: TextField(
-                                  controller: _feedbackController,
-                                  decoration: InputDecoration(
-                                    hintText: "Write your feedback here",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                        color: const Color.fromARGB(
-                                            255, 243, 33, 243),
-                                        width: 2,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 2),
-                                    ),
-                                  ),
-                                ),
+                      );
+                    },
+                  ),
+                );
+              }
+            },
+          ),
+          Consumer<FeedbackProvider>(
+            builder: (context, provider, child) {
+              return Container(
+                color: const Color(0xFFeeedf2),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 20, top: 5, left: 15, right: 15),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _feedbackController,
+                          decoration: InputDecoration(
+                            hintText: "Write your feedback here",
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(
+                                color: const Color.fromARGB(255, 243, 33, 243),
+                                width: 2,
                               ),
-                              IconButton(
-                                onPressed: () {
-                                  if (_feedbackController.text.isNotEmpty) {
-                                    FeedbackModel newFeedback = FeedbackModel(
-                                      id: DateTime.now().toString(),
-                                      user: provider.userId,
-                                      feedback: _feedbackController.text,
-                                      time: DateTime.now(),
-                                    );
-                                    provider.addFeedback(newFeedback);
-                                    _feedbackController.clear();
-                                  }
-                                },
-                                icon: Icon(
-                                  FluentSystemIcons.ic_fluent_send_filled,
-                                  color: const Color.fromARGB(255, 243, 33, 243),
-                                ),
-                              ),
-                            ],
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide:
+                                  BorderSide(color: Colors.grey, width: 2),
+                            ),
                           ),
                         ),
                       ),
+                      IconButton(
+                        onPressed: () {
+                          if (_feedbackController.text.isNotEmpty) {
+                            FeedbackModel newFeedback = FeedbackModel(
+                              id: DateTime.now().toString(),
+                              user: provider.userId,
+                              feedback: _feedbackController.text,
+                              time: DateTime.now(),
+                            );
+                            provider.addFeedback(newFeedback);
+                            _feedbackController.clear();
+                            _scrollDown();
+                          }
+                        },
+                        icon: Icon(
+                          FluentSystemIcons.ic_fluent_send_filled,
+                          color: const Color.fromARGB(255, 243, 33, 243),
+                        ),
+                      ),
                     ],
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
