@@ -4,16 +4,6 @@
 
 ---
 
-## 🚀 Features
-
-- 🛒 **Pet Store**: Browse and purchase pet products directly in-app.
-- 📅 **Reminders**: Stay on top of your pet’s daily care and vet visits.
-- 🏥 **Health Tracker**: Manage your pet’s health records.
-- 🧭 **Lost & Found**: Report or find lost pets in your community.
-- 🧰 **More Tools**: Access additional tools to enhance pet parenting.
-
----
-
 ## 📱 Screenshots
 
 | Home | Store | Lost & Find |
@@ -23,6 +13,16 @@
 | Cart | More |
 |------|------|
 | ![Cart](screenshots/Screenshot_cart.png) | ![More](screenshots/Screenshot_more.png) |
+
+---
+
+## 🚀 Features
+
+- 🛒 **Pet Store**: Browse and purchase pet products directly in-app.
+- 📅 **Reminders**: Stay on top of your pet’s daily care and vet visits.
+- 🏥 **Health Tracker**: Manage your pet’s health records.
+- 🧭 **Lost & Found**: Report or find lost pets in your community.
+- 🧰 **More Tools**: Access additional tools to enhance pet parenting.
 
 ---
 
