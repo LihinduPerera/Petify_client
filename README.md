@@ -2,8 +2,6 @@
 
 **Petify** is your all-in-one companion app for pet owners. Whether you're managing pet supplies, setting reminders, tracking healthcare, or locating lost pets, Petify brings everything under one roof. Built with **Flutter** and powered by a **FastAPI + MongoDB** backend, it's designed to be fast, reliable, and user-friendly.
 
-![Petify Banner](screenshots/Screenshot_home.png)
-
 ---
 
 ## 🚀 Features
@@ -46,7 +44,8 @@
 - Python 3.9+
 - MongoDB instance (local or cloud)
 
-### Clone the frontend & backend repos
+### Clone the frontend , backend & admin repos
 ```bash
 git clone https://github.com/LihinduPerera/Petify_client.git
 git clone https://github.com/LihinduPerera/petify_backend.git
+git clone https://github.com/LihinduPerera/petify_admin.git
